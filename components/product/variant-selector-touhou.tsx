@@ -36,11 +36,11 @@ export function VariantSelector({
     )
   }));
 
-  const varObj = variants.reduce(
+  const variantsObj = variants.reduce(
     (
       accumulator: {
         [optName: string]: {
-          title: string;
+          // title: string;
           variants: string[];
         };
       },
@@ -49,6 +49,11 @@ export function VariantSelector({
       // get the option part of the variant's title
       // display it as a <dt>
       // collect variants under one entity united by its option name
+      /* 
+        [
+          ["regular", ["regular_Variant 1", "regular_Nendroid Plus"]]
+        ]
+      */
       const optNameRegex = /\w+(?=_)/;
       const optNameArr = optNameRegex.exec(variant.title);
 
@@ -59,7 +64,7 @@ export function VariantSelector({
       return {
         ...accumulator,
         [optName]: {
-          title: optName,
+          // title: optName,
           variants: accumulator[optName]?.variants
             ? [...accumulator[optName]!.variants, variant.title]
             : [variant.title]
@@ -69,7 +74,25 @@ export function VariantSelector({
     {}
   );
 
-  console.log(varObj);
+  const variantsArr = Object.entries(variantsObj);
 
-  return <></>;
+  const markup = variantsArr.map(([optTitle, variants]) => (
+    <dl className="mb-8" key={optTitle}>
+      <dt className="mb-4 text-sm uppercase tracking-wide">{optTitle}</dt>
+      <dd className="flex flex-wrap gap-3">
+        {variants.variants.map((variantTitle) => (
+          <button
+            key={variantTitle}
+            className={
+              'flex min-w-[48px] items-center justify-center rounded-full border bg-neutral-100 px-2 py-1 text-sm dark:border-neutral-800 dark:bg-neutral-900'
+            }
+          >
+            {variantTitle}
+          </button>
+        ))}
+      </dd>
+    </dl>
+  ));
+
+  return markup;
 }
