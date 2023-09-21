@@ -38,26 +38,17 @@ export function VariantSelector({
 
   const varObj = variants.reduce(
     (
-      /* accumulator: {
+      accumulator: {
         [optName: string]: {
-          [optName: string]: string;
-          variants: ProductVariant[];
+          title: string;
+          variants: string[];
         };
-      }, */
-      accumulator: any,
+      },
       variant
     ) => {
       // get the option part of the variant's title
       // display it as a <dt>
       // collect variants under one entity united by its option name
-      /* 
-      {
-        [option_name]: {
-          [option_name],
-          [variant_title],
-        }
-      }
-    */
       const optNameRegex = /\w+(?=_)/;
       const optNameArr = optNameRegex.exec(variant.title);
 
@@ -65,15 +56,12 @@ export function VariantSelector({
 
       const [optName] = optNameArr;
 
-      console.log(accumulator);
-
       return {
         ...accumulator,
         [optName]: {
           title: optName,
-          // variants: [...accumulator[optName].variants, variant.title]
           variants: accumulator[optName]?.variants
-            ? [...accumulator[optName].variants, variant.title]
+            ? [...accumulator[optName]!.variants, variant.title]
             : [variant.title]
         }
       };
