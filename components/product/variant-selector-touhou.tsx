@@ -5,12 +5,6 @@ import { ProductOption, ProductVariant } from 'lib/shopify/types';
 import { createUrl } from 'lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-type Combination = {
-  id: string;
-  availableForSale: boolean;
-  [key: string]: string | boolean; // ie. { color: 'Red', size: 'Large', ... }
-};
-
 export function VariantSelector({
   options,
   variants
@@ -27,16 +21,6 @@ export function VariantSelector({
   if (hasNoOptionsOrJustOneOption) {
     return null;
   }
-
-  const combinations: Combination[] = variants.map((variant) => ({
-    id: variant.id,
-    availableForSale: variant.availableForSale,
-    // Adds key / value pairs for each variant (ie. "color": "Black" and "size": 'M").
-    ...variant.selectedOptions.reduce(
-      (accumulator, option) => ({ ...accumulator, [option.name.toLowerCase()]: option.value }),
-      {}
-    )
-  }));
 
   const variantsObj = variants.reduce(
     (
@@ -56,8 +40,8 @@ export function VariantSelector({
       const optAndVarTitle = optAndVarTitleRegex.exec(variant.title);
       if (optAndVarTitle === null) return accumulator;
 
-      const [, optTitle, varTitle] = optAndVarTitle;
-      if (!optTitle || !varTitle) return accumulator;
+      const optTitle = optAndVarTitle[1]!;
+      const varTitle = optAndVarTitle[2]!;
 
       const variantObj = {
         id: variant.id,
@@ -78,11 +62,9 @@ export function VariantSelector({
     {}
   );
 
-  // console.log(variantsObj);
-
   const variantsArr = Object.entries(variantsObj);
 
-  const markup = variantsArr.map(([optTitle, variants]) => (
+  return variantsArr.map(([optTitle, variants]) => (
     <dl className="mb-8" key={optTitle}>
       <dt className="mb-4 text-sm uppercase tracking-wide">{optTitle}</dt>
       <dd className="flex flex-wrap gap-3">
@@ -121,6 +103,4 @@ export function VariantSelector({
       </dd>
     </dl>
   ));
-
-  return markup;
 }
