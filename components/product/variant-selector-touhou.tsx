@@ -1,6 +1,7 @@
 'use client';
 
 import { ProductOption, ProductVariant } from 'lib/shopify/types';
+import { createUrl } from 'lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 type Combination = {
@@ -39,7 +40,7 @@ export function VariantSelector({
   const variantsObj = variants.reduce(
     (
       accumulator: {
-        [optName: string]: {
+        [optTitle: string]: {
           variants: { id: string; title: string }[];
         };
       },
@@ -71,16 +72,26 @@ export function VariantSelector({
     <dl className="mb-8" key={optTitle}>
       <dt className="mb-4 text-sm uppercase tracking-wide">{optTitle}</dt>
       <dd className="flex flex-wrap gap-3">
-        {variants.variants.map((variant) => (
-          <button
-            key={variant.id}
-            className={
-              'flex min-w-[48px] items-center justify-center rounded-full border bg-neutral-100 px-2 py-1 text-sm dark:border-neutral-800 dark:bg-neutral-900'
-            }
-          >
-            {variant.title}
-          </button>
-        ))}
+        {variants.variants.map((variant) => {
+          const optNameLowerCase = options[0]!.name.toLowerCase();
+          const optSearchParams = new URLSearchParams(searchParams.toString());
+          optSearchParams.set(optNameLowerCase, `${optTitle} ${variant.title}`);
+          const optUrl = createUrl(pathname, optSearchParams);
+
+          return (
+            <button
+              key={variant.id}
+              onClick={() => {
+                router.replace(optUrl, { scroll: false });
+              }}
+              className={
+                'flex min-w-[48px] items-center justify-center rounded-full border bg-neutral-100 px-2 py-1 text-sm dark:border-neutral-800 dark:bg-neutral-900'
+              }
+            >
+              {variant.title}
+            </button>
+          );
+        })}
       </dd>
     </dl>
   ));
