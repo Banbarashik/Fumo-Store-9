@@ -42,7 +42,12 @@ export function VariantSelector({
     (
       accumulator: {
         [optTitle: string]: {
-          variants: { id: string; title: string; availableForSale: boolean }[];
+          variants: {
+            id: string;
+            title: string;
+            titleWithOpt: string;
+            availableForSale: boolean;
+          }[];
         };
       },
       variant
@@ -57,6 +62,7 @@ export function VariantSelector({
       const variantObj = {
         id: variant.id,
         title: varTitle,
+        titleWithOpt: variant.title,
         availableForSale: variant.availableForSale
       };
 
@@ -82,12 +88,11 @@ export function VariantSelector({
       <dd className="flex flex-wrap gap-3">
         {variants.variants.map((variant) => {
           const optNameLowerCase = options[0]!.name.toLowerCase();
-          const variantName = `${optTitle} ${variant.title}`;
           const optSearchParams = new URLSearchParams(searchParams.toString());
-          optSearchParams.set(optNameLowerCase, variantName);
+          optSearchParams.set(optNameLowerCase, variant.titleWithOpt);
           const optUrl = createUrl(pathname, optSearchParams);
 
-          const isActive = searchParams.get(optNameLowerCase) === variantName;
+          const isActive = searchParams.get(optNameLowerCase) === variant.titleWithOpt;
 
           return (
             <button
