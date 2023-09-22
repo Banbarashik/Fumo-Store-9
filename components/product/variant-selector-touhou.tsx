@@ -40,40 +40,30 @@ export function VariantSelector({
     (
       accumulator: {
         [optName: string]: {
-          // title: string;
-          // variants: string[];
           variants: { id: string; title: string }[];
         };
       },
       variant
     ) => {
-      // get the option part of the variant's title
-      // display it as a <dt>
-      // collect variants under one entity united by its option name
-      /* 
-        [
-          ["regular", ["regular_Variant 1", "regular_Nendroid Plus"]]
-        ]
-      */
-      const optNameRegex = /\w+(?=_)/;
-      const optNameArr = optNameRegex.exec(variant.title);
-
-      if (optNameArr === null) return accumulator; // protection from null
-
-      const [optName] = optNameArr;
+      const optAndVarTitleRegex = /(\w+)_(.+)/;
+      const optAndVarTitle = optAndVarTitleRegex.exec(variant.title);
+      if (optAndVarTitle === null) return accumulator;
+      const [, optTitle, varTitle] = optAndVarTitle;
+      if (!optTitle || !varTitle) return accumulator;
 
       return {
         ...accumulator,
-        [optName]: {
-          // title: optName,
-          variants: accumulator[optName]?.variants
-            ? [...accumulator[optName]!.variants, { id: variant.id, title: variant.title }]
-            : [{ id: variant.id, title: variant.title }]
+        [optTitle]: {
+          variants: accumulator[optTitle]?.variants
+            ? [...accumulator[optTitle]!.variants, { id: variant.id, title: varTitle }]
+            : [{ id: variant.id, title: varTitle }]
         }
       };
     },
     {}
   );
+
+  // console.log(variantsObj);
 
   const variantsArr = Object.entries(variantsObj);
 
