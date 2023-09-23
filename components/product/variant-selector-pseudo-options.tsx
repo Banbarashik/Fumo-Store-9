@@ -5,7 +5,7 @@ import { ProductOption, ProductVariant } from 'lib/shopify/types';
 import { createUrl } from 'lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-export function VariantSelector({
+export function VariantSelectorWithPseudoOptions({
   options,
   variants
 }: {

@@ -2,9 +2,12 @@ import { AddToCart } from 'components/cart/add-to-cart';
 import Price from 'components/price';
 import Prose from 'components/prose';
 import { Product } from 'lib/shopify/types';
-import { VariantSelector } from './variant-selector-touhou';
+import { VariantSelector } from './variant-selector';
+import { VariantSelectorWithPseudoOptions } from './variant-selector-pseudo-options';
 
 export function ProductDescription({ product }: { product: Product }) {
+  const hasPseudoOptions = product.tags.includes('pseudo_options');
+
   return (
     <>
       <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
@@ -16,7 +19,11 @@ export function ProductDescription({ product }: { product: Product }) {
           />
         </div>
       </div>
-      <VariantSelector options={product.options} variants={product.variants} />
+      {!hasPseudoOptions ? (
+        <VariantSelector options={product.options} variants={product.variants} />
+      ) : (
+        <VariantSelectorWithPseudoOptions options={product.options} variants={product.variants} />
+      )}
 
       {product.descriptionHtml ? (
         <Prose
