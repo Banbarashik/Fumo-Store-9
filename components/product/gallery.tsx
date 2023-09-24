@@ -10,7 +10,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 export function Gallery({
   images
 }: {
-  images: { src: string; altText: string; variant: string }[];
+  images: { src: string; altText: string; selectedOptions: { name: string; value: string }[] }[];
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -26,6 +26,9 @@ export function Gallery({
   const previousImageIndex = imageIndex === 0 ? images.length - 1 : imageIndex - 1;
   previousSearchParams.set('image', previousImageIndex.toString());
   const previousUrl = createUrl(pathname, previousSearchParams);
+
+  //* current image = image from the array that === searchParams.get("title" or the option name)
+  //! account for another cases with a few options, not only one (pseudo-options)
 
   const buttonClassName =
     'h-full px-6 transition-all ease-in-out hover:scale-110 hover:text-black dark:hover:text-white flex items-center justify-center';
@@ -44,7 +47,7 @@ export function Gallery({
           />
         )}
 
-        {images.length > 1 ? (
+        {images.length > 1 && (
           <div className="absolute bottom-[15%] flex w-full justify-center">
             <div className="mx-auto flex h-11 items-center rounded-full border border-white bg-neutral-50/80 text-neutral-500 backdrop-blur dark:border-black dark:bg-neutral-900/80">
               <Link
@@ -66,10 +69,10 @@ export function Gallery({
               </Link>
             </div>
           </div>
-        ) : null}
+        )}
       </div>
 
-      {images.length > 1 ? (
+      {images.length > 1 && (
         <ul className="my-12 flex items-center justify-center gap-2 overflow-auto py-1 lg:mb-0">
           {images.map((image, index) => {
             const isActive = index === imageIndex;
@@ -97,7 +100,7 @@ export function Gallery({
             );
           })}
         </ul>
-      ) : null}
+      )}
     </>
   );
 }
