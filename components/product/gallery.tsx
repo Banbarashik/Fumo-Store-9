@@ -46,13 +46,13 @@ export function Gallery({
   return (
     <>
       <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden">
-        {images[imageIndex] && (
+        {images.length > 0 && (
           <Image
             className="h-full w-full object-contain"
             fill
             sizes="(min-width: 1024px) 66vw, 100vw"
-            alt={images[imageIndex]?.altText as string}
-            src={images[imageIndex]?.src as string}
+            alt={currentImage?.altText || images[0]!.altText || ''}
+            src={currentImage?.src || images[0]!.src}
             priority={true}
           />
         )}
