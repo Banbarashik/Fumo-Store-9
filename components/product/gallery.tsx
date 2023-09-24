@@ -7,7 +7,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-export function Gallery({ images }: { images: { src: string; altText: string }[] }) {
+export function Gallery({
+  images
+}: {
+  images: { src: string; altText: string; variant: string }[];
+}) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const imageSearchParam = searchParams.get('image');
