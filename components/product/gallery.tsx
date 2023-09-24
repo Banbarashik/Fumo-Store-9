@@ -18,27 +18,31 @@ export function Gallery({
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const imageSearchParam = searchParams.get('image');
-  const imageIndex = imageSearchParam ? parseInt(imageSearchParam) : 0;
 
-  const nextSearchParams = new URLSearchParams(searchParams.toString());
-  const nextImageIndex = imageIndex + 1 < images.length ? imageIndex + 1 : 0;
-  nextSearchParams.set('image', nextImageIndex.toString());
-  const nextUrl = createUrl(pathname, nextSearchParams);
-
-  const previousSearchParams = new URLSearchParams(searchParams.toString());
-  const previousImageIndex = imageIndex === 0 ? images.length - 1 : imageIndex - 1;
-  previousSearchParams.set('image', previousImageIndex.toString());
-  const previousUrl = createUrl(pathname, previousSearchParams);
-
-  //* current image = image from the array that === searchParams.get("title" or the option name)
-  //! account for another cases with a few options, not only one (pseudo-options)
   const [currentImage] = images.filter((image) =>
     image.selectedOptions.every(function (option) {
       const optionNameLowerCase = option.name.toLowerCase();
       return searchParams.get(optionNameLowerCase) === option.value;
     })
   );
+
+  const currentImageIndex = images.findIndex((image) => image.src === currentImage?.src);
+
+  const previousSearchParams = new URLSearchParams(searchParams.toString());
+  const previousImageIndex = currentImageIndex === 0 ? images.length - 1 : currentImageIndex - 1;
+  images[previousImageIndex]?.selectedOptions.forEach(function (option) {
+    const optionNameLowerCase = option.name.toLowerCase();
+    return previousSearchParams.set(optionNameLowerCase, option.value);
+  });
+  const previousUrl = createUrl(pathname, previousSearchParams);
+
+  const nextSearchParams = new URLSearchParams(searchParams.toString());
+  const nextImageIndex = currentImageIndex + 1 < images.length ? currentImageIndex + 1 : 0;
+  images[nextImageIndex]?.selectedOptions.forEach(function (option) {
+    const optionNameLowerCase = option.name.toLowerCase();
+    return nextSearchParams.set(optionNameLowerCase, option.value);
+  });
+  const nextUrl = createUrl(pathname, nextSearchParams);
 
   const buttonClassName =
     'h-full px-6 transition-all ease-in-out hover:scale-110 hover:text-black dark:hover:text-white flex items-center justify-center';
