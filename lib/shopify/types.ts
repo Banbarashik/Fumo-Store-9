@@ -35,7 +35,7 @@ export type Collection = ShopifyCollection & {
 
 export type Image = {
   url: string;
-  altText: string;
+  altText: string | null;
   width: number;
   height: number;
 };

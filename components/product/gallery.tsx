@@ -10,7 +10,11 @@ import { usePathname, useSearchParams } from 'next/navigation';
 export function Gallery({
   images
 }: {
-  images: { src: string; altText: string; selectedOptions: { name: string; value: string }[] }[];
+  images: {
+    src: string;
+    altText: string | null;
+    selectedOptions: { name: string; value: string }[];
+  }[];
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -29,6 +33,12 @@ export function Gallery({
 
   //* current image = image from the array that === searchParams.get("title" or the option name)
   //! account for another cases with a few options, not only one (pseudo-options)
+  const [currentImage] = images.filter((image) =>
+    image.selectedOptions.every(function (option) {
+      const optionNameLowerCase = option.name.toLowerCase();
+      return searchParams.get(optionNameLowerCase) === option.value;
+    })
+  );
 
   const buttonClassName =
     'h-full px-6 transition-all ease-in-out hover:scale-110 hover:text-black dark:hover:text-white flex items-center justify-center';
@@ -89,7 +99,7 @@ export function Gallery({
                   className="h-full w-full"
                 >
                   <GridTileImage
-                    alt={image.altText}
+                    alt={image.altText || 'Product image'}
                     src={image.src}
                     width={80}
                     height={80}
