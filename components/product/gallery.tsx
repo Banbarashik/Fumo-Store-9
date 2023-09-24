@@ -84,11 +84,14 @@ export function Gallery({
 
       {images.length > 1 && (
         <ul className="my-12 flex items-center justify-center gap-2 overflow-auto py-1 lg:mb-0">
-          {images.map((image, index) => {
+          {images.map(function (image) {
             const isActive = image.selectedOptions === currentImage?.selectedOptions;
             const imageSearchParams = new URLSearchParams(searchParams.toString());
 
-            imageSearchParams.set('image', index.toString());
+            image.selectedOptions.forEach(function (option) {
+              const optionNameLowerCase = option.name.toLowerCase();
+              imageSearchParams.set(optionNameLowerCase, option.value);
+            });
 
             return (
               <li key={image.src} className="h-20 w-20">
