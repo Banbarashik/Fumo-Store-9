@@ -42,7 +42,7 @@ export async function generateMetadata({
               url,
               width,
               height,
-              alt: alt || ''
+              ...(alt && { alt })
             }
           ]
         }
