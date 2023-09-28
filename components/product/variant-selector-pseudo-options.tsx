@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { ProductOption, ProductVariant } from 'lib/shopify/types';
 import { createUrl } from 'lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 export function VariantSelectorWithPseudoOptions({
   options,
@@ -15,12 +16,19 @@ export function VariantSelectorWithPseudoOptions({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const hasNoOptionsOrJustOneOption =
-    !options.length || (options.length === 1 && options[0]?.values.length === 1);
 
-  if (hasNoOptionsOrJustOneOption) {
+  const [option] = options;
+  const hasNoOptionOrJustOneVariant = !option || option.values.length === 1;
+
+  if (hasNoOptionOrJustOneVariant) {
     return null;
   }
+
+  const firstVariantSelectedSearchParams = new URLSearchParams();
+  const optionNameLowerCase = option.name.toLowerCase();
+  firstVariantSelectedSearchParams.set(optionNameLowerCase, option.values[0]!);
+  const firstVariantSelectedURL = createUrl(pathname, firstVariantSelectedSearchParams);
+  useEffect(() => router.replace(firstVariantSelectedURL), []);
 
   const variantsObj = variants.reduce(
     (
