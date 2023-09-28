@@ -18,17 +18,27 @@ export function VariantSelectorWithPseudoOptions({
   const searchParams = useSearchParams();
 
   const [option] = options;
+
   const hasNoOptionOrJustOneVariant = !option || option.values.length === 1;
 
   if (hasNoOptionOrJustOneVariant) {
     return null;
   }
 
-  const firstVariantSelectedSearchParams = new URLSearchParams();
   const optionNameLowerCase = option.name.toLowerCase();
-  firstVariantSelectedSearchParams.set(optionNameLowerCase, option.values[0]!);
-  const firstVariantSelectedURL = createUrl(pathname, firstVariantSelectedSearchParams);
-  useEffect(() => router.replace(firstVariantSelectedURL), []);
+
+  useEffect(function () {
+    const variantIsSelected = searchParams.has(optionNameLowerCase);
+
+    if (variantIsSelected) return;
+
+    const firstVariantSearchParams = new URLSearchParams();
+    firstVariantSearchParams.set(optionNameLowerCase, option.values[0]!);
+
+    const firstVariantURL = createUrl(pathname, firstVariantSearchParams);
+
+    router.replace(firstVariantURL);
+  }, []);
 
   const variantsObj = variants.reduce(
     (
@@ -77,12 +87,11 @@ export function VariantSelectorWithPseudoOptions({
       <dt className="mb-4 text-sm uppercase tracking-wide">{optTitle}</dt>
       <dd className="flex flex-wrap gap-3">
         {variants.map(function (variant) {
-          const optNameLowerCase = options[0]!.name.toLowerCase();
           const optSearchParams = new URLSearchParams(searchParams.toString());
-          optSearchParams.set(optNameLowerCase, variant.titleWithOpt);
+          optSearchParams.set(optionNameLowerCase, variant.titleWithOpt);
           const optUrl = createUrl(pathname, optSearchParams);
 
-          const isActive = searchParams.get(optNameLowerCase) === variant.titleWithOpt;
+          const isActive = searchParams.get(optionNameLowerCase) === variant.titleWithOpt;
 
           return (
             <button
