@@ -22,7 +22,7 @@ export function ProductDescription({ product }: { product: Product }) {
       {!hasPseudoOptions ? (
         <VariantSelector options={product.options} variants={product.variants} />
       ) : (
-        <VariantSelectorWithPseudoOptions options={product.options} variants={product.variants} />
+        <VariantSelectorWithPseudoOptions option={product.options[0]} variants={product.variants} />
       )}
 
       {product.descriptionHtml ? (

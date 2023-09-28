@@ -7,17 +7,15 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 export function VariantSelectorWithPseudoOptions({
-  options,
+  option,
   variants
 }: {
-  options: ProductOption[];
+  option: ProductOption | undefined;
   variants: ProductVariant[];
 }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
-  const [option] = options;
 
   const hasNoOptionOrJustOneVariant = !option || option.values.length === 1;
 
