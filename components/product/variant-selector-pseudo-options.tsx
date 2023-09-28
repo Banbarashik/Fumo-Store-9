@@ -64,11 +64,11 @@ export function VariantSelectorWithPseudoOptions({
 
   const variantsArr = Object.entries(variantsObj);
 
-  return variantsArr.map(([optTitle, variants]) => (
+  return variantsArr.map(([optTitle, { variants }]) => (
     <dl className="mb-8" key={optTitle}>
       <dt className="mb-4 text-sm uppercase tracking-wide">{optTitle}</dt>
       <dd className="flex flex-wrap gap-3">
-        {variants.variants.map((variant) => {
+        {variants.map(function (variant) {
           const optNameLowerCase = options[0]!.name.toLowerCase();
           const optSearchParams = new URLSearchParams(searchParams.toString());
           optSearchParams.set(optNameLowerCase, variant.titleWithOpt);
