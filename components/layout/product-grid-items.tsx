@@ -13,9 +13,8 @@ export default function ProductGridItems({ products }: { products: Product[] }) 
               alt={product.title}
               label={{
                 title: product.title,
-                amount:
-                  product.variants[0]?.price.amount ?? product.priceRange.maxVariantPrice.amount,
-                currencyCode: product.priceRange.maxVariantPrice.currencyCode
+                amount: product.variants[0]!.price.amount,
+                currencyCode: product.variants[0]!.price.currencyCode
               }}
               src={product.featuredImage?.url}
               fill

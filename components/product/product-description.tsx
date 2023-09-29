@@ -1,11 +1,17 @@
 import { AddToCart } from 'components/cart/add-to-cart';
 import Price from 'components/price';
 import Prose from 'components/prose';
-import { Product } from 'lib/shopify/types';
+import { Product, ProductVariant } from 'lib/shopify/types';
 import { VariantSelector } from './variant-selector';
 import { VariantSelectorWithPseudoOptions } from './variant-selector-pseudo-options';
 
-export function ProductDescription({ product }: { product: Product }) {
+export function ProductDescription({
+  product,
+  selectedVariant
+}: {
+  product: Product;
+  selectedVariant?: ProductVariant;
+}) {
   const hasPseudoOptions = product.tags.includes('pseudo_options');
 
   return (
@@ -14,8 +20,14 @@ export function ProductDescription({ product }: { product: Product }) {
         <h1 className="mb-2 text-5xl font-medium">{product.title}</h1>
         <div className="mr-auto w-auto rounded-full bg-blue-600 p-2 text-sm text-white">
           <Price
-            amount={product.variants[0]?.price.amount ?? product.priceRange.maxVariantPrice.amount}
-            currencyCode={product.priceRange.maxVariantPrice.currencyCode}
+            amount={
+              selectedVariant ? selectedVariant.price.amount : product.variants[0]!.price.amount
+            }
+            currencyCode={
+              selectedVariant
+                ? selectedVariant.price.currencyCode
+                : product.variants[0]!.price.currencyCode
+            }
           />
         </div>
       </div>

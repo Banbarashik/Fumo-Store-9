@@ -8,6 +8,7 @@ import { Gallery } from 'components/product/gallery';
 import { ProductDescription } from 'components/product/product-description';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { getProduct, getProductRecommendations } from 'lib/shopify';
+import { ProductVariant } from 'lib/shopify/types';
 import Link from 'next/link';
 
 export const runtime = 'edge';
@@ -50,10 +51,28 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductPage({ params }: { params: { handle: string } }) {
+export default async function ProductPage({
+  params,
+  searchParams
+}: {
+  params: { handle: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const product = await getProduct(params.handle);
 
   if (!product) return notFound();
+
+  console.log(searchParams);
+
+  // TODO: avoid the arrey traversing if there's only one variant
+  const selectedVariant = product.variants.find((variant: ProductVariant) =>
+    variant.selectedOptions.every(function (option) {
+      const optionNameLowerCase = option.name.toLowerCase();
+      return searchParams[optionNameLowerCase] === option.value;
+    })
+  );
+
+  console.log(selectedVariant);
 
   const productJsonLd = {
     '@context': 'https://schema.org',
@@ -93,7 +112,7 @@ export default async function ProductPage({ params }: { params: { handle: string
           </div>
 
           <div className="basis-full lg:basis-2/6">
-            <ProductDescription product={product} />
+            <ProductDescription product={product} selectedVariant={selectedVariant} />
           </div>
         </div>
         <Suspense>
