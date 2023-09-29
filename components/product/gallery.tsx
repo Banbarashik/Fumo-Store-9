@@ -19,7 +19,7 @@ export function Gallery({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [currentImage] = images.filter((image) =>
+  const currentImage = images.find((image) =>
     image.selectedOptions.every(function (option) {
       const optionNameLowerCase = option.name.toLowerCase();
       return searchParams.get(optionNameLowerCase) === option.value;
