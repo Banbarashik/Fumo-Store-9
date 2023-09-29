@@ -62,17 +62,15 @@ export default async function ProductPage({
 
   if (!product) return notFound();
 
-  console.log(searchParams);
-
-  // TODO: avoid the arrey traversing if there's only one variant
-  const selectedVariant = product.variants.find((variant: ProductVariant) =>
-    variant.selectedOptions.every(function (option) {
-      const optionNameLowerCase = option.name.toLowerCase();
-      return searchParams[optionNameLowerCase] === option.value;
-    })
-  );
-
-  console.log(selectedVariant);
+  const selectedVariant =
+    product.variants.length === 1 //* check to avoid unnecessary array traversal
+      ? product.variants[0]!
+      : product.variants.find((variant: ProductVariant) =>
+          variant.selectedOptions.every(function (option) {
+            const optionNameLowerCase = option.name.toLowerCase();
+            return searchParams[optionNameLowerCase] === option.value;
+          })
+        ) ?? product.variants[0]!; //* guard to avoid "undefined"
 
   const productJsonLd = {
     '@context': 'https://schema.org',
@@ -112,7 +110,7 @@ export default async function ProductPage({
           </div>
 
           <div className="basis-full lg:basis-2/6">
-            <ProductDescription product={product} selectedVariant={selectedVariant} />
+            <ProductDescription product={product} selectedVariantPrice={selectedVariant.price} />
           </div>
         </div>
         <Suspense>
