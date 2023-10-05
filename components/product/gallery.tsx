@@ -52,12 +52,12 @@ export function Gallery({
       <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden">
         {images.length > 0 && (
           <Image
-            className="h-full w-full object-contain"
+            className="object-contain"
             fill
             sizes="(min-width: 1024px) 66vw, 100vw"
             alt={currentImage?.altText || images[0]!.altText || ''}
             src={currentImage?.src || images[0]!.src}
-            priority={true}
+            priority
           />
         )}
 

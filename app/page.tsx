@@ -1,5 +1,9 @@
+import Grid from 'components/grid';
 import Footer from 'components/layout/footer';
 import { Suspense } from 'react';
+
+import CollectionGridItems from 'components/layout/collection-grid-items';
+import { getCollections } from 'lib/shopify';
 
 export const runtime = 'edge';
 
@@ -11,9 +15,16 @@ export const metadata = {
 };
 
 export default async function HomePage() {
+  const collections = await getCollections();
+
   return (
     <>
       <Suspense>
+        <div className="mx-auto max-w-screen-xl px-4">
+          <Grid className="grid-cols-1">
+            <CollectionGridItems collections={collections} />
+          </Grid>
+        </div>
         <Footer />
       </Suspense>
     </>
