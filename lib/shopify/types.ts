@@ -30,7 +30,7 @@ export type CartItem = {
 };
 
 export type Collection = Omit<ShopifyCollection, 'products'> & {
-  products: { handle: string }[];
+  products: Product[];
   path: string;
 };
 
@@ -107,7 +107,7 @@ export type ShopifyCollection = {
   title: string;
   description: string;
   image: Image | null;
-  products: Connection<{ handle: string }>;
+  products: Connection<Product>;
   seo: SEO;
   updatedAt: string;
 };

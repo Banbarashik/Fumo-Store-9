@@ -20,7 +20,9 @@ export default function CollectionGridItems({ collections }: { collections: Coll
                 src={collection.image.url}
                 fill
               />
-              <Grid>{/* <ProductGridItems products={collection.products} /> */}</Grid>
+              <Grid>
+                <ProductGridItems products={collection.products} />
+              </Grid>
             </Grid.Item>
           )
       )}
