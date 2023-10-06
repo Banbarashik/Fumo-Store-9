@@ -139,6 +139,7 @@ const reshapeCollection = (collection: ShopifyCollection): Collection | undefine
 
   return {
     ...collection,
+    products: removeEdgesAndNodes(collection.products),
     path: `/search/${collection.handle}`
   };
 };
@@ -319,6 +320,8 @@ export async function getCollections(): Promise<Collection[]> {
       handle: '',
       title: 'All',
       description: 'All products',
+      image: null,
+      products: [],
       seo: {
         title: 'All',
         description: 'All products'

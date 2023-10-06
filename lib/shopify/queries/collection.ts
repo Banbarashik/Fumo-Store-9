@@ -33,6 +33,13 @@ export const getCollectionsQuery = /* GraphQL */ `
     collections(first: 100, sortKey: TITLE) {
       edges {
         node {
+          products(first: 3, sortKey: BEST_SELLING) {
+            edges {
+              node {
+                handle
+              }
+            }
+          }
           ...collection
         }
       }

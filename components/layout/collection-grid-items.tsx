@@ -2,6 +2,8 @@ import Grid from 'components/grid';
 import { Collection } from 'lib/shopify/types';
 import Image from 'next/image';
 
+import ProductGridItems from './product-grid-items';
+
 export default function CollectionGridItems({ collections }: { collections: Collection[] }) {
   return (
     <>
@@ -18,6 +20,7 @@ export default function CollectionGridItems({ collections }: { collections: Coll
                 src={collection.image.url}
                 fill
               />
+              <Grid>{/* <ProductGridItems products={collection.products} /> */}</Grid>
             </Grid.Item>
           )
       )}
