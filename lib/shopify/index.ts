@@ -139,7 +139,7 @@ const reshapeCollection = (collection: ShopifyCollection): Collection | undefine
 
   return {
     ...collection,
-    products: removeEdgesAndNodes(collection.products),
+    products: reshapeProducts(removeEdgesAndNodes(collection.products)),
     path: `/search/${collection.handle}`
   };
 };

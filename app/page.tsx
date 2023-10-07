@@ -17,8 +17,6 @@ export const metadata = {
 export default async function HomePage() {
   const collections = await getCollections();
 
-  console.log(collections);
-
   return (
     <>
       <Suspense>
