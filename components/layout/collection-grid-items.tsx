@@ -13,17 +13,19 @@ export default function CollectionGridItems({ collections }: { collections: Coll
           !!collection.image && (
             <Grid.Item
               key={collection.handle}
-              className="relative animate-fadeIn border border-neutral-200"
+              className="relative aspect-auto animate-fadeIn border border-neutral-200"
             >
               <Link href={collection.path}>
                 <Image
-                  className="object-contain"
+                  className="w-full"
                   alt={collection.image.altText ?? ''}
                   src={collection.image.url}
-                  fill
+                  width={collection.image.width}
+                  height={collection.image.height}
+                  sizes="70vw"
                 />
               </Link>
-              <Grid>
+              <Grid className="grid-cols-3">
                 <ProductGridItems products={collection.products} />
               </Grid>
             </Grid.Item>
