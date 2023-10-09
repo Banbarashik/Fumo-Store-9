@@ -15,7 +15,7 @@ export default function CollectionGridItems({ collections }: { collections: Coll
               key={collection.handle}
               className="relative aspect-auto animate-fadeIn border border-neutral-200"
             >
-              <Link href={collection.path}>
+              <Link className="mb-[5%] inline-block w-full" href={collection.path}>
                 <Image
                   className="w-full"
                   alt={collection.image.altText ?? ''}
