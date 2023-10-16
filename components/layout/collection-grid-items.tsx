@@ -10,6 +10,7 @@ export default function CollectionGridItems({ collections }: { collections: Coll
     <>
       {collections.map(
         (collection) =>
+          //* dont't render the collection if it doesn't have an image
           !!collection.image && (
             <Grid.Item
               key={collection.handle}
@@ -17,7 +18,7 @@ export default function CollectionGridItems({ collections }: { collections: Coll
             >
               <Link className="mb-[5%] inline-block w-full" href={collection.path}>
                 <Image
-                  className="w-full"
+                  className="min-h-[130px] w-full object-cover" //* final min-h TBD
                   alt={collection.image.altText ?? ''}
                   src={collection.image.url}
                   width={collection.image.width}
