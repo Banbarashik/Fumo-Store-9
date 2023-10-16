@@ -13,7 +13,7 @@ export default function CollectionGridItems({ collections }: { collections: Coll
           !!collection.image && (
             <Grid.Item
               key={collection.handle}
-              className="relative aspect-auto animate-fadeIn border border-neutral-200"
+              className="relative animate-fadeIn border border-neutral-200"
             >
               <Link className="mb-[5%] inline-block w-full" href={collection.path}>
                 <Image
@@ -25,8 +25,11 @@ export default function CollectionGridItems({ collections }: { collections: Coll
                   sizes="70vw"
                 />
               </Link>
-              <Grid className="grid-cols-3">
-                <ProductGridItems products={collection.products} />
+              <Grid className="grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                <ProductGridItems
+                  products={collection.products}
+                  className="hidden aspect-square first:block md:last:block sm:[&:nth-child(2)]:block"
+                />
               </Grid>
             </Grid.Item>
           )
