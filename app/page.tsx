@@ -5,6 +5,8 @@ import { Suspense } from 'react';
 import CollectionGridItems from 'components/layout/collection-grid-items';
 import { getCollections } from 'lib/shopify';
 
+import Logo from 'components/logo';
+
 export const runtime = 'edge';
 
 export const metadata = {
@@ -20,7 +22,8 @@ export default async function HomePage() {
   return (
     <>
       <Suspense>
-        <div className="mx-auto max-w-screen-xl px-4">
+        <div className="mx-auto max-w-screen-xl px-4 py-4">
+          <Logo className="mx-auto mb-8 w-2/3 max-w-md" /> {/* //TODO change mb */}
           <Grid className="grid-cols-1">
             <CollectionGridItems collections={collections} />
           </Grid>
