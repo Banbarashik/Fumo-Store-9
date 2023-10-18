@@ -2,9 +2,6 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import Label from '../label';
 
-import { HoverCard, HoverCardContent, HoverCardTrigger } from 'components/ui/hover-card';
-import { Button } from '../ui/button';
-
 export function GridTileImage({
   isInteractive = true,
   active,
@@ -48,12 +45,6 @@ export function GridTileImage({
           position={label.position}
         />
       ) : null}
-      <HoverCard>
-        <HoverCardTrigger asChild className="absolute right-4 top-4">
-          <Button>Variants</Button>
-        </HoverCardTrigger>
-        <HoverCardContent></HoverCardContent>
-      </HoverCard>
     </div>
   );
 }
