@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { GridTileImage } from '@/components/grid/tile';
 
+import { Product } from '@/lib/shopify/types';
 import { getCollections } from 'lib/shopify';
 
 export default async function CollectionsList() {
@@ -25,34 +26,37 @@ export default async function CollectionsList() {
                   sizes="70vw"
                 />
               </Link>
-              <ul className="mx-[2%] flex gap-4">
-                {collection.products.map((product) => (
-                  <li
-                    key={product.handle}
-                    className="hidden aspect-square w-full animate-fadeIn first:block md:last:block sm:[&:nth-child(2)]:block"
-                  >
-                    <Link
-                      className="relative inline-block h-full w-full"
-                      href={`/product/${product.handle}`}
-                    >
-                      <GridTileImage
-                        alt={product.title}
-                        label={{
-                          title: product.title,
-                          amount: product.variants[0]!.price.amount,
-                          currencyCode: product.variants[0]!.price.currencyCode
-                        }}
-                        src={product.featuredImage?.url}
-                        fill
-                        sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
-                      />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <CollectionBestSellersList products={collection.products} />
             </li>
           )
       )}
+    </ul>
+  );
+}
+
+function CollectionBestSellersList({ products }: { products: Product[] }) {
+  return (
+    <ul className="mx-[2%] flex gap-4">
+      {products.map((product) => (
+        <li
+          key={product.handle}
+          className="hidden aspect-square w-full animate-fadeIn first:block md:last:block sm:[&:nth-child(2)]:block"
+        >
+          <Link className="relative inline-block h-full w-full" href={`/product/${product.handle}`}>
+            <GridTileImage
+              alt={product.title}
+              label={{
+                title: product.title,
+                amount: product.variants[0]!.price.amount,
+                currencyCode: product.variants[0]!.price.currencyCode
+              }}
+              src={product.featuredImage?.url}
+              fill
+              sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
+            />
+          </Link>
+        </li>
+      ))}
     </ul>
   );
 }
