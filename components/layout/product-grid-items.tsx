@@ -44,7 +44,7 @@ export default function ProductGridItems({
               <HoverCardTrigger asChild className="absolute right-0 top-0">
                 <Button>Variants</Button>
               </HoverCardTrigger>
-              <HoverCardContent>
+              <HoverCardContent className="w-full">
                 <ProductVariantsCard variants={product.variants} />
               </HoverCardContent>
             </HoverCard>

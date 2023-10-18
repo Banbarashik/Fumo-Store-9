@@ -24,19 +24,21 @@ export default function ProductVariantsCard({ variants }: { variants: ProductVar
         );
 
         return (
-          <li key={variant.id}>
-            <Link href={`/product/`}>
+          <li key={variant.id} className="rounded-sm dark:hover:bg-slate-700">
+            <Link href={`/product/`} className="flex gap-6 px-3 py-4">
               <Image
                 src={variant.image.url}
                 alt={variant.image.altText || variant.title}
                 width={40}
                 height={40}
+                className="aspect-square"
               />
               <div>
                 <p>{variant.title}</p>
                 <Price amount={variant.price.amount} currencyCode={variant.price.currencyCode} />
               </div>
               <button
+                className="ml-auto"
                 onClick={async (e) => {
                   e.preventDefault();
 
