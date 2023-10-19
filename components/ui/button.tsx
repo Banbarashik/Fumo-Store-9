@@ -19,7 +19,9 @@ const buttonVariants = cva(
           'bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80',
         ghost:
           'hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50',
-        link: 'text-slate-900 underline-offset-4 hover:underline dark:text-slate-50'
+        link: 'text-slate-900 underline-offset-4 hover:underline dark:text-slate-50',
+        glassmorphism:
+          'border border-neutral-200 text-black bg-white/70 backdrop-blur-md dark:border-neutral-700 dark:text-white dark:bg-black/70'
       },
       size: {
         default: 'h-10 px-4 py-2',
