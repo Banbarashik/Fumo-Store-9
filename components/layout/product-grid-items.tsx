@@ -25,11 +25,8 @@ export default function ProductGridItems({
         const hasJustOneVariant = product.variants.length === 1;
 
         return (
-          <Grid.Item key={product.handle} className={clsx('animate-fadeIn', className)}>
-            <Link
-              className="relative inline-block h-full w-full"
-              href={`/product/${product.handle}`}
-            >
+          <Grid.Item key={product.handle} className={clsx('relative animate-fadeIn', className)}>
+            <Link className="inline-block h-full w-full" href={`/product/${product.handle}`}>
               <GridTileImage
                 alt={product.title}
                 label={{
@@ -41,27 +38,24 @@ export default function ProductGridItems({
                 fill
                 sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
               />
-              {hasJustOneVariant ? (
-                <AddToCartButton
-                  productVariant={product.variants[0]!}
-                  className="absolute right-6 top-4"
-                />
-              ) : (
-                <HoverCard>
-                  <HoverCardTrigger asChild className="absolute right-6 top-4">
-                    <Button variant="glassmorphism" size="icon">
-                      <ListBulletIcon className="h-6" />
-                    </Button>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-full">
-                    <ProductVariantsCard
-                      productHandle={product.handle}
-                      variants={product.variants}
-                    />
-                  </HoverCardContent>
-                </HoverCard>
-              )}
             </Link>
+            {hasJustOneVariant ? (
+              <AddToCartButton
+                productVariant={product.variants[0]!}
+                className="absolute right-6 top-4"
+              />
+            ) : (
+              <HoverCard>
+                <HoverCardTrigger asChild className="absolute right-6 top-4">
+                  <Button variant="glassmorphism" size="icon">
+                    <ListBulletIcon className="h-6" />
+                  </Button>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-full">
+                  <ProductVariantsCard productHandle={product.handle} variants={product.variants} />
+                </HoverCardContent>
+              </HoverCard>
+            )}
           </Grid.Item>
         );
       })}
