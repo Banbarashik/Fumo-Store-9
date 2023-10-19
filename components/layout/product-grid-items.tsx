@@ -49,7 +49,7 @@ export default function ProductGridItems({
               ) : (
                 <HoverCard>
                   <HoverCardTrigger asChild className="absolute right-6 top-4">
-                    <Button variant="outline" size="icon">
+                    <Button variant="glassmorphism" size="icon">
                       <ListBulletIcon className="h-6" />
                     </Button>
                   </HoverCardTrigger>
