@@ -8,7 +8,13 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 // TODO: make the component remember its state so that the pending variant doesn't reset when component is removed from the DOM
-export default function AddToCartButton({ productVariant }: { productVariant: ProductVariant }) {
+export default function AddToCartButton({
+  productVariant,
+  className
+}: {
+  productVariant: ProductVariant;
+  className?: string;
+}) {
   const router = useRouter();
   const [pendingVariants, setPendingVariants] = useState<String[]>([]);
 
@@ -16,7 +22,7 @@ export default function AddToCartButton({ productVariant }: { productVariant: Pr
 
   return (
     <button
-      className="ml-auto"
+      className={className}
       onClick={async (e) => {
         e.preventDefault();
 

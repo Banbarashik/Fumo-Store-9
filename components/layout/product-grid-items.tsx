@@ -40,11 +40,13 @@ export default function ProductGridItems({
                 sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
               />
               {hasJustOneVariant ? (
-                <AddToCartButton productVariant={product.variants[0]!} />
+                <AddToCartButton
+                  productVariant={product.variants[0]!}
+                  className="absolute right-0 top-0"
+                />
               ) : (
                 <HoverCard>
                   <HoverCardTrigger asChild className="absolute right-0 top-0">
-                    {/* //TODO: render the shopping cart icon instead of the 'variants' button in case there's only one variant */}
                     <Button>Variants</Button>
                   </HoverCardTrigger>
                   <HoverCardContent className="w-full">

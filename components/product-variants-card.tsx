@@ -43,7 +43,7 @@ export default function ProductVariantsCard({
                 <p>{variant.title}</p>
                 <Price amount={variant.price.amount} currencyCode={variant.price.currencyCode} />
               </div>
-              <AddToCartButton productVariant={variant} />
+              <AddToCartButton productVariant={variant} className="ml-auto" />
             </Link>
           </li>
         );
