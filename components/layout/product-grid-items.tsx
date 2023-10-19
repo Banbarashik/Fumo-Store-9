@@ -10,6 +10,8 @@ import ProductVariantsCard from '@/components/product-variants-card';
 import { Button } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
+import { ListBulletIcon } from '@heroicons/react/24/outline';
+
 export default function ProductGridItems({
   products,
   className
@@ -42,12 +44,14 @@ export default function ProductGridItems({
               {hasJustOneVariant ? (
                 <AddToCartButton
                   productVariant={product.variants[0]!}
-                  className="absolute right-0 top-0"
+                  className="absolute right-6 top-4"
                 />
               ) : (
                 <HoverCard>
-                  <HoverCardTrigger asChild className="absolute right-0 top-0">
-                    <Button>Variants</Button>
+                  <HoverCardTrigger asChild className="absolute right-6 top-4">
+                    <Button variant="outline" size="icon">
+                      <ListBulletIcon className="h-6" />
+                    </Button>
                   </HoverCardTrigger>
                   <HoverCardContent className="w-full">
                     <ProductVariantsCard
