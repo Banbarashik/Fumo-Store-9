@@ -39,7 +39,7 @@ export default function ProductVariantsCard({
                 height={80}
                 className="h-20 w-20 rounded-sm object-cover"
               />
-              <div>
+              <div className="flex flex-col justify-between">
                 <p>{variant.title}</p>
                 <Price
                   className="w-fit rounded-full bg-blue-600 p-2 text-white"
