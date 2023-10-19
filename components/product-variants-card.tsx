@@ -12,6 +12,8 @@ import LoadingDots from '@/components/loading-dots';
 import Price from '@/components/price';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 
+// TODO: make the component remember its state so that the pending variant doesn't reset when component is removed from the DOM
+// TODO: divide the component into multiple components
 export default function ProductVariantsCard({ variants }: { variants: ProductVariant[] }) {
   const router = useRouter();
   const [pendingVariants, setPendingVariants] = useState<String[]>([]);
@@ -24,7 +26,9 @@ export default function ProductVariantsCard({ variants }: { variants: ProductVar
         );
 
         return (
+          // TODO: think if it's better to use the common hover effect (blue outline for dark theme)
           <li key={variant.id} className="rounded-sm dark:hover:bg-slate-700">
+            {/* //*TODO: make the link lead to the actual product page with the variant chosen */}
             <Link href={`/product/`} className="flex gap-6 px-3 py-4">
               <Image
                 src={variant.image.url}
@@ -72,5 +76,3 @@ export default function ProductVariantsCard({ variants }: { variants: ProductVar
     </ul>
   );
 }
-
-// TODO: make the component remember its state so that the pending variant doesn't reset when component is removed from the DOM

@@ -1,21 +1,13 @@
 import clsx from 'clsx';
-import Image from 'next/image';
 import Link from 'next/link';
 
-import { Product, ProductVariant } from 'lib/shopify/types';
+import { Product } from 'lib/shopify/types';
 
 import Grid from '@/components/grid';
 import { GridTileImage } from '@/components/grid/tile';
-import Price from '@/components/price';
-
+import ProductVariantsCard from '@/components/product-variants-card';
 import { Button } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-
-import OpenCart from '@/components/cart/open-cart';
-
-import { addItem } from '@/components/cart/actions';
-
-import ProductVariantsCard from '@/components/product-variants-card';
 
 export default function ProductGridItems({
   products,
