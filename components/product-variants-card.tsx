@@ -14,7 +14,13 @@ import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 
 // TODO: make the component remember its state so that the pending variant doesn't reset when component is removed from the DOM
 // TODO: divide the component into multiple components
-export default function ProductVariantsCard({ variants }: { variants: ProductVariant[] }) {
+export default function ProductVariantsCard({
+  variants,
+  productHandle
+}: {
+  variants: ProductVariant[];
+  productHandle: String;
+}) {
   const router = useRouter();
   const [pendingVariants, setPendingVariants] = useState<String[]>([]);
 
@@ -25,11 +31,19 @@ export default function ProductVariantsCard({ variants }: { variants: ProductVar
           (addedVariant) => addedVariant === variant.id
         );
 
+        const params = new URLSearchParams();
+        variant.selectedOptions.forEach((option) =>
+          params.append(option.name.toLowerCase(), option.value)
+        );
+        const paramsString = params.toString();
+
         return (
           // TODO: think if it's better to use the common hover effect (blue outline for dark theme)
           <li key={variant.id} className="rounded-sm dark:hover:bg-slate-700">
-            {/* //*TODO: make the link lead to the actual product page with the variant chosen */}
-            <Link href={`/product/`} className="flex gap-6 px-3 py-4">
+            <Link
+              href={`/product/${productHandle}?${paramsString}`}
+              className="flex gap-6 px-3 py-4"
+            >
               <Image
                 src={variant.image.url}
                 alt={variant.image.altText || variant.title}
