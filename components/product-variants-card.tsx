@@ -41,7 +41,11 @@ export default function ProductVariantsCard({
               />
               <div>
                 <p>{variant.title}</p>
-                <Price amount={variant.price.amount} currencyCode={variant.price.currencyCode} />
+                <Price
+                  className="w-fit rounded-full bg-blue-600 p-2 text-white"
+                  amount={variant.price.amount}
+                  currencyCode={variant.price.currencyCode}
+                />
               </div>
               <AddToCartButton productVariant={variant} className="ml-auto" />
             </Link>
