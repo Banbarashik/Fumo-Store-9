@@ -7,6 +7,7 @@ import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+// TODO: make the component remember its state so that the pending variant doesn't reset when component is removed from the DOM
 export default function AddToCartButton({ productVariant }: { productVariant: ProductVariant }) {
   const router = useRouter();
   const [pendingVariants, setPendingVariants] = useState<String[]>([]);
@@ -30,6 +31,8 @@ export default function AddToCartButton({ productVariant }: { productVariant: Pr
           // Trigger the error boundary in the root error.js
           throw new Error(error.toString());
         }
+
+        setPendingVariants(pendingVariants.filter((variant) => variant !== productVariant.id));
 
         router.refresh();
       }}
