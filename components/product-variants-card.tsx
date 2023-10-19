@@ -35,9 +35,9 @@ export default function ProductVariantsCard({
               <Image
                 src={variant.image.url}
                 alt={variant.image.altText || variant.title}
-                width={40}
-                height={40}
-                className="aspect-square"
+                width={80}
+                height={80}
+                className="h-20 w-20 rounded-sm object-cover"
               />
               <div>
                 <p>{variant.title}</p>

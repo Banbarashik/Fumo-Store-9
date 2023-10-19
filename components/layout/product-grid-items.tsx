@@ -12,6 +12,8 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 
 import { ListBulletIcon } from '@heroicons/react/24/outline';
 
+// TODO: handle the 'out of stock' situation
+// TODO: handle a 'variant without image' situation
 export default function ProductGridItems({
   products,
   className
