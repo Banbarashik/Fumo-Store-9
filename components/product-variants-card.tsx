@@ -39,7 +39,10 @@ export default function ProductVariantsCard({
 
         return (
           // TODO: think if it's better to use the common hover effect (blue outline for dark theme)
-          <li key={variant.id} className="rounded-sm dark:hover:bg-slate-700">
+          <li
+            key={variant.id}
+            className="rounded-sm border border-transparent hover:border-blue-600"
+          >
             <Link
               href={`/product/${productHandle}?${paramsString}`}
               className="flex gap-6 px-3 py-4"
