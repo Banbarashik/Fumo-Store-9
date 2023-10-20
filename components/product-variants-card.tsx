@@ -44,7 +44,7 @@ export default function ProductVariantsCard({
               {
                 'mb-4': i + 1 < arr.length, // don't add a margin to the last element of the list
                 'hover:border-blue-600': variant.availableForSale,
-                'overfnot classlow-hidden relative z-10 cursor-not-allowed text-neutral-500 before:absolute before:left-1/2 before:right-0 before:top-1/2 before:-z-10 before:h-px before:-translate-x-1/2 before:-rotate-45 before:bg-neutral-300 before:transition-transform dark:text-neutral-400 dark:ring-neutral-700 dark:before:bg-neutral-700 [&_*]:cursor-not-allowed':
+                'relative z-10 cursor-not-allowed overflow-hidden text-neutral-500 before:absolute before:left-1/2 before:right-0 before:top-1/2 before:-z-10 before:h-px before:-translate-x-1/2 before:-rotate-45 before:bg-neutral-300 before:transition-transform dark:text-neutral-400 dark:ring-neutral-700 dark:before:bg-neutral-700 [&_*]:cursor-not-allowed':
                   !variant.availableForSale
               }
             )}
@@ -60,7 +60,9 @@ export default function ProductVariantsCard({
                 alt={variant.image.altText || variant.title}
                 width={80}
                 height={80}
-                className="h-20 w-20 rounded-sm object-cover"
+                className={clsx('h-20 w-20 rounded-sm object-cover', {
+                  'opacity-50': !variant.availableForSale
+                })}
               />
               <div className="flex flex-col justify-between">
                 <p>{title}</p>
