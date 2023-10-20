@@ -25,6 +25,7 @@ export default function ProductGridItems({
     <>
       {products.map(function (product) {
         const hasJustOneVariant = product.variants.length === 1;
+        const hasPseudoOptions = product.tags.includes('pseudo_options');
 
         return (
           <Grid.Item key={product.handle} className={clsx('relative animate-fadeIn', className)}>
@@ -54,7 +55,11 @@ export default function ProductGridItems({
                   </Button>
                 </HoverCardTrigger>
                 <HoverCardContent className="w-full">
-                  <ProductVariantsCard productHandle={product.handle} variants={product.variants} />
+                  <ProductVariantsCard
+                    hasPseudoOptions={hasPseudoOptions}
+                    productHandle={product.handle}
+                    variants={product.variants}
+                  />
                 </HoverCardContent>
               </HoverCard>
             )}

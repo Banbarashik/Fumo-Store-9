@@ -9,10 +9,12 @@ import Price from '@/components/price';
 // TODO: divide the component into multiple components
 export default function ProductVariantsCard({
   variants,
-  productHandle
+  productHandle,
+  hasPseudoOptions = false
 }: {
   variants: ProductVariant[];
   productHandle: String;
+  hasPseudoOptions?: boolean;
 }) {
   return (
     <ul>
@@ -22,6 +24,14 @@ export default function ProductVariantsCard({
           params.append(option.name.toLowerCase(), option.value)
         );
         const paramsString = params.toString();
+
+        const optAndVarTitleRegex = /(\w+)_(.+)/;
+        const optAndVarTitle = optAndVarTitleRegex.exec(variant.title);
+
+        const title =
+          !hasPseudoOptions || optAndVarTitle === null
+            ? variant.title
+            : `${optAndVarTitle[1]!.toUpperCase()}: ${optAndVarTitle[2]}`;
 
         return (
           <li
@@ -40,7 +50,7 @@ export default function ProductVariantsCard({
                 className="h-20 w-20 rounded-sm object-cover"
               />
               <div className="flex flex-col justify-between">
-                <p>{variant.title}</p>
+                <p>{title}</p>
                 <Price
                   className="w-fit rounded-full bg-blue-600 p-2 text-white"
                   amount={variant.price.amount}
