@@ -43,7 +43,7 @@ export default function AddToCartButton({
 
         router.refresh();
       }}
-      variant="glassmorphism"
+      variant={productVariant.availableForSale ? 'glassmorphism' : 'ghost'}
       size="icon"
     >
       {!isPending ? (
