@@ -13,6 +13,11 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import { ListBulletIcon } from '@heroicons/react/24/outline';
 
 // TODO: handle the 'out of stock' situation
+//* out of stock can be: product with 1 variant (displaying the shopping cart),
+//* product with multiple variants, some of them out of stock
+//* product with multiple variants, all of them out of stock
+
+//* if !availableForSale and only 1 variant - don't render any button
 // TODO: handle a 'variant without image' situation
 export default function ProductGridItems({
   products,
@@ -43,10 +48,12 @@ export default function ProductGridItems({
               />
             </Link>
             {hasJustOneVariant ? (
-              <AddToCartButton
-                productVariant={product.variants[0]!}
-                className="absolute right-6 top-4"
-              />
+              product.availableForSale && (
+                <AddToCartButton
+                  productVariant={product.variants[0]!}
+                  className="absolute right-6 top-4"
+                />
+              )
             ) : (
               <HoverCard>
                 <HoverCardTrigger asChild className="absolute right-6 top-4">
