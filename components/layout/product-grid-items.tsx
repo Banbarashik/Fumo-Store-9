@@ -18,6 +18,7 @@ import { ListBulletIcon } from '@heroicons/react/24/outline';
 //* product with multiple variants, all of them out of stock
 
 //* if !availableForSale and only 1 variant - don't render any button
+//* if variant is out of stock - grey out the element, show (\) cursor and the message "Out of stock"
 // TODO: handle a 'variant without image' situation
 export default function ProductGridItems({
   products,
