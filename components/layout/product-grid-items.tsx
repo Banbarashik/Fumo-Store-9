@@ -12,14 +12,6 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 
 import { ListBulletIcon } from '@heroicons/react/24/outline';
 
-// TODO: handle the 'out of stock' situation
-//* out of stock can be: product with 1 variant (displaying the shopping cart),
-//* product with multiple variants, some of them out of stock
-//* product with multiple variants, all of them out of stock
-
-//* if !availableForSale and only 1 variant - don't render any button
-//* if variant is out of stock - grey out the element, show (\) cursor and the message "Out of stock"
-// TODO: handle a 'variant without image' situation
 export default function ProductGridItems({
   products,
   className
@@ -34,7 +26,10 @@ export default function ProductGridItems({
         const hasPseudoOptions = product.tags.includes('pseudo_options');
 
         return (
-          <Grid.Item key={product.handle} className={clsx('relative animate-fadeIn', className)}>
+          <Grid.Item
+            key={product.handle}
+            className={clsx('group relative animate-fadeIn', className)}
+          >
             <Link className="inline-block h-full w-full" href={`/product/${product.handle}`}>
               <GridTileImage
                 alt={product.title}
@@ -52,13 +47,13 @@ export default function ProductGridItems({
               product.availableForSale && (
                 <AddToCartButton
                   productVariant={product.variants[0]!}
-                  className="absolute right-6 top-4"
+                  className="absolute right-6 top-4 hidden group-hover:inline-flex"
                 />
               )
             ) : (
               <HoverCard>
                 <HoverCardTrigger asChild className="absolute right-6 top-4">
-                  <Button variant="glassmorphism" size="icon">
+                  <Button variant="glassmorphism" size="icon" aria-label="Show variants">
                     <ListBulletIcon className="h-6" />
                   </Button>
                 </HoverCardTrigger>
