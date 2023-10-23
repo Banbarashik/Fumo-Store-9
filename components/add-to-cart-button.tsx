@@ -23,6 +23,7 @@ export default function AddToCartButton({
 
   return (
     <Button
+      aria-label="Add to cart"
       className={className}
       onClick={async (e) => {
         e.preventDefault();
