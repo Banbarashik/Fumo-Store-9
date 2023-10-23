@@ -7,10 +7,6 @@ import AddToCartButton from '@/components/add-to-cart-button';
 import Grid from '@/components/grid';
 import { GridTileImage } from '@/components/grid/tile';
 import ProductVariantsCard from '@/components/product-variants-card';
-import { Button } from '@/components/ui/button';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-
-import { ListBulletIcon } from '@heroicons/react/24/outline';
 
 export default function ProductGridItems({
   products,
@@ -51,20 +47,11 @@ export default function ProductGridItems({
                 />
               )
             ) : (
-              <HoverCard>
-                <HoverCardTrigger asChild className="absolute right-6 top-4">
-                  <Button variant="glassmorphism" size="icon" aria-label="Show variants">
-                    <ListBulletIcon className="h-6" />
-                  </Button>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-full">
-                  <ProductVariantsCard
-                    hasPseudoOptions={hasPseudoOptions}
-                    productHandle={product.handle}
-                    variants={product.variants}
-                  />
-                </HoverCardContent>
-              </HoverCard>
+              <ProductVariantsCard
+                hasPseudoOptions={hasPseudoOptions}
+                productHandle={product.handle}
+                variants={product.variants}
+              />
             )}
           </Grid.Item>
         );

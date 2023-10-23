@@ -1,3 +1,7 @@
+'use client';
+
+import { useState } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -8,13 +12,47 @@ import { ProductVariant } from '@/lib/shopify/types';
 import AddToCartButton from '@/components/add-to-cart-button';
 import Price from '@/components/price';
 
+import { Button } from '@/components/ui/button';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { ListBulletIcon } from '@heroicons/react/24/outline';
+
 export default function ProductVariantsCard({
+  ...props
+}: {
+  variants: ProductVariant[];
+  productHandle: string;
+  hasPseudoOptions?: boolean;
+}) {
+  // const [isPending, setIsPending] = useState(false);
+  const [pendingVariants, setPendingVariants] = useState<string[]>([]);
+
+  return (
+    <HoverCard>
+      <HoverCardTrigger asChild className="absolute right-6 top-4">
+        <Button variant="glassmorphism" size="icon" aria-label="Show variants">
+          <ListBulletIcon className="h-6" />
+        </Button>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-full">
+        <ProductVariantsCardPodsos
+          {...props}
+          pendingVariants={pendingVariants}
+          setPendingVariants={setPendingVariants}
+        />
+      </HoverCardContent>
+    </HoverCard>
+  );
+}
+
+function ProductVariantsCardPodsos({
   variants,
   ...props
 }: {
   variants: ProductVariant[];
   productHandle: string;
   hasPseudoOptions?: boolean;
+  pendingVariants: string[];
+  setPendingVariants: any;
 }) {
   return (
     <ul>
@@ -42,11 +80,15 @@ export default function ProductVariantsCard({
 function ProductVariantsCardItem({
   variant,
   productHandle,
-  hasPseudoOptions
+  hasPseudoOptions,
+  pendingVariants,
+  setPendingVariants
 }: {
   variant: ProductVariant;
   productHandle: string;
   hasPseudoOptions?: boolean;
+  pendingVariants: string[];
+  setPendingVariants: any;
 }) {
   const params = new URLSearchParams();
   variant.selectedOptions.forEach((option) =>
@@ -89,7 +131,12 @@ function ProductVariantsCardItem({
           currencyCode={variant.price.currencyCode}
         />
       </div>
-      <AddToCartButton productVariant={variant} className="ml-auto" />
+      <AddToCartButton
+        productVariant={variant}
+        pendingVariants={pendingVariants}
+        setPendingVariants={setPendingVariants}
+        className="ml-auto"
+      />
     </Link>
   );
 }
