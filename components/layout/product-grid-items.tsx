@@ -42,7 +42,9 @@ export default function ProductGridItems({
             {hasJustOneVariant ? (
               product.availableForSale && (
                 <AddToCartButton
-                  productVariant={product.variants[0]!}
+                  isVariantAvailable={true}
+                  isPending={false}
+                  variantId={product.variants[0]!.id}
                   className="absolute right-6 top-4 hidden group-hover:inline-flex"
                 />
               )

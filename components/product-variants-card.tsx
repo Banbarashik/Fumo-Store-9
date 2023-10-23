@@ -5,6 +5,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { useRouter } from 'next/navigation';
+
 import clsx from 'clsx';
 
 import { ProductVariant } from '@/lib/shopify/types';
@@ -90,6 +92,8 @@ function ProductVariantsCardItem({
   pendingVariants: string[];
   setPendingVariants: any;
 }) {
+  const router = useRouter();
+
   const params = new URLSearchParams();
   variant.selectedOptions.forEach((option) =>
     params.append(option.name.toLowerCase(), option.value)
@@ -103,6 +107,8 @@ function ProductVariantsCardItem({
     !hasPseudoOptions || optAndVarTitle === null
       ? variant.title
       : `${optAndVarTitle[1]!.toUpperCase()}: ${optAndVarTitle[2]}`;
+
+  const isPending = pendingVariants.some((variantId) => variantId === variant.id);
 
   return (
     <Link
@@ -132,9 +138,13 @@ function ProductVariantsCardItem({
         />
       </div>
       <AddToCartButton
-        productVariant={variant}
-        pendingVariants={pendingVariants}
-        setPendingVariants={setPendingVariants}
+        addVariantToPending={() => setPendingVariants([...pendingVariants, variant.id])}
+        removeVariantFromPending={() =>
+          setPendingVariants(pendingVariants.filter((variantId) => variantId !== variant.id))
+        }
+        variantId={variant.id}
+        isPending={isPending}
+        isVariantAvailable={variant.availableForSale}
         className="ml-auto"
       />
     </Link>

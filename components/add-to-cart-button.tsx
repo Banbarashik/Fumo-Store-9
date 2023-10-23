@@ -1,34 +1,30 @@
 'use client';
 
-import { addItem } from '@/components/cart/actions';
 import LoadingDots from '@/components/loading-dots';
 import { Button } from '@/components/ui/button';
-import { ProductVariant } from '@/lib/shopify/types';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
+
 import { useRouter } from 'next/navigation';
+
+import { addItem } from '@/components/cart/actions';
 
 // TODO: make the component remember its state so that the pending variant doesn't reset when component is removed from the DOM
 export default function AddToCartButton({
-  productVariant,
+  isVariantAvailable,
   className,
-  // isPending,
-  // setIsPending
-  pendingVariants,
-  setPendingVariants
+  addVariantToPending,
+  removeVariantFromPending,
+  isPending,
+  variantId
 }: {
-  productVariant: ProductVariant;
+  isVariantAvailable: boolean;
   className?: string;
-  // isPending?: boolean;
-  // setIsPending?: any;
-  pendingVariants?: string[];
-  setPendingVariants?: any;
+  addVariantToPending?: any;
+  removeVariantFromPending?: any;
+  isPending: boolean;
+  variantId: string;
 }) {
   const router = useRouter();
-  // const [pendingVariants, setPendingVariants] = useState<String[]>([]);
-
-  if (!pendingVariants) return <></>;
-
-  const isPending = pendingVariants.some((variant) => variant === productVariant.id);
 
   return (
     <Button
@@ -38,24 +34,22 @@ export default function AddToCartButton({
         e.preventDefault();
 
         // Safeguard in case someone messes with `disabled` in devtools.
-        if (!productVariant.availableForSale || !productVariant.id) return;
+        if (!isVariantAvailable || !variantId) return;
 
-        setPendingVariants([...pendingVariants, productVariant.id]);
-        // setIsPending(true);
+        addVariantToPending();
 
-        const error = await addItem(productVariant.id);
+        const error = await addItem(variantId);
 
         if (error) {
           // Trigger the error boundary in the root error.js
           throw new Error(error.toString());
         }
 
-        setPendingVariants(pendingVariants.filter((variant) => variant !== productVariant.id));
-        // setIsPending(false);
+        removeVariantFromPending();
 
         router.refresh();
       }}
-      variant={productVariant.availableForSale ? 'glassmorphism' : 'ghost'}
+      variant={isVariantAvailable ? 'glassmorphism' : 'ghost'}
       size="icon"
     >
       {!isPending ? (
