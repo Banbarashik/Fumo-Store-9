@@ -7,6 +7,7 @@ import AddToCartButton from '@/components/add-to-cart-button';
 import Grid from '@/components/grid';
 import { GridTileImage } from '@/components/grid/tile';
 import ProductVariantsCard from '@/components/product-variants-card';
+import AddToCart from '@/components/add-to-cart';
 
 export default function ProductGridItems({
   products,
@@ -41,9 +42,8 @@ export default function ProductGridItems({
             </Link>
             {hasJustOneVariant ? (
               product.availableForSale && (
-                <AddToCartButton
-                  isVariantAvailable={true}
-                  isPending={false}
+                <AddToCart
+                  isVariantAvailable={product.availableForSale}
                   variantId={product.variants[0]!.id}
                   className="absolute right-6 top-4 hidden group-hover:inline-flex"
                 />

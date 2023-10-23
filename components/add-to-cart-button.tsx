@@ -19,8 +19,8 @@ export default function AddToCartButton({
 }: {
   isVariantAvailable: boolean;
   className?: string;
-  addVariantToPending?: any;
-  removeVariantFromPending?: any;
+  addVariantToPending: any;
+  removeVariantFromPending: any;
   isPending: boolean;
   variantId: string;
 }) {
