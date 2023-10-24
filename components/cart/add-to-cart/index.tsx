@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import AddToCartButton from '@/components/add-to-cart-button';
+import AddToCartButton from '@/components/cart/add-to-cart/button';
 
 export default function AddToCart({
   ...props

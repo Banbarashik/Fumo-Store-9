@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { Product } from 'lib/shopify/types';
 
-import AddToCart from '@/components/add-to-cart';
+import AddToCart from '@/components/cart/add-to-cart';
 import Grid from '@/components/grid';
 import { GridTileImage } from '@/components/grid/tile';
 import ProductVariantsCard from '@/components/product-variants-card';

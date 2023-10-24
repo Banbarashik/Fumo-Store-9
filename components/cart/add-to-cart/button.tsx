@@ -1,5 +1,5 @@
-import LoadingDots from '@/components/loading-dots';
 import { Button } from '@/components/ui/button';
+import LoadingDots from '@/components/ui/loading-dots';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 
 import { useRouter } from 'next/navigation';

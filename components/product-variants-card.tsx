@@ -9,8 +9,8 @@ import clsx from 'clsx';
 
 import { ProductVariant } from '@/lib/shopify/types';
 
-import AddToCartButton from '@/components/add-to-cart-button';
-import Price from '@/components/price';
+import AddToCartButton from '@/components/cart/add-to-cart/button';
+import Price from '@/components/ui/price';
 
 import { Button } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
@@ -74,9 +74,9 @@ function ProductVariantsCardItem({
 }: {
   variant: ProductVariant;
   productHandle: string;
-  hasPseudoOptions?: boolean;
   pendingVariants: string[];
   setPendingVariants: Dispatch<SetStateAction<string[]>>;
+  hasPseudoOptions?: boolean;
 }) {
   const params = new URLSearchParams();
   variant.selectedOptions.forEach((option) =>

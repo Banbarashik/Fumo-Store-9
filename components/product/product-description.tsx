@@ -1,6 +1,6 @@
-import { AddToCart } from 'components/cart/add-to-cart';
-import Price from 'components/price';
-import Prose from 'components/prose';
+import { AddToCart } from '@/components/product/add-to-cart';
+import Price from '@/components/ui/price';
+import Prose from '@/components/ui/prose';
 import { Money, Product } from 'lib/shopify/types';
 import { VariantSelector } from './variant-selector';
 import { VariantSelectorWithPseudoOptions } from './variant-selector-pseudo-options';

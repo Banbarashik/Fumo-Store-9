@@ -1,10 +1,10 @@
 'use client';
 
+import { addItem } from '@/components/cart/actions';
+import LoadingDots from '@/components/ui/loading-dots';
+import { ProductVariant } from '@/lib/shopify/types';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { addItem } from 'components/cart/actions';
-import LoadingDots from 'components/loading-dots';
-import { ProductVariant } from 'lib/shopify/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
 

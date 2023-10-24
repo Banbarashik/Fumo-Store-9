@@ -1,5 +1,5 @@
+import LoadingDots from '@/components/ui/loading-dots';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import LoadingDots from 'components/loading-dots';
 import { useRouter } from 'next/navigation';
 
 import clsx from 'clsx';
