@@ -1,5 +1,3 @@
-'use client';
-
 import LoadingDots from '@/components/loading-dots';
 import { Button } from '@/components/ui/button';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
@@ -8,7 +6,6 @@ import { useRouter } from 'next/navigation';
 
 import { addItem } from '@/components/cart/actions';
 
-// TODO: make the component remember its state so that the pending variant doesn't reset when component is removed from the DOM
 export default function AddToCartButton({
   isVariantAvailable,
   className,
@@ -19,8 +16,8 @@ export default function AddToCartButton({
 }: {
   isVariantAvailable: boolean;
   className?: string;
-  addVariantToPending: any;
-  removeVariantFromPending: any;
+  addVariantToPending: () => void;
+  removeVariantFromPending: () => void;
   isPending: boolean;
   variantId: string;
 }) {
