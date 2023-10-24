@@ -7,11 +7,11 @@ import AddToCartButton from '@/components/add-to-cart-button';
 export default function AddToCart({
   ...props
 }: {
+  variantId: string;
   isVariantAvailable: boolean;
-  className?: string;
   addVariantToPending: SetStateAction<boolean>;
   removeVariantFromPending: SetStateAction<boolean>;
-  variantId: string;
+  className?: string;
 }) {
   const [isPending, setIsPending] = useState(false);
 
@@ -19,8 +19,8 @@ export default function AddToCart({
     <AddToCartButton
       {...props}
       isPending={isPending}
-      addVariantToPending={() => setIsPending(true)}
-      removeVariantFromPending={() => setIsPending(false)}
+      setAsPending={() => setIsPending(true)}
+      setAsAdded={() => setIsPending(false)}
     />
   );
 }

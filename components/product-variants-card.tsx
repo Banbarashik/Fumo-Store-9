@@ -120,8 +120,8 @@ function ProductVariantsCardItem({
         />
       </div>
       <AddToCartButton
-        addVariantToPending={() => setPendingVariants((arr: string[]) => [...arr, variant.id])}
-        removeVariantFromPending={() =>
+        setAsPending={() => setPendingVariants((arr: string[]) => [...arr, variant.id])}
+        setAsAdded={() =>
           setPendingVariants((arr: string[]) => arr.filter((variantId) => variantId !== variant.id))
         }
         variantId={variant.id}

@@ -7,19 +7,19 @@ import { useRouter } from 'next/navigation';
 import { addItem } from '@/components/cart/actions';
 
 export default function AddToCartButton({
-  isVariantAvailable,
-  className,
-  addVariantToPending,
-  removeVariantFromPending,
   isPending,
-  variantId
+  variantId,
+  isVariantAvailable,
+  setAsPending,
+  setAsAdded,
+  className
 }: {
-  isVariantAvailable: boolean;
-  className?: string;
-  addVariantToPending: () => void;
-  removeVariantFromPending: () => void;
   isPending: boolean;
   variantId: string;
+  isVariantAvailable: boolean;
+  setAsPending: () => void;
+  setAsAdded: () => void;
+  className?: string;
 }) {
   const router = useRouter();
 
@@ -33,7 +33,7 @@ export default function AddToCartButton({
         // Safeguard in case someone messes with `disabled` in devtools.
         if (!isVariantAvailable || !variantId) return;
 
-        addVariantToPending();
+        setAsPending();
 
         const error = await addItem(variantId);
 
@@ -42,7 +42,7 @@ export default function AddToCartButton({
           throw new Error(error.toString());
         }
 
-        removeVariantFromPending();
+        setAsAdded();
 
         router.refresh();
       }}
