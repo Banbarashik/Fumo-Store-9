@@ -16,6 +16,8 @@ import { Button } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { ListBulletIcon } from '@heroicons/react/24/outline';
 
+// TODO: create types, make one type (ProductVariantsCardItem) extend the outher (ProductVariantsCard)
+
 export default function ProductVariantsCard({
   variants,
   ...props

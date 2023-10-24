@@ -3,11 +3,10 @@ import Link from 'next/link';
 
 import { Product } from 'lib/shopify/types';
 
-import AddToCartButton from '@/components/add-to-cart-button';
+import AddToCart from '@/components/add-to-cart';
 import Grid from '@/components/grid';
 import { GridTileImage } from '@/components/grid/tile';
 import ProductVariantsCard from '@/components/product-variants-card';
-import AddToCart from '@/components/add-to-cart';
 
 export default function ProductGridItems({
   products,
@@ -43,16 +42,16 @@ export default function ProductGridItems({
             {hasJustOneVariant ? (
               product.availableForSale && (
                 <AddToCart
-                  isVariantAvailable={product.availableForSale}
                   variantId={product.variants[0]!.id}
+                  isVariantAvailable={product.availableForSale}
                   className="absolute right-6 top-4 hidden group-hover:inline-flex"
                 />
               )
             ) : (
               <ProductVariantsCard
-                hasPseudoOptions={hasPseudoOptions}
-                productHandle={product.handle}
                 variants={product.variants}
+                productHandle={product.handle}
+                hasPseudoOptions={hasPseudoOptions}
               />
             )}
           </Grid.Item>
