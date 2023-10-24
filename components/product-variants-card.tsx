@@ -5,8 +5,6 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { useRouter } from 'next/navigation';
-
 import clsx from 'clsx';
 
 import { ProductVariant } from '@/lib/shopify/types';
@@ -19,13 +17,13 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import { ListBulletIcon } from '@heroicons/react/24/outline';
 
 export default function ProductVariantsCard({
+  variants,
   ...props
 }: {
   variants: ProductVariant[];
   productHandle: string;
   hasPseudoOptions?: boolean;
 }) {
-  // const [isPending, setIsPending] = useState(false);
   const [pendingVariants, setPendingVariants] = useState<string[]>([]);
 
   return (
@@ -36,46 +34,32 @@ export default function ProductVariantsCard({
         </Button>
       </HoverCardTrigger>
       <HoverCardContent className="w-full">
-        <ProductVariantsCardPodsos
-          {...props}
-          pendingVariants={pendingVariants}
-          setPendingVariants={setPendingVariants}
-        />
+        <ul>
+          {variants.map((variant: ProductVariant, i, arr) => (
+            <li
+              title={variant.availableForSale ? '' : 'Out of stock'}
+              key={variant.id}
+              className={clsx(
+                'rounded-sm border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900',
+                {
+                  'mb-4': i + 1 < arr.length, // don't add a margin to the last element of the list
+                  'hover:border-blue-600': variant.availableForSale,
+                  'relative z-10 cursor-not-allowed overflow-hidden text-neutral-500 before:absolute before:left-1/2 before:right-0 before:top-1/2 before:-z-10 before:h-px before:-translate-x-1/2 before:-rotate-45 before:bg-neutral-300 before:transition-transform dark:text-neutral-400 dark:ring-neutral-700 dark:before:bg-neutral-700 [&_*]:cursor-not-allowed':
+                    !variant.availableForSale
+                }
+              )}
+            >
+              <ProductVariantsCardItem
+                variant={variant}
+                {...props}
+                pendingVariants={pendingVariants}
+                setPendingVariants={setPendingVariants}
+              />
+            </li>
+          ))}
+        </ul>
       </HoverCardContent>
     </HoverCard>
-  );
-}
-
-function ProductVariantsCardPodsos({
-  variants,
-  ...props
-}: {
-  variants: ProductVariant[];
-  productHandle: string;
-  hasPseudoOptions?: boolean;
-  pendingVariants: string[];
-  setPendingVariants: any;
-}) {
-  return (
-    <ul>
-      {variants.map((variant: ProductVariant, i, arr) => (
-        <li
-          title={variant.availableForSale ? '' : 'Out of stock'}
-          key={variant.id}
-          className={clsx(
-            'rounded-sm border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900',
-            {
-              'mb-4': i + 1 < arr.length, // don't add a margin to the last element of the list
-              'hover:border-blue-600': variant.availableForSale,
-              'relative z-10 cursor-not-allowed overflow-hidden text-neutral-500 before:absolute before:left-1/2 before:right-0 before:top-1/2 before:-z-10 before:h-px before:-translate-x-1/2 before:-rotate-45 before:bg-neutral-300 before:transition-transform dark:text-neutral-400 dark:ring-neutral-700 dark:before:bg-neutral-700 [&_*]:cursor-not-allowed':
-                !variant.availableForSale
-            }
-          )}
-        >
-          <ProductVariantsCardItem variant={variant} {...props} />
-        </li>
-      ))}
-    </ul>
   );
 }
 
@@ -92,8 +76,6 @@ function ProductVariantsCardItem({
   pendingVariants: string[];
   setPendingVariants: any;
 }) {
-  const router = useRouter();
-
   const params = new URLSearchParams();
   variant.selectedOptions.forEach((option) =>
     params.append(option.name.toLowerCase(), option.value)
