@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -74,7 +74,7 @@ function ProductVariantsCardItem({
   productHandle: string;
   hasPseudoOptions?: boolean;
   pendingVariants: string[];
-  setPendingVariants: any;
+  setPendingVariants: Dispatch<SetStateAction<string[]>>;
 }) {
   const params = new URLSearchParams();
   variant.selectedOptions.forEach((option) =>
