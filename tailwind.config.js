@@ -21,6 +21,9 @@ module.exports = {
       hoverOnlyWhenSupported: true
     },
     extend: {
+      maxWidth: {
+        '2/3': '66.666667%'
+      },
       fontFamily: {
         sans: ['var(--font-inter)']
       },
