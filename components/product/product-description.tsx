@@ -31,7 +31,7 @@ export function ProductDescription({
     {
       initial: 0,
       slides: {
-        perView: 4,
+        perView: 6,
         spacing: 10
       }
     },
@@ -39,6 +39,12 @@ export function ProductDescription({
   );
 
   const hasPseudoOptions = product.tags.includes('pseudo_options');
+
+  const images = product.variants.map((variant) => ({
+    src: variant.image.url,
+    altText: variant.image.altText,
+    selectedOptions: variant.selectedOptions
+  }));
 
   return (
     <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 dark:border-neutral-800 dark:bg-black md:p-12 lg:flex-row lg:gap-8">
@@ -49,31 +55,37 @@ export function ProductDescription({
             selectedOptions: variant.selectedOptions
           }))}
         /> */}
-      <div className="basis-full lg:max-w-2/3">
-        <div ref={sliderRef} className="keen-slider h-full">
-          {product.variants
-            .map((variant) => ({
-              src: variant.image.url,
-              altText: variant.image.altText,
-              selectedOptions: variant.selectedOptions
-            }))
-            .map((image) => (
-              <div className="keen-slider__slide relative h-full w-full">
-                <Image
-                  src={image.src}
-                  alt={image.altText || ''}
-                  className="object-contain"
-                  sizes="(min-width: 1024px) 66vw, 100vw"
-                  fill
-                  priority
-                />
-              </div>
-            ))}
+      <div className="flex basis-full flex-col gap-6 lg:max-w-2/3">
+        <div ref={sliderRef} className="keen-slider basis-4/5">
+          {images.map((image) => (
+            <div key={image.src} className="keen-slider__slide relative h-full w-full">
+              <Image
+                src={image.src}
+                alt={image.altText || ''}
+                className="object-contain"
+                sizes="(min-width: 1024px) 66vw, 100vw"
+                fill
+                priority
+              />
+            </div>
+          ))}
         </div>
-        <div ref={thumbnailRef} className="keen-slider thumbnail">
-          <div className="keen-slider__slide bg-blue-400">1</div>
-          <div className="keen-slider__slide bg-orange-400">2</div>
-          <div className="keen-slider__slide bg-purple-400">3</div>
+        <div ref={thumbnailRef} className="keen-slider thumbnail basis-1/5">
+          {images.map((image) => (
+            <div className="keen-slider__slide relative">
+              <Image
+                className="
+                object-contain
+              "
+                key={image.src}
+                src={image.src}
+                alt={image.altText || ''}
+                // width={80}
+                // height={128}
+                fill
+              />
+            </div>
+          ))}
         </div>
       </div>
 
