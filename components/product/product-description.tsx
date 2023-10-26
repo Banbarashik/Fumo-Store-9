@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 import { AddToCart } from '@/components/product/add-to-cart';
 // import { Gallery } from '@/components/product/gallery';
 import Price from '@/components/ui/price';
@@ -48,10 +50,25 @@ export function ProductDescription({
           }))}
         /> */}
       <div className="basis-full lg:max-w-2/3">
-        <div ref={sliderRef} className="keen-slider">
-          <div className="keen-slider__slide bg-blue-400">1</div>
-          <div className="keen-slider__slide bg-orange-400">2</div>
-          <div className="keen-slider__slide bg-purple-400">3</div>
+        <div ref={sliderRef} className="keen-slider h-full">
+          {product.variants
+            .map((variant) => ({
+              src: variant.image.url,
+              altText: variant.image.altText,
+              selectedOptions: variant.selectedOptions
+            }))
+            .map((image) => (
+              <div className="keen-slider__slide relative h-full w-full">
+                <Image
+                  src={image.src}
+                  alt={image.altText || ''}
+                  className="object-contain"
+                  sizes="(min-width: 1024px) 66vw, 100vw"
+                  fill
+                  priority
+                />
+              </div>
+            ))}
         </div>
         <div ref={thumbnailRef} className="keen-slider thumbnail">
           <div className="keen-slider__slide bg-blue-400">1</div>
