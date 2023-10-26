@@ -1,4 +1,5 @@
 import Navbar from 'components/layout/navbar';
+import 'keen-slider/keen-slider.min.css';
 import { ensureStartsWith } from 'lib/utils';
 import { Inter } from 'next/font/google';
 import { ReactNode, Suspense } from 'react';
