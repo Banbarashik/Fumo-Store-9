@@ -31,7 +31,7 @@ export function ProductDescription({
     {
       initial: 0,
       slides: {
-        perView: 6,
+        perView: 4,
         spacing: 10
       }
     },
@@ -55,7 +55,7 @@ export function ProductDescription({
             selectedOptions: variant.selectedOptions
           }))}
         /> */}
-      <div className="flex basis-full flex-col gap-6 lg:max-w-2/3">
+      <div className="flex basis-full flex-col items-center gap-6 lg:max-w-2/3">
         <div ref={sliderRef} className="keen-slider basis-4/5">
           {images.map((image) => (
             <div key={image.src} className="keen-slider__slide relative h-full w-full">
@@ -70,22 +70,22 @@ export function ProductDescription({
             </div>
           ))}
         </div>
-        <div ref={thumbnailRef} className="keen-slider thumbnail basis-1/5">
-          {images.map((image) => (
-            <div className="keen-slider__slide relative">
-              <Image
-                className="
-                object-contain
-              "
-                key={image.src}
-                src={image.src}
-                alt={image.altText || ''}
-                // width={80}
-                // height={128}
-                fill
-              />
-            </div>
-          ))}
+        <div className="w-1/2 basis-1/5">
+          <div ref={thumbnailRef} className="keen-slider thumbnail h-full">
+            {images.map((image) => (
+              <div className="keen-slider__slide relative">
+                <Image
+                  className="object-cover"
+                  key={image.src}
+                  src={image.src}
+                  alt={image.altText || ''}
+                  // width={100}
+                  // height={100}
+                  fill
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
