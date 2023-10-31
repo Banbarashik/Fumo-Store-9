@@ -62,7 +62,7 @@ export function ProductDescription({
   return (
     <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 dark:border-neutral-800 dark:bg-black md:p-12 lg:flex-row lg:gap-8">
       <div className="flex basis-full flex-col items-center gap-6 lg:max-w-2/3">
-        <div className="relative w-full basis-4/5">
+        <div className="relative aspect-square max-h-[550px] w-full">
           <div ref={sliderRef} className="keen-slider h-full">
             {images.map((image) => (
               <div key={image.src} className="keen-slider__slide relative h-full w-full">
@@ -81,10 +81,10 @@ export function ProductDescription({
             <SliderControls instanceRefCurrent={instanceRef.current} currentSlide={currentSlide} />
           )}
         </div>
-        <div className="relative w-1/2 basis-1/5">
+        <div className="relative w-1/2">
           <div ref={thumbnailRef} className="keen-slider thumbnail h-full">
             {images.map((image) => (
-              <div key={image.src} className="keen-slider__slide relative">
+              <div key={image.src} className="keen-slider__slide relative aspect-square">
                 <Image className="object-cover" src={image.src} alt={image.altText || ''} fill />
               </div>
             ))}
