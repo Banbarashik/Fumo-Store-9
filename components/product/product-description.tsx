@@ -78,7 +78,11 @@ export function ProductDescription({
             ))}
           </div>
           {sliderLoaded && instanceRef.current && (
-            <SliderControls instanceRefCurrent={instanceRef.current} currentSlide={currentSlide} />
+            <SliderControls
+              className="hidden sm:inline-flex"
+              instanceRefCurrent={instanceRef.current}
+              currentSlide={currentSlide}
+            />
           )}
         </div>
         <div className="relative w-1/2">
@@ -91,6 +95,7 @@ export function ProductDescription({
           </div>
           {thumbnailLoaded && thumbnailInstanceRef.current && (
             <SliderControls
+              className="hidden sm:inline-flex"
               outside
               instanceRefCurrent={thumbnailInstanceRef.current}
               currentSlide={thumbnailCurrentSlide}
