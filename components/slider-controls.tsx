@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 import { KeenSliderInstance } from 'keen-slider/react';
 
 import { Button } from '@/components/ui/button';
@@ -5,15 +7,25 @@ import Chevron from '@/components/ui/chevron';
 
 export default function SliderControls({
   instanceRefCurrent,
-  currentSlide
+  currentSlide,
+  outside = false
 }: {
   instanceRefCurrent: KeenSliderInstance;
   currentSlide: number;
+  outside?: boolean;
 }) {
+  const className = (direction: 'left' | 'right') =>
+    clsx('absolute top-1/2 h-12 -translate-y-1/2', {
+      [`${direction}-4`]: !outside,
+      [`-${direction}-4`]: outside,
+      '-translate-x-full': outside && direction === 'left',
+      'translate-x-full': outside && direction === 'right'
+    });
+
   return (
     <>
       <Button
-        className="absolute left-4 top-1/2 h-12 -translate-y-1/2"
+        className={className('left')}
         disabled={currentSlide === 0}
         variant={currentSlide === 0 ? 'ghost' : 'outline'}
         onClick={() => instanceRefCurrent.prev()}
@@ -21,7 +33,7 @@ export default function SliderControls({
         <Chevron width={30} height={30} direction="left" />
       </Button>
       <Button
-        className="absolute right-4 top-1/2 h-12 -translate-y-1/2"
+        className={className('right')}
         disabled={currentSlide === instanceRefCurrent.track.details.maxIdx}
         variant={currentSlide === instanceRefCurrent.track.details.maxIdx ? 'ghost' : 'outline'}
         onClick={() => instanceRefCurrent.next()}
