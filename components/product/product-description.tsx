@@ -21,24 +21,31 @@ export function ProductDescription({
   product: Product;
   selectedVariantPrice: Money;
 }) {
+  const [sliderLoaded, setSliderLoaded] = useState(false);
+  const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
+
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [loaded, setLoaded] = useState(false);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    initial: 0,
     slideChanged(slider) {
       setCurrentSlide(slider.track.details.rel);
     },
     created() {
-      setLoaded(true);
+      setSliderLoaded(true);
     }
   });
 
-  const [thumbnailRef] = useKeenSlider<HTMLDivElement>(
+  const [thumbnailCurrentSlide, setThumbnailCurrentSlide] = useState(0);
+  const [thumbnailRef, thumbnailInstanceRef] = useKeenSlider<HTMLDivElement>(
     {
-      initial: 0,
       slides: {
         perView: 4,
         spacing: 10
+      },
+      slideChanged(slider) {
+        setThumbnailCurrentSlide(slider.track.details.rel);
+      },
+      created() {
+        setThumbnailLoaded(true);
       }
     },
     [ThumbnailPlugin(instanceRef)]
@@ -70,11 +77,11 @@ export function ProductDescription({
               </div>
             ))}
           </div>
-          {loaded && instanceRef.current && (
+          {sliderLoaded && instanceRef.current && (
             <SliderControls instanceRefCurrent={instanceRef.current} currentSlide={currentSlide} />
           )}
         </div>
-        <div className="w-1/2 basis-1/5">
+        <div className="relative w-1/2 basis-1/5">
           <div ref={thumbnailRef} className="keen-slider thumbnail h-full">
             {images.map((image) => (
               <div key={image.src} className="keen-slider__slide relative">
@@ -82,6 +89,12 @@ export function ProductDescription({
               </div>
             ))}
           </div>
+          {thumbnailLoaded && thumbnailInstanceRef.current && (
+            <SliderControls
+              instanceRefCurrent={thumbnailInstanceRef.current}
+              currentSlide={thumbnailCurrentSlide}
+            />
+          )}
         </div>
       </div>
 
@@ -103,14 +116,13 @@ export function ProductDescription({
             variants={product.variants}
           />
         )}
-
+        track.details.slides.length
         {product.descriptionHtml ? (
           <Prose
             className="mb-6 text-sm leading-tight dark:text-white/[60%]"
             html={product.descriptionHtml}
           />
         ) : null}
-
         <AddToCart variants={product.variants} availableForSale={product.availableForSale} />
       </div>
     </div>
