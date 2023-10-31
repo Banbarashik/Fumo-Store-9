@@ -91,6 +91,7 @@ export function ProductDescription({
           </div>
           {thumbnailLoaded && thumbnailInstanceRef.current && (
             <SliderControls
+              outside
               instanceRefCurrent={thumbnailInstanceRef.current}
               currentSlide={thumbnailCurrentSlide}
             />
