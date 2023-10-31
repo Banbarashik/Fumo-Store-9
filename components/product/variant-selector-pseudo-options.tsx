@@ -28,14 +28,18 @@ export function VariantSelectorWithPseudoOptions({
   useEffect(function () {
     const variantIsSelected = searchParams.has(optionNameLowerCase);
 
-    if (variantIsSelected) return;
+    if (variantIsSelected) {
+      const selectedVariant = searchParams.get(optionNameLowerCase);
+      const index = variants.findIndex((variant) => variant.title === selectedVariant);
+      syncSlider(index);
+    } else {
+      const firstVariantSearchParams = new URLSearchParams();
+      firstVariantSearchParams.set(optionNameLowerCase, option.values[0]!);
 
-    const firstVariantSearchParams = new URLSearchParams();
-    firstVariantSearchParams.set(optionNameLowerCase, option.values[0]!);
+      const firstVariantURL = createUrl(pathname, firstVariantSearchParams);
 
-    const firstVariantURL = createUrl(pathname, firstVariantSearchParams);
-
-    router.replace(firstVariantURL);
+      router.replace(firstVariantURL);
+    }
   }, []);
 
   const variantsObj = variants.reduce(
