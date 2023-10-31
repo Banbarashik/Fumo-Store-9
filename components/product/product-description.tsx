@@ -38,8 +38,22 @@ export function ProductDescription({
   const [thumbnailRef, thumbnailInstanceRef] = useKeenSlider<HTMLDivElement>(
     {
       slides: {
-        perView: product.variants.length >= 4 ? 4 : product.variants.length,
+        perView: 2,
         spacing: 10
+      },
+      breakpoints: {
+        '(min-width: 640px)': {
+          slides: {
+            perView: product.variants.length >= 3 ? 3 : product.variants.length,
+            spacing: 10
+          }
+        },
+        '(min-width: 768px)': {
+          slides: {
+            perView: product.variants.length >= 4 ? 4 : product.variants.length,
+            spacing: 10
+          }
+        }
       },
       slideChanged(slider) {
         setThumbnailCurrentSlide(slider.track.details.rel);
