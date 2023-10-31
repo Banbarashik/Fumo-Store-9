@@ -16,10 +16,10 @@ export default function SliderControls({
 }) {
   const className = (direction: 'left' | 'right') =>
     clsx('absolute top-1/2 h-12 -translate-y-1/2', {
-      [`${direction}-4`]: !outside,
-      [`-${direction}-4`]: outside,
-      '-translate-x-full': outside && direction === 'left',
-      'translate-x-full': outside && direction === 'right'
+      'left-4': !outside && direction === 'left',
+      'right-4': !outside && direction === 'right',
+      '-left-4 -translate-x-full': outside && direction === 'left',
+      '-right-4 translate-x-full': outside && direction === 'right'
     });
 
   return (
