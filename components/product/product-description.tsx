@@ -99,10 +99,10 @@ export function ProductDescription({
             />
           )}
         </div>
-        <div className="relative w-1/2">
+        <div className="relative w-full basis-24">
           <div ref={thumbnailRef} className="keen-slider thumbnail h-full">
             {images.map((image) => (
-              <div key={image.src} className="keen-slider__slide relative aspect-square">
+              <div key={image.src} className="keen-slider__slide relative aspect-square h-full">
                 <Image className="object-cover" src={image.src} alt={image.altText || ''} fill />
               </div>
             ))}
