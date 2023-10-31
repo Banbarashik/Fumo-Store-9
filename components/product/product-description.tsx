@@ -38,7 +38,7 @@ export function ProductDescription({
   const [thumbnailRef, thumbnailInstanceRef] = useKeenSlider<HTMLDivElement>(
     {
       slides: {
-        perView: 4,
+        perView: product.variants.length >= 4 ? 4 : product.variants.length,
         spacing: 10
       },
       slideChanged(slider) {
