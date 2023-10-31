@@ -1,5 +1,3 @@
-'use client';
-
 import clsx from 'clsx';
 import { ProductOption, ProductVariant } from 'lib/shopify/types';
 import { createUrl } from 'lib/utils';
@@ -8,10 +6,12 @@ import { useEffect } from 'react';
 
 export function VariantSelectorWithPseudoOptions({
   option,
-  variants
+  variants,
+  syncSlider
 }: {
   option: ProductOption | undefined;
   variants: ProductVariant[];
+  syncSlider: (index: number) => void;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -43,6 +43,7 @@ export function VariantSelectorWithPseudoOptions({
       accumulator: {
         [optTitle: string]: {
           variants: {
+            index: number;
             id: string;
             title: string;
             titleWithOpt: string;
@@ -50,7 +51,8 @@ export function VariantSelectorWithPseudoOptions({
           }[];
         };
       },
-      variant
+      variant,
+      i
     ) => {
       const optAndVarTitleRegex = /(\w+)_(.+)/;
       const optAndVarTitle = optAndVarTitleRegex.exec(variant.title);
@@ -60,6 +62,7 @@ export function VariantSelectorWithPseudoOptions({
       const varTitle = optAndVarTitle[2]!;
 
       const variantObj = {
+        index: i,
         id: variant.id,
         title: varTitle,
         titleWithOpt: variant.title,
@@ -98,6 +101,7 @@ export function VariantSelectorWithPseudoOptions({
               disabled={!variant.availableForSale}
               title={!variant.availableForSale ? 'Out of Stock' : ''}
               onClick={() => {
+                syncSlider(variant.index);
                 router.replace(optUrl, { scroll: false });
               }}
               className={clsx(

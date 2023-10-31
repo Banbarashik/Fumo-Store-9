@@ -113,6 +113,7 @@ export function ProductDescription({
           <VariantSelector options={product.options} variants={product.variants} />
         ) : (
           <VariantSelectorWithPseudoOptions
+            syncSlider={(index) => instanceRef.current?.moveToIdx(index)}
             option={product.options[0]}
             variants={product.variants}
           />
