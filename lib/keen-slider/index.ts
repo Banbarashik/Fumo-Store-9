@@ -7,13 +7,13 @@ export function ThumbnailPlugin(
   return (slider) => {
     function removeActive() {
       slider.slides.forEach((slide) => {
-        slide.classList.remove('border-4', 'border-blue-600');
+        slide.classList.remove('border-2', 'border-blue-600');
       });
     }
     function addActive(idx: number) {
       // TODO: find out how to correctly handle the 'Object is possibly undefined' problem
       //! the non-null assertion is a temporary solution
-      slider.slides[idx]!.classList.add('border-4', 'border-blue-600');
+      slider.slides[idx]!.classList.add('border-2', 'border-blue-600');
     }
 
     function addClickEvents() {
