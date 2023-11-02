@@ -1,5 +1,6 @@
 'use client';
 
+import clsx from 'clsx';
 import { useKeenSlider } from 'keen-slider/react';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -93,7 +94,13 @@ export function ProductDescription({
             />
           )}
         </div>
-        <div className="relative w-full basis-24 sm:w-4/5">
+        <div
+          className={clsx('relative basis-24', {
+            'w-full sm:w-4/5': product.variants.length >= 4,
+            'w-full sm:w-1/2': product.variants.length === 3,
+            'w-4/5 sm:w-2/5': product.variants.length === 2
+          })}
+        >
           <div ref={thumbnailRef} className="keen-slider thumbnail h-full">
             {images.map((image) => (
               <div key={image.src} className="keen-slider__slide relative aspect-square h-full">
