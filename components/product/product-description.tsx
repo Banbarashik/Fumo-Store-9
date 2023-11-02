@@ -94,29 +94,31 @@ export function ProductDescription({
             />
           )}
         </div>
-        <div
-          className={clsx('relative basis-24', {
-            'w-full sm:w-4/5': product.variants.length >= 4,
-            'w-full sm:w-1/2': product.variants.length === 3,
-            'w-4/5 sm:w-2/5': product.variants.length === 2
-          })}
-        >
-          <div ref={thumbnailRef} className="keen-slider thumbnail h-full">
-            {images.map((image) => (
-              <div key={image.src} className="keen-slider__slide relative aspect-square h-full">
-                <Image className="object-cover" src={image.src} alt={image.altText || ''} fill />
-              </div>
-            ))}
+        {product.variants.length > 1 && (
+          <div
+            className={clsx('relative basis-24', {
+              'w-full sm:w-4/5': product.variants.length >= 4,
+              'w-full sm:w-1/2': product.variants.length === 3,
+              'w-4/5 sm:w-2/5': product.variants.length === 2
+            })}
+          >
+            <div ref={thumbnailRef} className="keen-slider thumbnail h-full">
+              {images.map((image) => (
+                <div key={image.src} className="keen-slider__slide relative aspect-square h-full">
+                  <Image className="object-cover" src={image.src} alt={image.altText || ''} fill />
+                </div>
+              ))}
+            </div>
+            {thumbnailLoaded && thumbnailInstanceRef.current && (
+              <SliderControls
+                className="hidden sm:inline-flex"
+                outside
+                instanceRefCurrent={thumbnailInstanceRef.current}
+                currentSlide={thumbnailCurrentSlide}
+              />
+            )}
           </div>
-          {thumbnailLoaded && thumbnailInstanceRef.current && (
-            <SliderControls
-              className="hidden sm:inline-flex"
-              outside
-              instanceRefCurrent={thumbnailInstanceRef.current}
-              currentSlide={thumbnailCurrentSlide}
-            />
-          )}
-        </div>
+        )}
       </div>
 
       <div>
