@@ -38,17 +38,11 @@ export function ProductDescription({
   const [thumbnailRef, thumbnailInstanceRef] = useKeenSlider<HTMLDivElement>(
     {
       slides: {
-        perView: 2,
+        perView: product.variants.length >= 3 ? 3 : product.variants.length,
         spacing: 10
       },
       breakpoints: {
         '(min-width: 640px)': {
-          slides: {
-            perView: product.variants.length >= 3 ? 3 : product.variants.length,
-            spacing: 10
-          }
-        },
-        '(min-width: 768px)': {
           slides: {
             perView: product.variants.length >= 4 ? 4 : product.variants.length,
             spacing: 10
@@ -99,7 +93,7 @@ export function ProductDescription({
             />
           )}
         </div>
-        <div className="relative w-full basis-24">
+        <div className="relative w-full basis-24 sm:w-4/5">
           <div ref={thumbnailRef} className="keen-slider thumbnail h-full">
             {images.map((image) => (
               <div key={image.src} className="keen-slider__slide relative aspect-square h-full">
