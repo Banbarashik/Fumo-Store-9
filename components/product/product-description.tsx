@@ -86,7 +86,7 @@ export function ProductDescription({
               </div>
             ))}
           </div>
-          {sliderLoaded && instanceRef.current && (
+          {product.variants.length > 1 && sliderLoaded && instanceRef.current && (
             <SliderControls
               className="hidden sm:inline-flex"
               instanceRefCurrent={instanceRef.current}
