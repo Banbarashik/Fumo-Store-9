@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { ThumbnailPlugin } from '@/lib/keen-slider';
-import { Money, Product } from '@/lib/shopify/types';
+import { Money, Product, ProductVariant } from '@/lib/shopify/types';
 
 import { AddToCart } from '@/components/product/add-to-cart';
 import { VariantSelector } from '@/components/product/variant-selector';
@@ -62,11 +62,22 @@ export function ProductDescription({
 
   const hasPseudoOptions = product.tags.includes('pseudo_options');
 
-  const images = product.variants.map((variant) => ({
-    src: variant.image.url,
-    altText: variant.image.altText,
-    selectedOptions: variant.selectedOptions
-  }));
+  const images = product.variants.map(function (variant: ProductVariant) {
+    const optAndVarTitleRegex = /(\w+)_(.+)/;
+    const optAndVarTitle = optAndVarTitleRegex.exec(variant.title);
+
+    const title =
+      !hasPseudoOptions || optAndVarTitle === null
+        ? variant.title
+        : `${optAndVarTitle[1]!.toUpperCase()}: ${optAndVarTitle[2]}`;
+
+    return {
+      src: variant.image.url,
+      altText: variant.image.altText,
+      selectedOptions: variant.selectedOptions,
+      caption: title
+    };
+  });
 
   return (
     <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 dark:border-neutral-800 dark:bg-black md:p-12 lg:flex-row lg:gap-8">
@@ -74,7 +85,7 @@ export function ProductDescription({
         <div className="relative aspect-square max-h-[550px] w-full">
           <div ref={sliderRef} className="keen-slider h-full">
             {images.map((image) => (
-              <div key={image.src} className="keen-slider__slide relative h-full w-full">
+              <figure key={image.src} className="keen-slider__slide relative h-full w-full">
                 <Image
                   src={image.src}
                   alt={image.altText || ''}
@@ -83,7 +94,10 @@ export function ProductDescription({
                   fill
                   priority
                 />
-              </div>
+                <figcaption className="absolute bottom-5 left-1/2 w-max -translate-x-1/2 bg-black/50 px-3 py-1 text-xs sm:text-base">
+                  {image.caption}
+                </figcaption>
+              </figure>
             ))}
           </div>
           {product.variants.length > 1 && sliderLoaded && instanceRef.current && (
