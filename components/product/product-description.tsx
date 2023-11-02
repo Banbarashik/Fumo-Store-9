@@ -109,7 +109,7 @@ export function ProductDescription({
                 </div>
               ))}
             </div>
-            {thumbnailLoaded && thumbnailInstanceRef.current && (
+            {product.variants.length > 4 && thumbnailLoaded && thumbnailInstanceRef.current && (
               <SliderControls
                 className="hidden sm:inline-flex"
                 outside
