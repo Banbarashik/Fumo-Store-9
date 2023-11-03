@@ -96,7 +96,7 @@ export default async function ProductPage({
           __html: JSON.stringify(productJsonLd)
         }}
       />
-      <div className="mx-auto max-w-screen-2xl px-4">
+      <div className="mx-auto max-w-screen-2xl px-0 sm:px-4">
         <ProductDescription product={product} selectedVariantPrice={selectedVariant.price} />
         <Suspense>
           <RelatedProducts id={product.id} />
