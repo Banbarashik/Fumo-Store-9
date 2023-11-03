@@ -81,6 +81,16 @@ export function ProductDescription({
 
   return (
     <div className="flex flex-col rounded-b-lg border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-black sm:rounded-t-lg sm:p-8 md:p-12 lg:flex-row lg:gap-8">
+      <div className="mb-6 flex items-center justify-between border-b pb-4 dark:border-neutral-700 lg:hidden">
+        <h1 className="text-xl font-medium">{product.title}</h1>
+        <div className="w-auto rounded-full bg-blue-600 p-2 text-sm text-white">
+          <Price
+            amount={selectedVariantPrice.amount}
+            currencyCode={selectedVariantPrice.currencyCode}
+          />
+        </div>
+      </div>
+
       <div className="flex basis-full flex-col items-center gap-6 lg:max-w-2/3">
         <div className="relative aspect-square max-h-[550px] w-full">
           <div ref={sliderRef} className="keen-slider h-full">
@@ -139,8 +149,8 @@ export function ProductDescription({
       </div>
 
       <div>
-        <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
-          <h1 className="mb-2 text-5xl font-medium">{product.title}</h1>
+        <div className="mb-6 hidden flex-col border-b pb-6 dark:border-neutral-700 lg:flex">
+          <h1 className="mb-2 text-4xl font-medium">{product.title}</h1>
           <div className="mr-auto w-auto rounded-full bg-blue-600 p-2 text-sm text-white">
             <Price
               amount={selectedVariantPrice.amount}

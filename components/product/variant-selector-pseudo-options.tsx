@@ -1,8 +1,9 @@
 import clsx from 'clsx';
-import { ProductOption, ProductVariant } from 'lib/shopify/types';
-import { createUrl } from 'lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+
+import { ProductOption, ProductVariant } from '@/lib/shopify/types';
+import { createUrl } from '@/lib/utils';
 
 export function VariantSelectorWithPseudoOptions({
   option,
