@@ -80,7 +80,7 @@ export function ProductDescription({
   });
 
   return (
-    <div className="flex flex-col rounded-b-lg border border-neutral-200 bg-white p-8 dark:border-neutral-800 dark:bg-black sm:rounded-t-lg md:p-12 lg:flex-row lg:gap-8">
+    <div className="flex flex-col rounded-b-lg border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-black sm:rounded-t-lg sm:p-8 md:p-12 lg:flex-row lg:gap-8">
       <div className="flex basis-full flex-col items-center gap-6 lg:max-w-2/3">
         <div className="relative aspect-square max-h-[550px] w-full">
           <div ref={sliderRef} className="keen-slider h-full">
