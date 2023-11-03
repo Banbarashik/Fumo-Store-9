@@ -148,7 +148,7 @@ export function ProductDescription({
         )}
       </div>
 
-      <div>
+      <div className="lg:basis-2/6">
         <div className="mb-6 hidden flex-col border-b pb-6 dark:border-neutral-700 lg:flex">
           <h1 className="mb-2 text-4xl font-medium">{product.title}</h1>
           <div className="mr-auto w-auto rounded-full bg-blue-600 p-2 text-sm text-white">
