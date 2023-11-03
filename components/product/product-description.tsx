@@ -94,7 +94,7 @@ export function ProductDescription({
                   fill
                   priority
                 />
-                <figcaption className="absolute bottom-5 left-1/2 w-max -translate-x-1/2 bg-black/50 px-3 py-1 text-xs sm:text-base">
+                <figcaption className="absolute bottom-5 left-1/2 w-max -translate-x-1/2 bg-black/50 px-3 py-1 text-xs text-white sm:text-base">
                   {image.caption}
                 </figcaption>
               </figure>
