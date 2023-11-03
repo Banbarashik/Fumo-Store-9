@@ -94,7 +94,7 @@ export function ProductDescription({
       <div className="flex basis-full flex-col items-center gap-6 lg:max-w-2/3">
         <div className="relative aspect-square max-h-[550px] w-full">
           <div ref={sliderRef} className="keen-slider h-full">
-            {images.map((image) => (
+            {images.map((image, _, arr) => (
               <figure key={image.src} className="keen-slider__slide relative h-full w-full">
                 <Image
                   src={image.src}
@@ -104,9 +104,11 @@ export function ProductDescription({
                   fill
                   priority
                 />
-                <figcaption className="absolute bottom-5 left-1/2 w-max -translate-x-1/2 bg-black/50 px-3 py-1 text-xs text-white sm:text-base">
-                  {image.caption}
-                </figcaption>
+                {arr.length > 1 && (
+                  <figcaption className="absolute bottom-5 left-1/2 w-max -translate-x-1/2 bg-black/50 px-3 py-1 text-xs text-white sm:text-base">
+                    {image.caption}
+                  </figcaption>
+                )}
               </figure>
             ))}
           </div>
