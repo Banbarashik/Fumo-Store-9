@@ -1,123 +1,127 @@
 'use client';
 
-import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
-import { GridTileImage } from 'components/grid/tile';
-import { createUrl } from 'lib/utils';
+import clsx from 'clsx';
+import { useKeenSlider } from 'keen-slider/react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+
+import { ThumbnailPlugin } from '@/lib/keen-slider';
+
+import SliderControls from '@/components/slider-controls';
 
 export function Gallery({
-  images
+  images,
+  mountSliderRefToParent
 }: {
   images: {
     src: string;
     altText: string | null;
-    selectedOptions: { name: string; value: string }[];
+    selectedOptions: {
+      name: string;
+      value: string;
+    }[];
+    caption: string;
   }[];
+  mountSliderRefToParent: any;
 }) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const [sliderLoaded, setSliderLoaded] = useState(false);
+  const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
 
-  const currentImage = images.find((image) =>
-    image.selectedOptions.every(function (option) {
-      const optionNameLowerCase = option.name.toLowerCase();
-      return searchParams.get(optionNameLowerCase) === option.value;
-    })
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel);
+    },
+    created(slider) {
+      setSliderLoaded(true);
+      mountSliderRefToParent(slider);
+    }
+  });
+
+  const [thumbnailCurrentSlide, setThumbnailCurrentSlide] = useState(0);
+  const [thumbnailRef, thumbnailInstanceRef] = useKeenSlider<HTMLDivElement>(
+    {
+      slides: {
+        perView: images.length >= 3 ? 3 : images.length,
+        spacing: 10
+      },
+      breakpoints: {
+        '(min-width: 640px)': {
+          slides: {
+            perView: images.length >= 4 ? 4 : images.length,
+            spacing: 10
+          }
+        }
+      },
+      slideChanged(slider) {
+        setThumbnailCurrentSlide(slider.track.details.rel);
+      },
+      created() {
+        setThumbnailLoaded(true);
+      }
+    },
+    [ThumbnailPlugin(instanceRef)]
   );
 
-  const currentImageIndex = images.findIndex((image) => image.src === currentImage?.src);
-
-  const previousSearchParams = new URLSearchParams(searchParams.toString());
-  const previousImageIndex = currentImageIndex === 0 ? images.length - 1 : currentImageIndex - 1;
-  images[previousImageIndex]?.selectedOptions.forEach(function (option) {
-    const optionNameLowerCase = option.name.toLowerCase();
-    return previousSearchParams.set(optionNameLowerCase, option.value);
-  });
-  const previousUrl = createUrl(pathname, previousSearchParams);
-
-  const nextSearchParams = new URLSearchParams(searchParams.toString());
-  const nextImageIndex = currentImageIndex + 1 < images.length ? currentImageIndex + 1 : 0;
-  images[nextImageIndex]?.selectedOptions.forEach(function (option) {
-    const optionNameLowerCase = option.name.toLowerCase();
-    return nextSearchParams.set(optionNameLowerCase, option.value);
-  });
-  const nextUrl = createUrl(pathname, nextSearchParams);
-
-  const buttonClassName =
-    'h-full px-6 transition-all ease-in-out hover:scale-110 hover:text-black dark:hover:text-white flex items-center justify-center';
-
   return (
-    <>
-      <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden">
-        {images.length > 0 && (
-          <Image
-            className="object-contain"
-            fill
-            sizes="(min-width: 1024px) 66vw, 100vw"
-            alt={currentImage?.altText || images[0]!.altText || ''}
-            src={currentImage?.src || images[0]!.src}
-            priority
+    <div className="flex basis-full flex-col items-center gap-6 lg:max-w-2/3">
+      <div className="relative aspect-square max-h-[550px] w-full">
+        <div ref={sliderRef} className="keen-slider h-full">
+          {images.map((image, _, arr) => (
+            <figure key={image.src} className="keen-slider__slide relative h-full w-full">
+              <Image
+                src={image.src}
+                alt={image.altText || ''}
+                className="object-contain"
+                sizes="(min-width: 1024px) 66vw, 100vw"
+                fill
+                priority
+              />
+              {arr.length > 1 && (
+                <figcaption className="absolute bottom-5 left-1/2 w-max -translate-x-1/2 bg-black/50 px-3 py-1 text-xs text-white sm:text-base">
+                  {image.caption}
+                </figcaption>
+              )}
+            </figure>
+          ))}
+        </div>
+        {images.length > 1 && sliderLoaded && instanceRef.current && (
+          <SliderControls
+            className="hidden sm:inline-flex"
+            instanceRefCurrent={instanceRef.current}
+            currentSlide={currentSlide}
           />
-        )}
-
-        {images.length > 1 && (
-          <div className="absolute bottom-[15%] flex w-full justify-center">
-            <div className="mx-auto flex h-11 items-center rounded-full border border-white bg-neutral-50/80 text-neutral-500 backdrop-blur dark:border-black dark:bg-neutral-900/80">
-              <Link
-                aria-label="Previous product image"
-                href={previousUrl}
-                className={buttonClassName}
-                scroll={false}
-              >
-                <ArrowLeftIcon className="h-5" />
-              </Link>
-              <div className="mx-1 h-6 w-px bg-neutral-500"></div>
-              <Link
-                aria-label="Next product image"
-                href={nextUrl}
-                className={buttonClassName}
-                scroll={false}
-              >
-                <ArrowRightIcon className="h-5" />
-              </Link>
-            </div>
-          </div>
         )}
       </div>
 
       {images.length > 1 && (
-        <ul className="my-12 flex items-center justify-center gap-2 overflow-auto py-1 lg:mb-0">
-          {images.map(function (image) {
-            const isActive = image.selectedOptions === currentImage?.selectedOptions;
-            const imageSearchParams = new URLSearchParams(searchParams.toString());
-
-            image.selectedOptions.forEach(function (option) {
-              const optionNameLowerCase = option.name.toLowerCase();
-              imageSearchParams.set(optionNameLowerCase, option.value);
-            });
-
-            return (
-              <li key={image.src} className="h-20 w-20">
-                <Link
-                  aria-label="Enlarge product image"
-                  href={createUrl(pathname, imageSearchParams)}
-                  scroll={false}
-                  className="h-full w-full"
-                >
-                  <GridTileImage
-                    alt={image.altText || 'Product image'}
-                    src={image.src}
-                    width={80}
-                    height={80}
-                    active={isActive}
-                  />
-                </Link>
-              </li>
-            );
+        <div
+          className={clsx('relative basis-24', {
+            'w-full sm:w-4/5': images.length >= 4,
+            'w-full sm:w-1/2': images.length === 3,
+            'w-4/5 sm:w-2/5': images.length === 2
           })}
-        </ul>
+        >
+          <div ref={thumbnailRef} className="keen-slider thumbnail h-full">
+            {images.map((image) => (
+              <div
+                key={image.src}
+                className="keen-slider__slide relative aspect-square h-full cursor-pointer"
+              >
+                <Image className="object-cover" src={image.src} alt={image.altText || ''} fill />
+              </div>
+            ))}
+          </div>
+          {images.length > 4 && thumbnailLoaded && thumbnailInstanceRef.current && (
+            <SliderControls
+              className="hidden sm:inline-flex"
+              outside
+              instanceRefCurrent={thumbnailInstanceRef.current}
+              currentSlide={thumbnailCurrentSlide}
+            />
+          )}
+        </div>
       )}
-    </>
+    </div>
   );
 }

@@ -1,17 +1,13 @@
 'use client';
 
-import clsx from 'clsx';
-import { useKeenSlider } from 'keen-slider/react';
-import Image from 'next/image';
 import { useState } from 'react';
 
-import { ThumbnailPlugin } from '@/lib/keen-slider';
 import { Money, Product, ProductVariant } from '@/lib/shopify/types';
 
 import { AddToCart } from '@/components/product/add-to-cart';
+import { Gallery } from '@/components/product/gallery';
 import { VariantSelector } from '@/components/product/variant-selector';
 import { VariantSelectorWithPseudoOptions } from '@/components/product/variant-selector-pseudo-options';
-import SliderControls from '@/components/slider-controls';
 import Price from '@/components/ui/price';
 import Prose from '@/components/ui/prose';
 
@@ -22,43 +18,7 @@ export function ProductDescription({
   product: Product;
   selectedVariantPrice: Money;
 }) {
-  const [sliderLoaded, setSliderLoaded] = useState(false);
-  const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
-
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    slideChanged(slider) {
-      setCurrentSlide(slider.track.details.rel);
-    },
-    created() {
-      setSliderLoaded(true);
-    }
-  });
-
-  const [thumbnailCurrentSlide, setThumbnailCurrentSlide] = useState(0);
-  const [thumbnailRef, thumbnailInstanceRef] = useKeenSlider<HTMLDivElement>(
-    {
-      slides: {
-        perView: product.variants.length >= 3 ? 3 : product.variants.length,
-        spacing: 10
-      },
-      breakpoints: {
-        '(min-width: 640px)': {
-          slides: {
-            perView: product.variants.length >= 4 ? 4 : product.variants.length,
-            spacing: 10
-          }
-        }
-      },
-      slideChanged(slider) {
-        setThumbnailCurrentSlide(slider.track.details.rel);
-      },
-      created() {
-        setThumbnailLoaded(true);
-      }
-    },
-    [ThumbnailPlugin(instanceRef)]
-  );
+  const [sliderRef, setSliderRef] = useState<any>({});
 
   const hasPseudoOptions = product.tags.includes('pseudo_options');
 
@@ -91,64 +51,7 @@ export function ProductDescription({
         </div>
       </div>
 
-      <div className="flex basis-full flex-col items-center gap-6 lg:max-w-2/3">
-        <div className="relative aspect-square max-h-[550px] w-full">
-          <div ref={sliderRef} className="keen-slider h-full">
-            {images.map((image, _, arr) => (
-              <figure key={image.src} className="keen-slider__slide relative h-full w-full">
-                <Image
-                  src={image.src}
-                  alt={image.altText || ''}
-                  className="object-contain"
-                  sizes="(min-width: 1024px) 66vw, 100vw"
-                  fill
-                  priority
-                />
-                {arr.length > 1 && (
-                  <figcaption className="absolute bottom-5 left-1/2 w-max -translate-x-1/2 bg-black/50 px-3 py-1 text-xs text-white sm:text-base">
-                    {image.caption}
-                  </figcaption>
-                )}
-              </figure>
-            ))}
-          </div>
-          {product.variants.length > 1 && sliderLoaded && instanceRef.current && (
-            <SliderControls
-              className="hidden sm:inline-flex"
-              instanceRefCurrent={instanceRef.current}
-              currentSlide={currentSlide}
-            />
-          )}
-        </div>
-        {product.variants.length > 1 && (
-          <div
-            className={clsx('relative basis-24', {
-              'w-full sm:w-4/5': product.variants.length >= 4,
-              'w-full sm:w-1/2': product.variants.length === 3,
-              'w-4/5 sm:w-2/5': product.variants.length === 2
-            })}
-          >
-            <div ref={thumbnailRef} className="keen-slider thumbnail h-full">
-              {images.map((image) => (
-                <div
-                  key={image.src}
-                  className="keen-slider__slide relative aspect-square h-full cursor-pointer"
-                >
-                  <Image className="object-cover" src={image.src} alt={image.altText || ''} fill />
-                </div>
-              ))}
-            </div>
-            {product.variants.length > 4 && thumbnailLoaded && thumbnailInstanceRef.current && (
-              <SliderControls
-                className="hidden sm:inline-flex"
-                outside
-                instanceRefCurrent={thumbnailInstanceRef.current}
-                currentSlide={thumbnailCurrentSlide}
-              />
-            )}
-          </div>
-        )}
-      </div>
+      <Gallery images={images} mountSliderRefToParent={setSliderRef} />
 
       <div className="lg:basis-2/6">
         <div className="mb-6 hidden flex-col border-b pb-6 dark:border-neutral-700 lg:flex">
@@ -164,7 +67,7 @@ export function ProductDescription({
           <VariantSelector options={product.options} variants={product.variants} />
         ) : (
           <VariantSelectorWithPseudoOptions
-            syncSlider={(index) => instanceRef.current?.moveToIdx(index)}
+            syncSlider={(index) => sliderRef.moveToIdx(index)}
             option={product.options[0]}
             variants={product.variants}
           />
