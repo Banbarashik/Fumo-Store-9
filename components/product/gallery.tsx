@@ -1,9 +1,7 @@
-'use client';
-
 import clsx from 'clsx';
-import { useKeenSlider } from 'keen-slider/react';
+import { KeenSliderInstance, useKeenSlider } from 'keen-slider/react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import { ThumbnailPlugin } from '@/lib/keen-slider';
 
@@ -11,7 +9,7 @@ import SliderControls from '@/components/slider-controls';
 
 export function Gallery({
   images,
-  mountSliderRefToParent
+  mountSlider
 }: {
   images: {
     src: string;
@@ -22,19 +20,19 @@ export function Gallery({
     }[];
     caption: string;
   }[];
-  mountSliderRefToParent: any;
+  mountSlider: Dispatch<SetStateAction<KeenSliderInstance | null>>;
 }) {
   const [sliderLoaded, setSliderLoaded] = useState(false);
   const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
 
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+  const [sliderRef, sliderInstanceRef] = useKeenSlider<HTMLDivElement>({
     slideChanged(slider) {
       setCurrentSlide(slider.track.details.rel);
     },
     created(slider) {
       setSliderLoaded(true);
-      mountSliderRefToParent(slider);
+      mountSlider(slider);
     }
   });
 
@@ -60,7 +58,7 @@ export function Gallery({
         setThumbnailLoaded(true);
       }
     },
-    [ThumbnailPlugin(instanceRef)]
+    [ThumbnailPlugin(sliderInstanceRef)]
   );
 
   return (
@@ -85,10 +83,10 @@ export function Gallery({
             </figure>
           ))}
         </div>
-        {images.length > 1 && sliderLoaded && instanceRef.current && (
+        {images.length > 1 && sliderLoaded && sliderInstanceRef.current && (
           <SliderControls
             className="hidden sm:inline-flex"
-            instanceRefCurrent={instanceRef.current}
+            instanceRefCurrent={sliderInstanceRef.current}
             currentSlide={currentSlide}
           />
         )}

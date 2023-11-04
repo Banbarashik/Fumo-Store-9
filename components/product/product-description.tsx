@@ -1,5 +1,6 @@
 'use client';
 
+import { KeenSliderInstance } from 'keen-slider/react';
 import { useState } from 'react';
 
 import { Money, Product, ProductVariant } from '@/lib/shopify/types';
@@ -18,7 +19,7 @@ export function ProductDescription({
   product: Product;
   selectedVariantPrice: Money;
 }) {
-  const [sliderRef, setSliderRef] = useState<any>({});
+  const [sliderInstance, setSliderInstance] = useState<KeenSliderInstance | null>(null);
 
   const hasPseudoOptions = product.tags.includes('pseudo_options');
 
@@ -51,7 +52,7 @@ export function ProductDescription({
         </div>
       </div>
 
-      <Gallery images={images} mountSliderRefToParent={setSliderRef} />
+      <Gallery images={images} mountSlider={setSliderInstance} />
 
       <div className="lg:basis-2/6">
         <div className="mb-6 hidden flex-col border-b pb-6 dark:border-neutral-700 lg:flex">
@@ -67,7 +68,7 @@ export function ProductDescription({
           <VariantSelector options={product.options} variants={product.variants} />
         ) : (
           <VariantSelectorWithPseudoOptions
-            syncSlider={(index) => sliderRef.moveToIdx(index)}
+            syncSlider={(index) => sliderInstance?.moveToIdx(index)}
             option={product.options[0]}
             variants={product.variants}
           />
