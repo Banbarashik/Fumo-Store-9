@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Money, Product, ProductVariant } from '@/lib/shopify/types';
 
 import { AddToCart } from '@/components/product/add-to-cart';
-import { Gallery } from '@/components/product/gallery';
+import Gallery from '@/components/product/gallery';
 import { VariantSelector } from '@/components/product/variant-selector';
 import { VariantSelectorWithPseudoOptions } from '@/components/product/variant-selector-pseudo-options';
 import Price from '@/components/ui/price';

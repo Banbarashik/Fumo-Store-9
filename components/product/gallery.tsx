@@ -7,7 +7,7 @@ import { ThumbnailPlugin } from '@/lib/keen-slider';
 
 import SliderControls from '@/components/slider-controls';
 
-export function Gallery({
+export default function Gallery({
   images,
   mountSlider
 }: {
