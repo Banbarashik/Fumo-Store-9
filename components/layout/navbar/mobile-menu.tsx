@@ -1,13 +1,15 @@
 'use client';
 
-import { Dialog, Transition } from '@headlessui/react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
 
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Menu } from 'lib/shopify/types';
-import Search from './search';
+import { Dialog, Transition } from '@headlessui/react';
+import { MenuIcon, XIcon } from 'lucide-react';
+
+import { Menu } from '@/lib/shopify/types';
+
+import Search from '@/components/layout/navbar/search';
 
 export default function MobileMenu({ menu }: { menu: Menu[] }) {
   const pathname = usePathname();
@@ -35,9 +37,9 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
       <button
         onClick={openMobileMenu}
         aria-label="Open mobile menu"
-        className="flex h-11 w-11 items-center justify-center rounded-md border border-neutral-200 text-black transition-colors dark:border-neutral-700 dark:text-white md:hidden"
+        className="flex h-11 w-11 items-center justify-center rounded-md border-neutral-200 text-black transition-colors dark:border-blue-200 dark:text-blue-200 md:hidden"
       >
-        <Bars3Icon className="h-4" />
+        <MenuIcon size={30} />
       </button>
       <Transition show={isOpen}>
         <Dialog onClose={closeMobileMenu} className="relative z-50">
@@ -68,7 +70,7 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
                   onClick={closeMobileMenu}
                   aria-label="Close mobile menu"
                 >
-                  <XMarkIcon className="h-6" />
+                  <XIcon />
                 </button>
 
                 <div className="mb-4 w-full">
