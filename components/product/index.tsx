@@ -12,7 +12,7 @@ import { VariantSelectorWithPseudoOptions } from '@/components/product/variant-s
 import Price from '@/components/ui/price';
 import Prose from '@/components/ui/prose';
 
-export function ProductDescription({
+export default function Product({
   product,
   selectedVariantPrice
 }: {

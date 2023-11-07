@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
+import { HIDDEN_PRODUCT_TAG } from '@/lib/constants';
+import { getProduct, getProductRecommendations } from '@/lib/shopify';
+import { ProductVariant } from '@/lib/shopify/types';
+
+import Footer from '@/components/layout/footer';
+import Product from '@/components/product';
 import { GridTileImage } from 'components/grid/tile';
-import Footer from 'components/layout/footer';
-import { ProductDescription } from 'components/product/product-description';
-import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
-import { getProduct, getProductRecommendations } from 'lib/shopify';
-import { ProductVariant } from 'lib/shopify/types';
-import Link from 'next/link';
 
 export const runtime = 'edge';
 
@@ -97,7 +98,7 @@ export default async function ProductPage({
         }}
       />
       <div className="mx-auto max-w-screen-2xl px-0 sm:px-4">
-        <ProductDescription product={product} selectedVariantPrice={selectedVariant.price} />
+        <Product product={product} selectedVariantPrice={selectedVariant.price} />
         <Suspense>
           <RelatedProducts id={product.id} />
         </Suspense>
