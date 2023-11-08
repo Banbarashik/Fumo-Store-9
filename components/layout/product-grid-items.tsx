@@ -44,7 +44,7 @@ export default function ProductGridItems({
                 <AddToCart
                   variantId={product.variants[0]!.id}
                   isVariantAvailable={product.availableForSale}
-                  className="absolute right-6 top-4 hidden group-hover:inline-flex"
+                  className="absolute right-6 top-4 hidden lg:group-hover:inline-flex"
                 />
               )
             ) : (

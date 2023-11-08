@@ -30,7 +30,7 @@ export default function ProductVariantsCard({
 
   return (
     <HoverCard>
-      <HoverCardTrigger asChild className="absolute right-6 top-4">
+      <HoverCardTrigger asChild className="absolute right-6 top-4 hidden lg:inline-flex">
         <Button variant="glassmorphism" size="icon" aria-label="Show variants">
           <ListBulletIcon className="h-6" />
         </Button>
