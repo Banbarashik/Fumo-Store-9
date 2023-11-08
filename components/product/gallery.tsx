@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { KeenSliderInstance, useKeenSlider } from 'keen-slider/react';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import { ThumbnailPlugin } from '@/lib/keen-slider';
@@ -22,6 +23,8 @@ export default function Gallery({
   }[];
   mountSlider: Dispatch<SetStateAction<KeenSliderInstance | null>>;
 }) {
+  const searchParams = useSearchParams();
+
   const [sliderLoaded, setSliderLoaded] = useState(false);
   const [thumbnailLoaded, setThumbnailLoaded] = useState(false);
 
@@ -56,6 +59,12 @@ export default function Gallery({
       },
       created() {
         setThumbnailLoaded(true);
+
+        const selectedVariant = searchParams.get(images[0]!.selectedOptions[0]!.name.toLowerCase());
+        const index = images.findIndex(
+          (image) => image.selectedOptions[0]!.value === selectedVariant
+        );
+        sliderInstanceRef.current?.moveToIdx(index);
       }
     },
     [ThumbnailPlugin(sliderInstanceRef)]
@@ -64,6 +73,7 @@ export default function Gallery({
   return (
     <div className="flex basis-full flex-col items-center gap-6 lg:max-w-2/3">
       <div className="relative aspect-square max-h-[550px] w-full">
+        {/* SLIDER */}
         <div ref={sliderRef} className="keen-slider h-full">
           {images.map((image, _, arr) => (
             <figure key={image.src} className="keen-slider__slide relative h-full w-full">
@@ -92,6 +102,7 @@ export default function Gallery({
         )}
       </div>
 
+      {/* THUMBNAIL SLIDER */}
       {images.length > 1 && (
         <div
           className={clsx('relative basis-24', {
@@ -110,6 +121,8 @@ export default function Gallery({
               </div>
             ))}
           </div>
+
+          {/* THUMBNAIL SLIDER CONTROLS */}
           {images.length > 4 && thumbnailLoaded && thumbnailInstanceRef.current && (
             <SliderControls
               className="hidden sm:inline-flex"
