@@ -102,8 +102,8 @@ export function VariantSelectorWithPseudoOptions({
               disabled={!variant.availableForSale}
               title={!variant.availableForSale ? 'Out of Stock' : ''}
               onClick={() => {
-                syncSlider(variant.index);
                 router.replace(optUrl, { scroll: false });
+                syncSlider(variant.index);
               }}
               className={clsx(
                 'flex min-w-[48px] items-center justify-center rounded-full border bg-neutral-100 px-2 py-1 text-sm dark:border-neutral-800 dark:bg-neutral-900',
