@@ -41,6 +41,7 @@ export default async function Navbar() {
         </div>
         <div className="flex justify-end md:w-1/3">
           <Suspense fallback={<OpenCart />}>
+            <Link href="/login">Login</Link>
             <Cart />
           </Suspense>
         </div>
