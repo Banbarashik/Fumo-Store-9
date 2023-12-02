@@ -17,7 +17,48 @@ export const metadata = {
   }
 };
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  if (searchParams.code && !Array.isArray(searchParams.code)) {
+    try {
+      if (process.env.CLIENT_ID === undefined) throw new Error('CLIENT_ID not found');
+      if (process.env.LOGIN_REDIRECT_URI === undefined)
+        throw new Error('LOGIN_REDIRECT_URI not found');
+
+      console.log(searchParams.code);
+
+      const body = new URLSearchParams();
+
+      body.append('grant_type', 'authorization_code');
+      body.append('client_id', process.env.CLIENT_ID);
+      body.append('redirect_uri', process.env.LOGIN_REDIRECT_URI);
+      body.append('code', searchParams.code);
+
+      const credentials = btoa(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`);
+      credentials.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+
+      const headers = {
+        'content-type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${credentials}`
+      };
+
+      const response = await fetch(`https://shopify.com/${process.env.SHOP_ID}/auth/oauth/token`, {
+        method: 'POST',
+        headers: headers,
+        body
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <>
       <Suspense>
