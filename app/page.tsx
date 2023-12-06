@@ -28,15 +28,6 @@ export default async function HomePage({
       if (process.env.LOGIN_REDIRECT_URI === undefined)
         throw new Error('LOGIN_REDIRECT_URI not found');
 
-      console.log(searchParams.code);
-
-      const body = new URLSearchParams();
-
-      body.append('grant_type', 'authorization_code');
-      body.append('client_id', process.env.CLIENT_ID);
-      body.append('redirect_uri', process.env.LOGIN_REDIRECT_URI);
-      body.append('code', searchParams.code);
-
       const credentials = btoa(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`);
       credentials.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 
@@ -45,15 +36,54 @@ export default async function HomePage({
         Authorization: `Basic ${credentials}`
       };
 
-      const response = await fetch(`https://shopify.com/${process.env.SHOP_ID}/auth/oauth/token`, {
-        method: 'POST',
-        headers: headers,
-        body
-      });
+      const intermediateAccessTokenReqBody = new URLSearchParams();
+      intermediateAccessTokenReqBody.append('grant_type', 'authorization_code');
+      intermediateAccessTokenReqBody.append('client_id', process.env.CLIENT_ID);
+      intermediateAccessTokenReqBody.append('redirect_uri', process.env.LOGIN_REDIRECT_URI);
+      intermediateAccessTokenReqBody.append('code', searchParams.code);
 
-      const data = await response.json();
+      const intermediateAccessTokenRes = await fetch(
+        `https://shopify.com/${process.env.SHOP_ID}/auth/oauth/token`,
+        {
+          method: 'POST',
+          headers,
+          body: intermediateAccessTokenReqBody
+        }
+      );
 
-      console.log(data);
+      const {
+        access_token: intermediateAccessToken,
+        expires_in,
+        id_token,
+        refresh_token
+      } = await intermediateAccessTokenRes.json();
+
+      const finalAccessTokenReqBody = new URLSearchParams();
+      finalAccessTokenReqBody.append(
+        'grant_type',
+        'urn:ietf:params:oauth:grant-type:token-exchange'
+      );
+      finalAccessTokenReqBody.append('client_id', process.env.CLIENT_ID);
+      finalAccessTokenReqBody.append('audience', '30243aa5-17c1-465a-8493-944bcc4e88aa');
+      finalAccessTokenReqBody.append('subject_token', intermediateAccessToken);
+      finalAccessTokenReqBody.append(
+        'subject_token_type',
+        'urn:ietf:params:oauth:token-type:access_token'
+      );
+      finalAccessTokenReqBody.append('scopes', 'https://api.customers.com/auth/customer.graphql');
+
+      const finalAccessTokenRes = await fetch(
+        `https://shopify.com/${process.env.SHOP_ID}/auth/oauth/token`,
+        {
+          method: 'POST',
+          headers,
+          body: finalAccessTokenReqBody
+        }
+      );
+
+      const { access_token: finalAccessToken } = await finalAccessTokenRes.json();
+
+      console.log(finalAccessToken);
     } catch (err) {
       console.error(err);
     }
