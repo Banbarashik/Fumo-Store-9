@@ -2,7 +2,10 @@
 
 import { cookies } from 'next/headers';
 
+// TODO: handle cases when retrieval of tokens fails
 export async function storeAccessToken(code: string) {
+  console.log({ code });
+
   if (process.env.CLIENT_ID === undefined) throw new Error('CLIENT_ID not found');
   if (process.env.LOGIN_REDIRECT_URI === undefined) throw new Error('LOGIN_REDIRECT_URI not found');
 
@@ -20,43 +23,54 @@ export async function storeAccessToken(code: string) {
   intermediateAccessTokenReqBody.append('redirect_uri', process.env.LOGIN_REDIRECT_URI);
   intermediateAccessTokenReqBody.append('code', code);
 
-  const intermediateAccessTokenRes = await fetch(
-    `https://shopify.com/${process.env.SHOP_ID}/auth/oauth/token`,
-    {
-      method: 'POST',
-      headers,
-      body: intermediateAccessTokenReqBody
-    }
-  );
+  try {
+    const intermediateAccessTokenRes = await fetch(
+      `https://shopify.com/${process.env.SHOP_ID}/auth/oauth/token`,
+      {
+        method: 'POST',
+        headers,
+        body: intermediateAccessTokenReqBody
+      }
+    );
 
-  const {
-    access_token: intermediateAccessToken,
-    expires_in,
-    id_token,
-    refresh_token
-  } = await intermediateAccessTokenRes.json();
+    console.log(intermediateAccessTokenRes.status, intermediateAccessTokenRes.statusText);
+    if (intermediateAccessTokenRes.status !== 200) return;
 
-  const finalAccessTokenReqBody = new URLSearchParams();
-  finalAccessTokenReqBody.append('grant_type', 'urn:ietf:params:oauth:grant-type:token-exchange');
-  finalAccessTokenReqBody.append('client_id', process.env.CLIENT_ID);
-  finalAccessTokenReqBody.append('audience', '30243aa5-17c1-465a-8493-944bcc4e88aa');
-  finalAccessTokenReqBody.append('subject_token', intermediateAccessToken);
-  finalAccessTokenReqBody.append(
-    'subject_token_type',
-    'urn:ietf:params:oauth:token-type:access_token'
-  );
-  finalAccessTokenReqBody.append('scopes', 'https://api.customers.com/auth/customer.graphql');
+    const {
+      access_token: intermediateAccessToken,
+      expires_in,
+      id_token,
+      refresh_token
+    } = await intermediateAccessTokenRes.json();
 
-  const finalAccessTokenRes = await fetch(
-    `https://shopify.com/${process.env.SHOP_ID}/auth/oauth/token`,
-    {
-      method: 'POST',
-      headers,
-      body: finalAccessTokenReqBody
-    }
-  );
+    const finalAccessTokenReqBody = new URLSearchParams();
+    finalAccessTokenReqBody.append('grant_type', 'urn:ietf:params:oauth:grant-type:token-exchange');
+    finalAccessTokenReqBody.append('client_id', process.env.CLIENT_ID);
+    finalAccessTokenReqBody.append('audience', '30243aa5-17c1-465a-8493-944bcc4e88aa');
+    finalAccessTokenReqBody.append('subject_token', intermediateAccessToken);
+    finalAccessTokenReqBody.append(
+      'subject_token_type',
+      'urn:ietf:params:oauth:token-type:access_token'
+    );
+    finalAccessTokenReqBody.append('scopes', 'https://api.customers.com/auth/customer.graphql');
 
-  const { access_token: finalAccessToken } = await finalAccessTokenRes.json();
+    const finalAccessTokenRes = await fetch(
+      `https://shopify.com/${process.env.SHOP_ID}/auth/oauth/token`,
+      {
+        method: 'POST',
+        headers,
+        body: finalAccessTokenReqBody
+      }
+    );
 
-  cookies().set('access_token', finalAccessToken);
+    const { access_token: finalAccessToken } = await finalAccessTokenRes.json();
+
+    console.log({ intermediateAccessToken, finalAccessToken });
+
+    cookies().set('access_token', finalAccessToken);
+  } catch (err) {
+    console.error(err);
+  }
+
+  // console.log(cookies().getAll());
 }
