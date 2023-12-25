@@ -1,30 +1,27 @@
 'use client';
 
-import { storeAccessToken } from '@/app/actions';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function Login() {
-  const [isLogged, setIsLogged] = useState(false);
+import { authenticate } from '@/app/actions';
 
+export default function Login() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const searchParams = useSearchParams();
+
   const code = searchParams.get('code');
 
-  useEffect(() => {
-    if (code && !Array.isArray(code) && !isLogged) {
-      console.log('useEffect executed', 'code: ', code);
-      const authenticate = async function () {
-        console.log('code: ', code);
-        const log = (await storeAccessToken(code)) || false;
-        setIsLogged(log);
-      };
+  useEffect(function () {
+    if (!code) return;
 
-      authenticate();
-    }
-  }, [isLogged]);
+    const logIn = async function () {
+      const isAccessTokenStored = await authenticate(code);
+      setIsLoggedIn(isAccessTokenStored);
+    };
 
-  console.log({ isLogged });
+    logIn();
+  }, []);
 
-  return isLogged ? <Link href="/account">Account</Link> : <Link href="/login">Login</Link>;
+  return isLoggedIn ? <Link href="/account">Account</Link> : <Link href="/login">Login</Link>;
 }
