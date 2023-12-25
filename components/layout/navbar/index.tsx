@@ -8,6 +8,8 @@ import { Menu } from '@/lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
+import Login from '@/components/login';
+
 export default async function Navbar() {
   const menu = await getMenu('main-menu');
 
@@ -40,8 +42,8 @@ export default async function Navbar() {
           <Search />
         </div>
         <div className="flex justify-end md:w-1/3">
+          <Login />
           <Suspense fallback={<OpenCart />}>
-            <Link href="/login">Login</Link>
             <Cart />
           </Suspense>
         </div>
