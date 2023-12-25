@@ -7,10 +7,12 @@ import { cookies } from 'next/headers';
 // [] retrieval of one of the tokens failed AND there's no an access token in the cookies
 // [] retrieval of one of the tokens failed BUT there's an access token in the cookies
 //* I CAN CHECK FOR THE PRESENCE OF THE ACCESS TOKEN (COOKIES().GET('ACCESS_TOKEN'))
-export async function authenticate(code: string) {
+export async function authenticate(code: string | null) {
   const isAuthenticated = cookies().get('access_token') !== undefined;
 
   if (isAuthenticated) return true;
+  if (isAuthenticated && code === null) return true;
+  if (!isAuthenticated && code === null) return false;
 
   if (process.env.CLIENT_ID === undefined) throw new Error('CLIENT_ID not found');
   if (process.env.LOGIN_REDIRECT_URI === undefined) throw new Error('LOGIN_REDIRECT_URI not found');
@@ -27,7 +29,7 @@ export async function authenticate(code: string) {
   intermediateAccessTokenReqBody.append('grant_type', 'authorization_code');
   intermediateAccessTokenReqBody.append('client_id', process.env.CLIENT_ID);
   intermediateAccessTokenReqBody.append('redirect_uri', process.env.LOGIN_REDIRECT_URI);
-  intermediateAccessTokenReqBody.append('code', code);
+  intermediateAccessTokenReqBody.append('code', code!);
 
   try {
     const intermediateAccessTokenRes = await fetch(

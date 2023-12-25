@@ -10,10 +10,8 @@ export default function Login() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const searchParams = useSearchParams();
 
-  const code = searchParams.get('code');
-
   useEffect(function () {
-    if (!code) return;
+    const code = searchParams.get('code');
 
     const logIn = async function () {
       const isAccessTokenStored = await authenticate(code);
