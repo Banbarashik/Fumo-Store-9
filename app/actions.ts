@@ -3,8 +3,14 @@
 import { cookies } from 'next/headers';
 
 // TODO: handle cases when retrieval of tokens fails
+// CASES:
+// [] retrieval of one of the tokens failed AND there's no an access token in the cookies
+// [] retrieval of one of the tokens failed BUT there's an access token in the cookies
+//* I CAN CHECK FOR THE PRESENCE OF THE ACCESS TOKEN (COOKIES().GET('ACCESS_TOKEN'))
 export async function storeAccessToken(code: string) {
-  console.log({ code });
+  const isAccessTokenStored = cookies().get('access_token') !== undefined;
+
+  if (isAccessTokenStored) return true;
 
   if (process.env.CLIENT_ID === undefined) throw new Error('CLIENT_ID not found');
   if (process.env.LOGIN_REDIRECT_URI === undefined) throw new Error('LOGIN_REDIRECT_URI not found');
@@ -34,7 +40,7 @@ export async function storeAccessToken(code: string) {
     );
 
     console.log(intermediateAccessTokenRes.status, intermediateAccessTokenRes.statusText);
-    if (intermediateAccessTokenRes.status !== 200) return;
+    if (intermediateAccessTokenRes.status !== 200) return false;
 
     const {
       access_token: intermediateAccessToken,
@@ -68,6 +74,8 @@ export async function storeAccessToken(code: string) {
     console.log({ intermediateAccessToken, finalAccessToken });
 
     cookies().set('access_token', finalAccessToken);
+
+    return true;
   } catch (err) {
     console.error(err);
   }
