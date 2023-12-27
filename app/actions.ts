@@ -2,6 +2,13 @@
 
 import { cookies } from 'next/headers';
 
+interface AccessTokenResponse {
+  access_token: string;
+  expires_in: number;
+  id_token: string;
+  refresh_token: string;
+}
+
 // TODO: handle cases when retrieval of tokens fails
 // CASES:
 // [] retrieval of one of the tokens failed AND there's no an access token in the cookies
@@ -44,12 +51,7 @@ export async function authenticate(code: string | null) {
     console.log(intermediateAccessTokenRes.status, intermediateAccessTokenRes.statusText);
     if (intermediateAccessTokenRes.status !== 200) return false;
 
-    const {
-      access_token: intermediateAccessToken,
-      expires_in,
-      id_token,
-      refresh_token
-    } = await intermediateAccessTokenRes.json();
+    const { access_token: intermediateAccessToken } = await intermediateAccessTokenRes.json();
 
     const finalAccessTokenReqBody = new URLSearchParams();
     finalAccessTokenReqBody.append('grant_type', 'urn:ietf:params:oauth:grant-type:token-exchange');
@@ -71,11 +73,16 @@ export async function authenticate(code: string | null) {
       }
     );
 
-    const { access_token: finalAccessToken } = await finalAccessTokenRes.json();
+    const { access_token, expires_in, id_token, refresh_token }: AccessTokenResponse =
+      await finalAccessTokenRes.json();
 
-    console.log({ intermediateAccessToken, finalAccessToken });
-
-    cookies().set('access_token', finalAccessToken);
+    cookies().set({
+      name: 'access_token',
+      value: access_token,
+      secure: true,
+      httpOnly: true,
+      expires: Date.now() + expires_in * 1000
+    });
 
     return true;
   } catch (err) {
