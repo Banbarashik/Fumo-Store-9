@@ -8,6 +8,14 @@ export const getCustomerQuery = /* GraphQL */ `
             name
             totalPrice {
               amount
+              currencyCode
+            }
+            lineItems(first: 100) {
+              edges {
+                node {
+                  name
+                }
+              }
             }
           }
         }

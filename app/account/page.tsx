@@ -8,12 +8,23 @@ export default async function Account() {
 
   const customer = await getCustomer(accessToken.value);
 
-  console.log(customer.orders);
+  console.log(customer.orders[0].lineItems);
 
   return (
     <div>
       <h1>Account info</h1>
       <p>{customer.displayName}</p>
+      <p>Orders</p>
+      <ul>
+        {customer.orders.map(function (order) {
+          return (
+            <li key={order.name}>
+              <p>Order: {order.name}</p>
+              <p>Total price: {order.totalPrice.amount}</p>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }

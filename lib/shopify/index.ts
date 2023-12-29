@@ -415,9 +415,14 @@ export async function getCustomer(accessToken: string) {
 
   const body = await res.json();
 
+  const orders = removeEdgesAndNodes(body.data.customer.orders).map((order) => ({
+    ...order,
+    lineItems: removeEdgesAndNodes(order.lineItems)
+  }));
+
   return {
     displayName: body.data.customer.displayName,
-    orders: removeEdgesAndNodes(body.data.customer.orders)
+    orders
   };
 }
 
