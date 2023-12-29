@@ -17,39 +17,40 @@ interface finalAccessTokenResponse extends accessTokenResponse {
 // [] retrieval of one of the tokens failed AND there's no an access token in the cookies
 // [] retrieval of one of the tokens failed BUT there's an access token in the cookies
 export async function authenticate(code: string | null): Promise<boolean> {
-  const isAuthenticated = cookies().get('access_token') !== undefined;
-
-  if (isAuthenticated) return true;
-
-  const refreshToken = cookies().get('refresh_token');
-
-  if (refreshToken === undefined && code === null) return false; //* both ways of authentication aren't available
-
-  if (process.env.CLIENT_ID === undefined) throw new Error('CLIENT_ID not found');
-  if (process.env.LOGIN_REDIRECT_URI === undefined) throw new Error('LOGIN_REDIRECT_URI not found');
-
-  const credentials = btoa(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`);
-  credentials.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-
-  const headers = {
-    'content-type': 'application/x-www-form-urlencoded',
-    Authorization: `Basic ${credentials}`
-  };
-
-  const intermediateAccessTokenReqBody = new URLSearchParams();
-
-  if (refreshToken) {
-    intermediateAccessTokenReqBody.append('grant_type', 'refresh_token');
-    intermediateAccessTokenReqBody.append('client_id', process.env.CLIENT_ID);
-    intermediateAccessTokenReqBody.append('refresh_token', refreshToken.value);
-  } else if (code) {
-    intermediateAccessTokenReqBody.append('grant_type', 'authorization_code');
-    intermediateAccessTokenReqBody.append('client_id', process.env.CLIENT_ID);
-    intermediateAccessTokenReqBody.append('redirect_uri', process.env.LOGIN_REDIRECT_URI);
-    intermediateAccessTokenReqBody.append('code', code);
-  }
-
   try {
+    const isAuthenticated = cookies().get('access_token') !== undefined;
+
+    if (isAuthenticated) return true;
+
+    const refreshToken = cookies().get('refresh_token');
+
+    if (refreshToken === undefined && code === null) return false; //* both ways of authentication aren't available
+
+    if (process.env.CLIENT_ID === undefined) throw new Error('CLIENT_ID not found');
+    if (process.env.LOGIN_REDIRECT_URI === undefined)
+      throw new Error('LOGIN_REDIRECT_URI not found');
+
+    const credentials = btoa(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`);
+    credentials.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+
+    const headers = {
+      'content-type': 'application/x-www-form-urlencoded',
+      Authorization: `Basic ${credentials}`
+    };
+
+    const intermediateAccessTokenReqBody = new URLSearchParams();
+
+    if (refreshToken) {
+      intermediateAccessTokenReqBody.append('grant_type', 'refresh_token');
+      intermediateAccessTokenReqBody.append('client_id', process.env.CLIENT_ID);
+      intermediateAccessTokenReqBody.append('refresh_token', refreshToken.value);
+    } else if (code) {
+      intermediateAccessTokenReqBody.append('grant_type', 'authorization_code');
+      intermediateAccessTokenReqBody.append('client_id', process.env.CLIENT_ID);
+      intermediateAccessTokenReqBody.append('redirect_uri', process.env.LOGIN_REDIRECT_URI);
+      intermediateAccessTokenReqBody.append('code', code);
+    }
+
     const intermediateAccessTokenRes = await fetch(
       `https://shopify.com/${process.env.SHOP_ID}/auth/oauth/token`,
       {
@@ -59,7 +60,13 @@ export async function authenticate(code: string | null): Promise<boolean> {
       }
     );
 
-    if (intermediateAccessTokenRes.status !== 200) return false;
+    if (!intermediateAccessTokenRes.ok)
+      throw new Error(
+        "Not 2xx response from Shopify. Couldn't get an intermediate access token to use for Token exchange",
+        {
+          cause: intermediateAccessTokenRes
+        }
+      );
 
     const {
       access_token: intermediateAccessToken,
@@ -86,15 +93,20 @@ export async function authenticate(code: string | null): Promise<boolean> {
       }
     );
 
-    const { access_token, expires_in } = await finalAccessTokenRes.json();
+    if (!finalAccessTokenRes.ok)
+      throw new Error("Not 2xx response from Shopify. Couldn't get an access token", {
+        cause: finalAccessTokenRes
+      });
+
+    const { access_token: finalAccessToken, expires_in }: finalAccessTokenResponse =
+      await finalAccessTokenRes.json();
 
     cookies().set({
       name: 'access_token',
-      value: access_token,
+      value: finalAccessToken,
       secure: true,
       httpOnly: true,
-      // expires: Date.now() + expires_in * 1000
-      expires: Date.now() + 15000
+      expires: Date.now() + expires_in * 1000
     });
     cookies().set({
       name: 'refresh_token',
@@ -102,8 +114,6 @@ export async function authenticate(code: string | null): Promise<boolean> {
       secure: true,
       httpOnly: true
     });
-
-    console.log({ access_token, intermediateAccessToken, refreshToken });
 
     return true;
   } catch (err) {
