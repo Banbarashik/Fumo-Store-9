@@ -25,6 +25,7 @@ import {
   getProductsQuery
 } from './queries/product';
 import {
+  Customer,
   Cart,
   Collection,
   Connection,
@@ -398,7 +399,7 @@ export async function getProductRecommendations(productId: string): Promise<Prod
   return reshapeProducts(res.body.data.productRecommendations);
 }
 
-export async function getCustomer(accessToken: string) {
+export async function getCustomer(accessToken: string): Promise<Customer> {
   const res = await fetch(
     `https://shopify.com/${process.env.SHOP_ID}/account/customer/api/unstable/graphql`,
     {

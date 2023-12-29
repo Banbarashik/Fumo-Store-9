@@ -8,8 +8,6 @@ export default async function Account() {
 
   const customer = await getCustomer(accessToken.value);
 
-  console.log(customer.orders[0].lineItems[0]);
-
   return (
     <div>
       <h1>Account info</h1>
