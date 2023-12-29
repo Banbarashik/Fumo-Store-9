@@ -16,6 +16,7 @@ import {
   getCollectionQuery,
   getCollectionsQuery
 } from './queries/collection';
+import { getCustomerQuery } from './queries/customer';
 import { getMenuQuery } from './queries/menu';
 import { getPageQuery, getPagesQuery } from './queries/page';
 import {
@@ -395,6 +396,29 @@ export async function getProductRecommendations(productId: string): Promise<Prod
   });
 
   return reshapeProducts(res.body.data.productRecommendations);
+}
+
+export async function getCustomer(accessToken: string) {
+  const res = await fetch(
+    `https://shopify.com/${process.env.SHOP_ID}/account/customer/api/unstable/graphql`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: accessToken
+      },
+      body: JSON.stringify({
+        query: getCustomerQuery
+      })
+    }
+  );
+
+  const body = await res.json();
+
+  return {
+    displayName: body.data.customer.displayName,
+    orders: removeEdgesAndNodes(body.data.customer.orders)
+  };
 }
 
 export async function getProducts({
