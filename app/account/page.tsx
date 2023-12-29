@@ -1,3 +1,4 @@
+import { getCustomerQuery } from '@/lib/shopify/queries/customer';
 import { cookies } from 'next/headers';
 
 export default async function Account() {
@@ -5,15 +6,7 @@ export default async function Account() {
 
   if (!accessToken) return <p>You must log in</p>;
 
-  const getUserNameQuery = `
-    query getUserName {
-      customer {
-        firstName
-      }
-    }
-  `;
-
-  const getUserNameRes = await fetch(
+  const getCustomerRes = await fetch(
     `https://shopify.com/${process.env.SHOP_ID}/account/customer/api/unstable/graphql`,
     {
       method: 'POST',
@@ -23,20 +16,20 @@ export default async function Account() {
       },
       body: JSON.stringify({
         operationName: 'getUserName',
-        query: getUserNameQuery,
+        query: getCustomerQuery,
         variables: {}
       })
     }
   );
 
-  const data = await getUserNameRes.json();
+  const { data } = await getCustomerRes.json();
 
-  console.log(data.data.customer.firstName);
+  console.log(data.customer.orders.edges);
 
   return (
     <div>
       <h1>Account info</h1>
-      <p>{data.data.customer.firstName}</p>
+      <p>{data.customer.displayName}</p>
     </div>
   );
 }
