@@ -1,19 +1,34 @@
+import imageFragment from '@/lib/shopify/fragments/image';
+
 export const getCustomerQuery = /* GraphQL */ `
   query getCustomer {
     customer {
       displayName
-      orders(first: 100) {
+      orders(first: 10) {
         edges {
           node {
             name
+            processedAt
             totalPrice {
               amount
               currencyCode
             }
-            lineItems(first: 100) {
+            lineItems(first: 10) {
               edges {
                 node {
                   name
+                  image {
+                    ...image
+                  }
+                  quantity
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  totalPrice {
+                    amount
+                    currencyCode
+                  }
                 }
               }
             }
@@ -22,4 +37,5 @@ export const getCustomerQuery = /* GraphQL */ `
       }
     }
   }
+  ${imageFragment}
 `;

@@ -415,6 +415,8 @@ export async function getCustomer(accessToken: string) {
 
   const body = await res.json();
 
+  // console.log(body);
+
   const orders = removeEdgesAndNodes(body.data.customer.orders).map((order) => ({
     ...order,
     lineItems: removeEdgesAndNodes(order.lineItems)

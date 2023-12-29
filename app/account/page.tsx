@@ -8,7 +8,7 @@ export default async function Account() {
 
   const customer = await getCustomer(accessToken.value);
 
-  console.log(customer.orders[0].lineItems);
+  console.log(customer.orders[0].lineItems[0]);
 
   return (
     <div>
