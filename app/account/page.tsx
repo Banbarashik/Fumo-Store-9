@@ -1,11 +1,7 @@
-export default function Account({
-  searchParams
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  console.log(searchParams);
+import { cookies } from 'next/headers';
 
-  if (!searchParams.code) return <p>You must login first</p>;
+export default function Account() {
+  const accessToken = cookies().get('access_token');
 
-  return <p>Account info</p>;
+  return accessToken ? <p>Account info</p> : <p>You must log in</p>;
 }
