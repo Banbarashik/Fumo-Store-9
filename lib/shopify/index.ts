@@ -1,4 +1,9 @@
-import { HIDDEN_PRODUCT_TAG, SHOPIFY_GRAPHQL_API_ENDPOINT, TAGS } from 'lib/constants';
+import {
+  HIDDEN_PRODUCT_TAG,
+  SHOPIFY_CUSTOMER_ACCOUNT_API_ENDPOINT,
+  SHOPIFY_STOREFRONT_API_ENDPOINT,
+  TAGS
+} from 'lib/constants';
 import { isShopifyError } from 'lib/type-guards';
 import { ensureStartsWith } from 'lib/utils';
 import { revalidateTag } from 'next/cache';
@@ -25,10 +30,10 @@ import {
   getProductsQuery
 } from './queries/product';
 import {
-  Customer,
   Cart,
   Collection,
   Connection,
+  Customer,
   Image,
   Menu,
   Page,
@@ -52,10 +57,16 @@ import {
   ShopifyUpdateCartOperation
 } from './types';
 
-const domain = process.env.SHOPIFY_STORE_DOMAIN
+const storeDomain = process.env.SHOPIFY_STORE_DOMAIN
   ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
   : '';
-const endpoint = `${domain}${SHOPIFY_GRAPHQL_API_ENDPOINT}`;
+const storefrontEndpoint = `${storeDomain}${SHOPIFY_STOREFRONT_API_ENDPOINT} `;
+
+const shopifyDomain = process.env.SHOPIFY_DOMAIN
+  ? ensureStartsWith(process.env.SHOPIFY_DOMAIN, 'https://')
+  : '';
+const customerAccountEndpoint = `${shopifyDomain}${SHOPIFY_CUSTOMER_ACCOUNT_API_ENDPOINT}`;
+
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
 
 type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never;
@@ -74,7 +85,7 @@ export async function shopifyFetch<T>({
   variables?: ExtractVariables<T>;
 }): Promise<{ status: number; body: T } | never> {
   try {
-    const result = await fetch(endpoint, {
+    const result = await fetch(storefrontEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -341,6 +352,31 @@ export async function getCollections(): Promise<Collection[]> {
   return collections;
 }
 
+export async function getCustomer(accessToken: string): Promise<Customer> {
+  const res = await fetch(customerAccountEndpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: accessToken
+    },
+    body: JSON.stringify({
+      query: getCustomerQuery
+    })
+  });
+
+  const body = await res.json();
+
+  const orders = removeEdgesAndNodes(body.data.customer.orders).map((order) => ({
+    ...order,
+    lineItems: removeEdgesAndNodes(order.lineItems)
+  }));
+
+  return {
+    displayName: body.data.customer.displayName,
+    orders
+  };
+}
+
 export async function getMenu(handle: string): Promise<Menu[]> {
   const res = await shopifyFetch<ShopifyMenuOperation>({
     query: getMenuQuery,
@@ -353,7 +389,10 @@ export async function getMenu(handle: string): Promise<Menu[]> {
   return (
     res.body?.data?.menu?.items.map((item: { title: string; url: string }) => ({
       title: item.title,
-      path: item.url.replace(domain, '').replace('/collections', '/search').replace('/pages', '')
+      path: item.url
+        .replace(storeDomain, '')
+        .replace('/collections', '/search')
+        .replace('/pages', '')
     })) || []
   );
 }
@@ -397,36 +436,6 @@ export async function getProductRecommendations(productId: string): Promise<Prod
   });
 
   return reshapeProducts(res.body.data.productRecommendations);
-}
-
-export async function getCustomer(accessToken: string): Promise<Customer> {
-  const res = await fetch(
-    `https://shopify.com/${process.env.SHOP_ID}/account/customer/api/unstable/graphql`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: accessToken
-      },
-      body: JSON.stringify({
-        query: getCustomerQuery
-      })
-    }
-  );
-
-  const body = await res.json();
-
-  // console.log(body);
-
-  const orders = removeEdgesAndNodes(body.data.customer.orders).map((order) => ({
-    ...order,
-    lineItems: removeEdgesAndNodes(order.lineItems)
-  }));
-
-  return {
-    displayName: body.data.customer.displayName,
-    orders
-  };
 }
 
 export async function getProducts({
