@@ -46,6 +46,7 @@ import {
   ShopifyCollectionProductsOperation,
   ShopifyCollectionsOperation,
   ShopifyCreateCartOperation,
+  ShopifyCustomerOperation,
   ShopifyMenuOperation,
   ShopifyPageOperation,
   ShopifyPagesOperation,
@@ -75,17 +76,19 @@ export async function shopifyFetch<T>({
   cache = 'no-cache',
   headers,
   query,
+  endpoint,
   tags,
   variables
 }: {
   cache?: RequestCache;
   headers?: HeadersInit;
   query: string;
+  endpoint: string;
   tags?: string[];
   variables?: ExtractVariables<T>;
 }): Promise<{ status: number; body: T } | never> {
   try {
-    const result = await fetch(storefrontEndpoint, {
+    const result = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -217,6 +220,7 @@ const reshapeProducts = (products: ShopifyProduct[]) => {
 
 export async function createCart(): Promise<Cart> {
   const res = await shopifyFetch<ShopifyCreateCartOperation>({
+    endpoint: storefrontEndpoint,
     query: createCartMutation,
     cache: 'no-store'
   });
@@ -229,6 +233,7 @@ export async function addToCart(
   lines: { merchandiseId: string; quantity: number }[]
 ): Promise<Cart> {
   const res = await shopifyFetch<ShopifyAddToCartOperation>({
+    endpoint: storefrontEndpoint,
     query: addToCartMutation,
     variables: {
       cartId,
@@ -241,6 +246,7 @@ export async function addToCart(
 
 export async function removeFromCart(cartId: string, lineIds: string[]): Promise<Cart> {
   const res = await shopifyFetch<ShopifyRemoveFromCartOperation>({
+    endpoint: storefrontEndpoint,
     query: removeFromCartMutation,
     variables: {
       cartId,
@@ -257,6 +263,7 @@ export async function updateCart(
   lines: { id: string; merchandiseId: string; quantity: number }[]
 ): Promise<Cart> {
   const res = await shopifyFetch<ShopifyUpdateCartOperation>({
+    endpoint: storefrontEndpoint,
     query: editCartItemsMutation,
     variables: {
       cartId,
@@ -270,6 +277,7 @@ export async function updateCart(
 
 export async function getCart(cartId: string): Promise<Cart | undefined> {
   const res = await shopifyFetch<ShopifyCartOperation>({
+    endpoint: storefrontEndpoint,
     query: getCartQuery,
     variables: { cartId },
     cache: 'no-store'
@@ -285,6 +293,7 @@ export async function getCart(cartId: string): Promise<Cart | undefined> {
 
 export async function getCollection(handle: string): Promise<Collection | undefined> {
   const res = await shopifyFetch<ShopifyCollectionOperation>({
+    endpoint: storefrontEndpoint,
     query: getCollectionQuery,
     tags: [TAGS.collections],
     variables: {
@@ -305,6 +314,7 @@ export async function getCollectionProducts({
   sortKey?: string;
 }): Promise<Product[]> {
   const res = await shopifyFetch<ShopifyCollectionProductsOperation>({
+    endpoint: storefrontEndpoint,
     query: getCollectionProductsQuery,
     tags: [TAGS.collections, TAGS.products],
     variables: {
@@ -324,6 +334,7 @@ export async function getCollectionProducts({
 
 export async function getCollections(): Promise<Collection[]> {
   const res = await shopifyFetch<ShopifyCollectionsOperation>({
+    endpoint: storefrontEndpoint,
     query: getCollectionsQuery,
     tags: [TAGS.collections]
   });
@@ -353,32 +364,28 @@ export async function getCollections(): Promise<Collection[]> {
 }
 
 export async function getCustomer(accessToken: string): Promise<Customer> {
-  const res = await fetch(customerAccountEndpoint, {
-    method: 'POST',
+  const res = await shopifyFetch<ShopifyCustomerOperation>({
+    endpoint: customerAccountEndpoint,
+    query: getCustomerQuery,
     headers: {
-      'Content-Type': 'application/json',
       Authorization: accessToken
-    },
-    body: JSON.stringify({
-      query: getCustomerQuery
-    })
+    }
   });
 
-  const body = await res.json();
-
-  const orders = removeEdgesAndNodes(body.data.customer.orders).map((order) => ({
+  const orders = removeEdgesAndNodes(res.body.data.customer.orders).map((order) => ({
     ...order,
     lineItems: removeEdgesAndNodes(order.lineItems)
   }));
 
   return {
-    displayName: body.data.customer.displayName,
+    displayName: res.body.data.customer.displayName,
     orders
   };
 }
 
 export async function getMenu(handle: string): Promise<Menu[]> {
   const res = await shopifyFetch<ShopifyMenuOperation>({
+    endpoint: storefrontEndpoint,
     query: getMenuQuery,
     tags: [TAGS.collections],
     variables: {
@@ -399,6 +406,7 @@ export async function getMenu(handle: string): Promise<Menu[]> {
 
 export async function getPage(handle: string): Promise<Page> {
   const res = await shopifyFetch<ShopifyPageOperation>({
+    endpoint: storefrontEndpoint,
     query: getPageQuery,
     variables: { handle }
   });
@@ -408,6 +416,7 @@ export async function getPage(handle: string): Promise<Page> {
 
 export async function getPages(): Promise<Page[]> {
   const res = await shopifyFetch<ShopifyPagesOperation>({
+    endpoint: storefrontEndpoint,
     query: getPagesQuery
   });
 
@@ -416,6 +425,7 @@ export async function getPages(): Promise<Page[]> {
 
 export async function getProduct(handle: string): Promise<Product | undefined> {
   const res = await shopifyFetch<ShopifyProductOperation>({
+    endpoint: storefrontEndpoint,
     query: getProductQuery,
     tags: [TAGS.products],
     variables: {
@@ -428,6 +438,7 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
 
 export async function getProductRecommendations(productId: string): Promise<Product[]> {
   const res = await shopifyFetch<ShopifyProductRecommendationsOperation>({
+    endpoint: storefrontEndpoint,
     query: getProductRecommendationsQuery,
     tags: [TAGS.products],
     variables: {
@@ -448,6 +459,7 @@ export async function getProducts({
   sortKey?: string;
 }): Promise<Product[]> {
   const res = await shopifyFetch<ShopifyProductsOperation>({
+    endpoint: storefrontEndpoint,
     query: getProductsQuery,
     tags: [TAGS.products],
     variables: {

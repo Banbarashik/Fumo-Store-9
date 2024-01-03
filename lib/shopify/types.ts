@@ -34,7 +34,7 @@ export type Collection = Omit<ShopifyCollection, 'products'> & {
   path: string;
 };
 
-export type Customer = {
+export type Customer = Omit<ShopifyCustomer, 'orders'> & {
   displayName: string;
   orders: Order[];
 };
@@ -64,7 +64,7 @@ export type Money = {
   currencyCode: string;
 };
 
-export type Order = {
+export type Order = Omit<ShopifyOrder, 'lineItems'> & {
   name: string;
   processedAt: string;
   totalPrice: Money;
@@ -130,6 +130,18 @@ export type ShopifyCollection = {
   products: Connection<Product>;
   seo: SEO;
   updatedAt: string;
+};
+
+export type ShopifyCustomer = {
+  displayName: string;
+  orders: Connection<Order>;
+};
+
+export type ShopifyOrder = {
+  name: string;
+  processedAt: string;
+  totalPrice: Money;
+  lineItems: Connection<LineItem>;
 };
 
 export type ShopifyProduct = {
@@ -258,6 +270,21 @@ export type ShopifyPageOperation = {
 export type ShopifyPagesOperation = {
   data: {
     pages: Connection<Page>;
+  };
+};
+
+export type ShopifyCustomerOperation = {
+  data: { customer: ShopifyCustomer };
+  extensions: {
+    cost: {
+      requestedQueryCost: number;
+      actualQueryCost: number;
+      throttleStatus: {
+        maximumAvailable: number;
+        currentlyAvailable: number;
+        restoreRate: number;
+      };
+    };
   };
 };
 
