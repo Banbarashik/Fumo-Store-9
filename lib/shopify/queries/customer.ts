@@ -4,6 +4,15 @@ export const getCustomerQuery = /* GraphQL */ `
   query getCustomer {
     customer {
       displayName
+      defaultAddress {
+        formatted
+      }
+      emailAddress {
+        emailAddress
+      }
+      phoneNumber {
+        phoneNumber
+      }
       orders(first: 10) {
         edges {
           node {

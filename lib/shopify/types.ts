@@ -134,6 +134,15 @@ export type ShopifyCollection = {
 
 export type ShopifyCustomer = {
   displayName: string;
+  defaultAddress: {
+    formatted: string[];
+  } | null;
+  emailAddress: {
+    emailAddress: string | null;
+  } | null;
+  phoneNumber: {
+    phoneNumber: string;
+  } | null;
   orders: Connection<Order>;
 };
 

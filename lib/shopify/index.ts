@@ -378,7 +378,7 @@ export async function getCustomer(accessToken: string): Promise<Customer> {
   }));
 
   return {
-    displayName: res.body.data.customer.displayName,
+    ...res.body.data.customer,
     orders
   };
 }
