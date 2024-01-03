@@ -8,10 +8,19 @@ export default async function Account() {
 
   const customer = await getCustomer(accessToken.value);
 
+  console.log(customer);
+
   return (
-    <div>
-      <h1>Account info</h1>
-      <p>{customer.displayName}</p>
+    <div className="mx-auto max-w-screen-md py-4">
+      <h1 className="pb-6 text-center text-3xl">Customer Information</h1>
+      <div className="grid grid-cols-2 gap-4">
+        <p>Full name: {customer.displayName}</p>
+        <p className="col-start-1 row-start-2">
+          Address: {customer.defaultAddress?.formatted.join(', ')}
+        </p>
+        <p className="col-start-2 row-start-1">E-mail: {customer.emailAddress?.emailAddress}</p>
+        <p>Phone number: {customer.phoneNumber?.phoneNumber}</p>
+      </div>
       <p>Orders</p>
       <ul>
         {customer.orders.map(function (order) {
