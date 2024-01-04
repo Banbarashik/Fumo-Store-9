@@ -38,7 +38,13 @@ export default async function Account() {
           >
             <div className="mb-3 flex justify-between">
               <p>
-                Order {order.name} dated {order.processedAt}
+                Order {order.name}
+                {', '}
+                {new Date(order.processedAt).toLocaleString(undefined, {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: 'numeric'
+                })}
               </p>
               <div>
                 <span>Total: </span>
