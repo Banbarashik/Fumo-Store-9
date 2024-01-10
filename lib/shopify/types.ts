@@ -35,7 +35,6 @@ export type Collection = Omit<ShopifyCollection, 'products'> & {
 };
 
 export type Customer = Omit<ShopifyCustomer, 'orders'> & {
-  displayName: string;
   orders: Order[];
 };
 
