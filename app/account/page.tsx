@@ -1,3 +1,4 @@
+import CustomerInfo from '@/components/account/info';
 import Price from '@/components/ui/price';
 import { getCustomer } from '@/lib/shopify';
 import clsx from 'clsx';
@@ -16,14 +17,12 @@ export default async function Account() {
   return (
     <div className="mx-auto max-w-screen-md py-4">
       <h1 className="pb-6 text-center text-3xl">Customer Information</h1>
-      <div className="grid grid-cols-2 gap-4">
-        <p>Full name: {customer.displayName}</p>
-        <p className="col-start-1 row-start-2">
-          Address: {customer.defaultAddress?.formatted.join(', ')}
-        </p>
-        <p className="col-start-2 row-start-1">E-mail: {customer.emailAddress?.emailAddress}</p>
-        <p>Phone number: {customer.phoneNumber?.phoneNumber}</p>
-      </div>
+      <CustomerInfo
+        displayName={customer.displayName}
+        address={customer.defaultAddress?.formatted.join(', ')}
+        email={customer.emailAddress?.emailAddress}
+        phone={customer.phoneNumber?.phoneNumber}
+      />
       <h2 className="text-center text-2xl">Orders</h2>
       <ul className="rounded-sm border border-neutral-200 px-3 py-4 dark:border-neutral-800">
         {customer.orders.map((order, i, arr) => (
