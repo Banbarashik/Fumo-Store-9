@@ -23,7 +23,7 @@ module.exports = {
     },
     extend: {
       screens: {
-        tall: { raw: '(min-height: 860px)' }
+        tall: { raw: '(min-height: 900px)' }
       },
       maxWidth: {
         '2/3': '66.666667%'
