@@ -10,10 +10,10 @@ export default function CustomerInfo({
   phone?: string;
 }) {
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="mb-6 grid gap-4 px-4 sm:grid-cols-2">
       <p>Full name: {displayName}</p>
-      <p className="col-start-1 row-start-2">Address: {address}</p>
-      <p className="col-start-2 row-start-1">E-mail: {email}</p>
+      <p className="sm:col-start-1 sm:row-start-2">Address: {address}</p>
+      <p className="sm:col-start-2 sm:row-start-1">E-mail: {email}</p>
       <p>Phone number: {phone}</p>
     </div>
   );
