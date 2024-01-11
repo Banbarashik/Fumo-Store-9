@@ -5,9 +5,9 @@ import Image from 'next/image';
 
 export default function CustomerOrders({ orders }: { orders: Order[] }) {
   return (
-    <ul className="rounded-sm border border-neutral-200 px-3 py-4 dark:border-neutral-800">
+    <ul className="overflow-y-scroll rounded-sm border border-neutral-200 px-3 py-4 dark:border-neutral-800">
       {orders.map((order, i, arr) => (
-        <CustomerOrder order={order} isLast={i + 1 < arr.length} />
+        <CustomerOrder order={order} isLast={arr.length === i + 1} />
       ))}
     </ul>
   );
@@ -17,9 +17,12 @@ function CustomerOrder({ order, isLast }: { order: Order; isLast: boolean }) {
   return (
     <li
       key={order.name}
-      className={clsx('rounded-sm border border-neutral-200 px-3 py-4 dark:border-neutral-800', {
-        'mb-6': !isLast // don't add a margin to the last element of the list
-      })}
+      className={clsx(
+        'rounded-sm border border-neutral-200 px-3 py-4 dark:border-neutral-700 dark:bg-neutral-900',
+        {
+          'mb-6': !isLast // don't add a margin to the last element of the list
+        }
+      )}
     >
       <div className="mb-3 flex justify-between">
         <p>
@@ -42,7 +45,7 @@ function CustomerOrder({ order, isLast }: { order: Order; isLast: boolean }) {
       </div>
       <ul>
         {order.lineItems.map((item, i, arr) => (
-          <CustomerOrderItem item={item} isLast={i + 1 < arr.length} />
+          <CustomerOrderItem item={item} isLast={arr.length === i + 1} />
         ))}
       </ul>
     </li>
@@ -53,7 +56,7 @@ function CustomerOrderItem({ item, isLast }: { item: LineItem; isLast: boolean }
   return (
     <li
       className={clsx(
-        'flex gap-6 rounded-sm border border-neutral-200 bg-neutral-100 px-3 py-4 dark:border-neutral-800 dark:bg-neutral-900',
+        'flex gap-6 rounded-sm border border-neutral-200 bg-neutral-100 px-3 py-4 dark:border-neutral-800 dark:bg-neutral-800',
         {
           'mb-4': !isLast // don't add a margin to the last element of the list
         }
