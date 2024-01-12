@@ -6,7 +6,10 @@ import { cookies } from 'next/headers';
 export default async function Account() {
   const accessToken = cookies().get('access_token');
 
-  if (!accessToken) return <p>You must log in</p>;
+  if (!accessToken)
+    return (
+      <p className="absolute left-1/2 top-1/2 -translate-x-1/2 text-2xl">You aren't logged in.</p>
+    );
 
   const customer = await getCustomer(accessToken.value);
 
