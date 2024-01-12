@@ -62,10 +62,10 @@ function CustomerOrderItem({ item, isLast }: { item: LineItem; isLast: boolean }
         }
       )}
     >
-      <div className="flex grow basis-0 flex-col justify-between">
+      <div className="flex grow basis-0 flex-col justify-between gap-2">
         <p>{item.name}</p>
         <Price
-          className="w-fit rounded-full bg-blue-600 p-2 text-white"
+          className="w-fit rounded-full bg-blue-600 p-2 text-sm text-white"
           amount={item.price.amount}
           currencyCode={item.price.currencyCode}
         />
@@ -79,7 +79,7 @@ function CustomerOrderItem({ item, isLast }: { item: LineItem; isLast: boolean }
         <p className="order-first text-sm sm:order-last">Quantity: {item.quantity}</p>
       </div>
       <Image
-        className="order-first h-20 w-20 rounded-sm object-cover"
+        className="order-first h-20 w-20 self-center rounded-sm object-cover sm:self-start"
         src={item.image.url}
         alt={item.image.altText || ''}
         width={80}
