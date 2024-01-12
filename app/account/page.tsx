@@ -22,7 +22,11 @@ export default async function Account() {
         phone={customer.phoneNumber?.phoneNumber}
       />
       <h2 className="mb-4 text-center text-2xl">Orders</h2>
-      <CustomerOrders orders={customer.orders} />
+      {customer.orders.length === 0 ? (
+        <p className="text-center text-lg">You haven't made any orders yet.</p>
+      ) : (
+        <CustomerOrders orders={customer.orders} />
+      )}
     </div>
   );
 }
