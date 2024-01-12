@@ -56,13 +56,13 @@ function CustomerOrderItem({ item, isLast }: { item: LineItem; isLast: boolean }
   return (
     <li
       className={clsx(
-        'flex gap-6 rounded-sm border border-neutral-200 bg-neutral-100 px-3 py-4 dark:border-neutral-800 dark:bg-neutral-800',
+        'flex flex-wrap gap-6 rounded-sm border border-neutral-200 bg-neutral-100 px-3 py-4 dark:border-neutral-800 dark:bg-neutral-800',
         {
           'mb-4': !isLast // don't add a margin to the last element of the list
         }
       )}
     >
-      <div className="flex flex-col justify-between">
+      <div className="flex grow basis-0 flex-col justify-between">
         <p>{item.name}</p>
         <Price
           className="w-fit rounded-full bg-blue-600 p-2 text-white"
@@ -70,15 +70,13 @@ function CustomerOrderItem({ item, isLast }: { item: LineItem; isLast: boolean }
           currencyCode={item.price.currencyCode}
         />
       </div>
-      <div className="ml-auto flex flex-col justify-between text-right">
-        <div>
-          <Price
-            className="inline text-right text-base font-medium text-black dark:text-white"
-            amount={item.totalPrice.amount}
-            currencyCode={item.totalPrice.currencyCode}
-          />
-        </div>
-        <p className="text-sm">Quantity: {item.quantity}</p>
+      <div className="flex w-full items-center justify-between text-right sm:ml-auto sm:w-auto sm:flex-col sm:items-end">
+        <Price
+          className="inline-block text-right text-base font-medium text-black dark:text-white"
+          amount={item.totalPrice.amount}
+          currencyCode={item.totalPrice.currencyCode}
+        />
+        <p className="order-first text-sm sm:order-last">Quantity: {item.quantity}</p>
       </div>
       <Image
         className="order-first h-20 w-20 rounded-sm object-cover"
