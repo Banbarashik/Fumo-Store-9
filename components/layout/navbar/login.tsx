@@ -24,7 +24,7 @@ export default function Login() {
 
   return isLoggedIn ? (
     <Link href="/account">
-      <UserCircle2 className="text-black dark:text-blue-200" />
+      <UserCircle2 className="text-black dark:text-blue-200 sm:h-7 sm:w-7" />
     </Link>
   ) : (
     <Link href="/login">
