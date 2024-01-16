@@ -10,12 +10,15 @@ export default async function CollectionsList() {
   const collections = await getCollections();
 
   return (
-    <ul className="mb-10 flex animate-fadeIn overflow-hidden rounded-lg border border-neutral-200 pb-4">
+    <ul className="mb-10 flex animate-fadeIn flex-col gap-14">
       {collections.map(
         (collection) =>
           //* dont't render the collection if it doesn't have an image
           !!collection.image && (
-            <li key={collection.handle} className="w-full">
+            <li
+              key={collection.handle}
+              className="w-full overflow-hidden rounded-lg border border-neutral-200 pb-4"
+            >
               <Link className="mb-[4%] inline-block w-full" href={collection.path}>
                 <Image
                   className="min-h-[55px] w-full object-cover" //* final min-h TBD
