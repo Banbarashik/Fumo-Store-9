@@ -27,8 +27,8 @@ export default function Login() {
       <UserCircle2 className="text-black dark:text-blue-200 sm:h-7 sm:w-7" />
     </Link>
   ) : (
-    <Link href="/login">
+    <a href="/login">
       <LogIn className="text-black dark:text-blue-200" />
-    </Link>
+    </a>
   );
 }
