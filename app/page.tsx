@@ -21,7 +21,7 @@ export default async function HomePage() {
   return (
     <>
       <Suspense>
-        <div className="mx-auto max-w-screen-xl px-4 py-4 text-center">
+        <div className="mx-auto max-w-screen-xl px-4 py-10 text-center">
           <CollectionsList />
           <Link href="/search" className={buttonVariants({ size: 'lg', className: 'gap-1' })}>
             <span className="text-base">See all our collections</span>
