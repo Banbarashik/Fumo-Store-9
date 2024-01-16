@@ -80,8 +80,9 @@ function CustomerOrderItem({ item, isLast }: { item: LineItem; isLast: boolean }
       </div>
       <Image
         className="order-first h-20 w-20 self-center rounded-sm object-cover sm:self-start"
-        src={item.image.url}
-        alt={item.image.altText || ''}
+        //TODO: gracefully regress the product image to a dummy image if there's no url
+        src={item.image?.url || ''}
+        alt={item.image?.altText || item.name}
         width={80}
         height={80}
       />
