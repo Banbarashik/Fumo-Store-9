@@ -48,7 +48,7 @@ export type Image = {
 export type LineItem = {
   name: string;
   quantity: number;
-  image: Image;
+  image: Image | null;
   price: Money;
   totalPrice: Money;
 };
