@@ -469,7 +469,19 @@ export async function getProducts({
     }
   });
 
-  return reshapeProducts(removeEdgesAndNodes(res.body.data.products));
+  const reshapedProducts = reshapeProducts(removeEdgesAndNodes(res.body.data.products));
+
+  //* custom sorting method to sort products by price
+  //* was implemented because the API can't sort products by a product's first variant's price
+  if (sortKey === 'PRICE') {
+    const reshapedAndSortedProducts = reshapedProducts.sort(
+      (productA, productB) => productA.variants[0].price.amount - productB.variants[0].price.amount
+    );
+
+    return reshapedAndSortedProducts;
+  }
+
+  return reshapedProducts;
 }
 
 // This is called from `app/api/revalidate.ts` so providers can control revalidation logic.
