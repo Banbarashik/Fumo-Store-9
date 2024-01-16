@@ -17,7 +17,7 @@ export default async function CollectionsList() {
           !!collection.image && (
             <li
               key={collection.handle}
-              className="w-full overflow-hidden rounded-lg border border-t-0 border-neutral-200 pb-4"
+              className="w-full overflow-hidden rounded-lg border border-neutral-300 pb-4 dark:border-t-0 dark:border-neutral-200"
             >
               <Link className="mb-[4%] inline-block w-full" href={collection.path}>
                 <Image
