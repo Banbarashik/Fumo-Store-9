@@ -474,9 +474,10 @@ export async function getProducts({
   //* custom sorting method to sort products by price
   //* was implemented because the API can't sort products by a product's first variant's price
   if (sortKey === 'PRICE') {
-    const reshapedAndSortedProducts = reshapedProducts.sort(
-      (productA, productB) => productA.variants[0].price.amount - productB.variants[0].price.amount
-    );
+    const reshapedAndSortedProducts = reshapedProducts.sort((productA, productB) => {
+      if (reverse) return productB.variants[0].price.amount - productA.variants[0].price.amount;
+      return productA.variants[0].price.amount - productB.variants[0].price.amount;
+    });
 
     return reshapedAndSortedProducts;
   }
