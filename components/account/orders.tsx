@@ -28,7 +28,7 @@ function CustomerOrder({ order, isLast }: { order: Order; isLast: boolean }) {
         <p>
           Order {order.name}
           {', '}
-          {new Date(order.processedAt).toLocaleString(undefined, {
+          {new Date(order.createdAt).toLocaleString(undefined, {
             year: 'numeric',
             month: 'numeric',
             day: 'numeric'
