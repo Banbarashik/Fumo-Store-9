@@ -13,7 +13,7 @@ export const getCustomerQuery = /* GraphQL */ `
       phoneNumber {
         phoneNumber
       }
-      orders(first: 100) {
+      orders(first: 15, sortKey: CREATED_AT, reverse: true) {
         edges {
           node {
             name
@@ -22,7 +22,7 @@ export const getCustomerQuery = /* GraphQL */ `
               amount
               currencyCode
             }
-            lineItems(first: 100) {
+            lineItems(first: 30) {
               edges {
                 node {
                   name
