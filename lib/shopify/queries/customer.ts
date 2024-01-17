@@ -17,7 +17,7 @@ export const getCustomerQuery = /* GraphQL */ `
         edges {
           node {
             name
-            processedAt
+            createdAt
             totalPrice {
               amount
               currencyCode
