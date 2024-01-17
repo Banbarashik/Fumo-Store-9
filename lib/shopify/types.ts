@@ -64,9 +64,6 @@ export type Money = {
 };
 
 export type Order = Omit<ShopifyOrder, 'lineItems'> & {
-  name: string;
-  processedAt: string;
-  totalPrice: Money;
   lineItems: LineItem[];
 };
 
@@ -147,7 +144,7 @@ export type ShopifyCustomer = {
 
 export type ShopifyOrder = {
   name: string;
-  processedAt: string;
+  createdAt: string;
   totalPrice: Money;
   lineItems: Connection<LineItem>;
 };
