@@ -34,7 +34,7 @@ export const getCollectionQuery = /* GraphQL */ `
 
 export const getCollectionsQuery = /* GraphQL */ `
   query getCollections {
-    collections(first: 100, sortKey: ID) {
+    collections(first: 5, sortKey: ID) {
       edges {
         node {
           ...collection
