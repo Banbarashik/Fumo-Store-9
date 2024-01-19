@@ -367,6 +367,7 @@ export async function getCustomer(accessToken: string): Promise<Customer> {
   const res = await shopifyFetch<ShopifyCustomerOperation>({
     endpoint: customerAccountEndpoint,
     query: getCustomerQuery,
+    tags: [TAGS.orders],
     headers: {
       Authorization: accessToken
     }
@@ -491,17 +492,19 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
   // otherwise it will continue to retry the request.
   const collectionWebhooks = ['collections/create', 'collections/delete', 'collections/update'];
   const productWebhooks = ['products/create', 'products/delete', 'products/update'];
+  const orderWebhooks = ['orders/create'];
   const topic = headers().get('x-shopify-topic') || 'unknown';
   const secret = req.nextUrl.searchParams.get('secret');
   const isCollectionUpdate = collectionWebhooks.includes(topic);
   const isProductUpdate = productWebhooks.includes(topic);
+  const isOrderUpdate = orderWebhooks.includes(topic);
 
   if (!secret || secret !== process.env.SHOPIFY_REVALIDATION_SECRET) {
     console.error('Invalid revalidation secret.');
     return NextResponse.json({ status: 200 });
   }
 
-  if (!isCollectionUpdate && !isProductUpdate) {
+  if (!isCollectionUpdate && !isProductUpdate && !isOrderUpdate) {
     // We don't need to revalidate anything for any other topics.
     return NextResponse.json({ status: 200 });
   }
@@ -512,6 +515,10 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
 
   if (isProductUpdate) {
     revalidateTag(TAGS.products);
+  }
+
+  if (isOrderUpdate) {
+    revalidateTag(TAGS.orders);
   }
 
   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
