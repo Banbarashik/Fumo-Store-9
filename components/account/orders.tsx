@@ -7,7 +7,7 @@ export default function CustomerOrders({ orders }: { orders: Order[] }) {
   return (
     <ul className="overflow-y-scroll rounded-sm border border-neutral-200 px-3 py-4 dark:border-neutral-800">
       {orders.map((order, i, arr) => (
-        <CustomerOrder order={order} isLast={arr.length === i + 1} />
+        <CustomerOrder key={order.name} order={order} isLast={arr.length === i + 1} />
       ))}
     </ul>
   );
@@ -16,7 +16,6 @@ export default function CustomerOrders({ orders }: { orders: Order[] }) {
 function CustomerOrder({ order, isLast }: { order: Order; isLast: boolean }) {
   return (
     <li
-      key={order.name}
       className={clsx(
         'rounded-sm border border-neutral-200 px-3 py-4 dark:border-neutral-700 dark:bg-neutral-900',
         {
@@ -45,7 +44,7 @@ function CustomerOrder({ order, isLast }: { order: Order; isLast: boolean }) {
       </div>
       <ul>
         {order.lineItems.map((item, i, arr) => (
-          <CustomerOrderItem item={item} isLast={arr.length === i + 1} />
+          <CustomerOrderItem key={item.name} item={item} isLast={arr.length === i + 1} />
         ))}
       </ul>
     </li>
