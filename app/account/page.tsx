@@ -16,7 +16,7 @@ export default async function Account() {
   return (
     //* 92px in max-h-[calc(100vh-92px)] is the calculated height of the navbar
     // TODO find a more dynamic way to calculate the max height of the div
-    <div className="mx-auto flex max-h-[calc(100vh+220px)] max-w-screen-md flex-col py-4 sm:max-h-[calc(100vh+170px)] sm:tall:max-h-[calc(100vh-92px)]">
+    <div className="mx-auto flex max-h-[calc(100vh+220px)] max-w-screen-md flex-col py-4 sm:max-h-[calc(100vh+170px)] 2xl:max-h-[calc(100vh-92px)]">
       <h1 className="mb-6 text-center text-2xl sm:text-3xl">Customer Information</h1>
       <CustomerInfo
         displayName={customer.displayName}
