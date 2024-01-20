@@ -3,6 +3,8 @@ import CustomerOrders from '@/components/account/orders';
 import { getCustomer } from '@/lib/shopify';
 import { cookies } from 'next/headers';
 
+export const runtime = 'edge';
+
 export default async function Account() {
   const accessToken = cookies().get('access_token');
 
