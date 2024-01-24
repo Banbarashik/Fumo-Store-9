@@ -1,39 +1,6 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fcommerce&project-name=commerce&repo-name=commerce&demo-title=Next.js%20Commerce&demo-url=https%3A%2F%2Fdemo.vercel.store&demo-image=https%3A%2F%2Fbigcommerce-demo-asset-ksvtgfvnd.vercel.app%2Fbigcommerce.png&env=COMPANY_NAME,SHOPIFY_REVALIDATION_SECRET,SHOPIFY_STORE_DOMAIN,SHOPIFY_STOREFRONT_ACCESS_TOKEN,SITE_NAME,TWITTER_CREATOR,TWITTER_SITE)
+# Fumo Store №9
 
-# Next.js Commerce
-
-A Next.js 13 and App Router-ready ecommerce template featuring:
-
-- Next.js App Router
-- Optimized for SEO using Next.js's Metadata
-- React Server Components (RSCs) and Suspense
-- Server Actions for mutations
-- Edge Runtime
-- New fetching and caching paradigms
-- Dynamic OG images
-- Styling with Tailwind CSS
-- Checkout and payments with Shopify
-- Automatic light/dark mode based on system settings
-
-<h3 id="v1-note"></h3>
-
-> Note: Looking for Next.js Commerce v1? View the [code](https://github.com/vercel/commerce/tree/v1), [demo](https://commerce-v1.vercel.store), and [release notes](https://github.com/vercel/commerce/releases/tag/v1).
-
-## Providers
-
-Vercel will only be actively maintaining a Shopify version [as outlined in our vision and strategy for Next.js Commerce](https://github.com/vercel/commerce/pull/966).
-
-Vercel is happy to partner and work with any commerce provider to help them get a similar template up and running and listed below. Alternative providers should be able to fork this repository and swap out the `lib/shopify` file with their own implementation while leaving the rest of the template mostly unchanged.
-
-- Shopify (this repository)
-- [BigCommerce](https://github.com/bigcommerce/nextjs-commerce) ([Demo](https://next-commerce-v2.vercel.app/))
-- [Medusa](https://github.com/medusajs/vercel-commerce) ([Demo](https://medusa-nextjs-commerce.vercel.app/))
-- [Saleor](https://github.com/saleor/nextjs-commerce) ([Demo](https://saleor-commerce.vercel.app/))
-- [Shopware](https://github.com/shopwareLabs/vercel-commerce) ([Demo](https://shopware-vercel-commerce-react.vercel.app/))
-- [Swell](https://github.com/swellstores/verswell-commerce) ([Demo](https://verswell-commerce.vercel.app/))
-- [Umbraco](https://github.com/umbraco/Umbraco.VercelCommerce.Demo) ([Demo](https://vercel-commerce-demo.umbraco.com/))
-
-> Note: Providers, if you are looking to use similar products for your demo, you can [download these assets](https://drive.google.com/file/d/1q_bKerjrwZgHwCw0ovfUMW6He9VtepO_/view?usp=sharing).
+An E-Commerce Website. Integrated with Shopify. Built upon the Next.js Commerce template.
 
 ## Running locally
 
@@ -52,16 +19,23 @@ pnpm dev
 
 Your app should now be running on [localhost:3000](http://localhost:3000/).
 
-<details>
-  <summary>Expand if you work at Vercel and want to run locally and / or contribute</summary>
-
-1. Run `vc link`.
-1. Select the `Vercel Solutions` scope.
-1. Connect to the existing `commerce-shopify` project.
-1. Run `vc env pull` to get environment variables.
-1. Run `pmpm dev` to ensure everything is working correctly.
-</details>
-
 ## Vercel, Next.js Commerce, and Shopify Integration Guide
 
 You can use this comprehensive [integration guide](http://vercel.com/docs/integrations/shopify) with step-by-step instructions on how to configure Shopify as a headless CMS using Next.js Commerce as your headless Shopify storefront on Vercel.
+
+If you want to use this project for your own Store, you can follow Vercel's intergration guide [integration guide](http://vercel.com/docs/integrations/shopify).
+
+> Note: Additionaly to the steps described in Vercel's integration guide, you need to do some extra actions to integrate with Shopify's Customer Account API
+
+First, you need to follow Shopify's [Getting started with the Customer Account API](https://shopify.dev/docs/custom-storefronts/building-with-the-customer-account-api/getting-started) guide. After you've completed all the steps, you need to add the following environment variables to your project
+
+| Key                | Value                              |
+| ------------------ | ---------------------------------- |
+| LOGIN_REDIRECT_URI | (URL of your ngrok HTTPS endpoint) |
+| SHOP_ID            | (your shop id)                     |
+
+Once you've deployed your store, you should set the value of LOGIN_REDIRECT_URI in Production Environment to your deployment's URL.
+
+To get your shop's ID, you can add "/shop.json" to the end of your store URL (e.g., "test-store.myshopify.com/shop.json") which will display store info in JSON format. On this page you can search for "shopId" and you should find the store ID as a string.
+
+Finally, you need to create a webhook for "Order creation" event the same way as described in [Step 5](https://vercel.com/docs/integrations/shopify#configure-shopify-webhooks) of Vercel's guide.
