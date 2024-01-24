@@ -2,40 +2,39 @@
 
 An E-Commerce Website. Integrated with Shopify. Built upon the Next.js Commerce template.
 
-## Running locally
+## Project setup
 
-You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js Commerce. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/concepts/projects/environment-variables) for this, but a `.env` file is all that is necessary.
+### Setting up the local environment
 
-> Note: You should not commit your `.env` file or it will expose secrets that will allow others to control your Shopify store.
+1. Clone the repository.
+2. Rename .env.example to .env.local.
 
-1. Install Vercel CLI: `npm i -g vercel`
-2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
-3. Download your environment variables: `vercel env pull`
+Run the following commands (in the folder of your cloned repository):
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Your app should now be running on [localhost:3000](http://localhost:3000/).
+Your app should now be running on [localhost:3000](http://localhost:3000/). To shut down the app click Ctrl + C while in terminal.
+> The storefront won't work just yet. You'll have to populate your .env.local file with environment variables values to which you'll get while following the Shopify Integration instruction.
 
-## Vercel, Next.js Commerce, and Shopify Integration Guide
+### Shopify integration
 
-You can use this comprehensive [integration guide](http://vercel.com/docs/integrations/shopify) with step-by-step instructions on how to configure Shopify as a headless CMS using Next.js Commerce as your headless Shopify storefront on Vercel.
+1. Follow this [video](https://youtu.be/CcLopj8zVJc) to create a development store.
+2. Set the value of the "SHOPIFY_STORE_DOMAIN" environment variable to the URL of your development store (can be seen in [Settings](https://admin.shopify.com/store/store-for-instruction/settings)).
+3. Install the [Headless app](https://apps.shopify.com/headless) and create a storefront ([instruction](https://vercel.com/docs/integrations/shopify#install-the-shopify-headless-app)).
+4. Set the value of the "SHOPIFY_STOREFRONT_ACCESS_TOKEN" environment variable to the Public access token from the previous step.
+5. Configure Shopify webhooks using this [instruction](https://vercel.com/docs/integrations/shopify#configure-shopify-webhooks).
+6. Create a webhook for the "Order creation" event the same way.
+7. Set the value of the "SHOPIFY_REVALIDATION_SECRET" environment variable to the revalidation secret you created in Step 5.
+8. In your Shopify store's [Settings](https://admin.shopify.com/store/store-for-instruction/settings), go to [Customer accounts](https://admin.shopify.com/store/store-for-instruction/settings/customer_accounts), click "Edit" in "Accounts in online store and checkout", checkout "Show login link in the header of online store and at checkout" and choose "New customer accounts". Save the settings.
+9. Follow Steps 1-3 of Shopify's [Getting started with the Customer Account API](https://shopify.dev/docs/custom-storefronts/building-with-the-customer-account-api/getting-started) guide (this storefront uses the confidential type of a client, so you can ignore info related to public clients).
+10. Set the values of the "CLIENT_ID" and "CLIENT_SECRET" environment variables to the client ID and client secret from the previous step.
+11. Set the value of the "LOGIN_REDIRECT_URI" environment variable to the ngrok endpoint you used in Step 8 and 5.
+12. Set the value of the "SHOP_ID" environment variable to your Shopify store's shop ID.
+To get the shop ID, you can add "/shop.json" to the end of your store URL (e.g., "test-store.myshopify.com/shop.json") which will display store info in JSON format. On this page you can search for "shopId".
 
-If you want to use this project for your own Store, you can follow Vercel's intergration guide [integration guide](http://vercel.com/docs/integrations/shopify).
+After completing these steps your storefront will be able to display information from your Shopify store, store products in the cart, create orders and authorize users.
 
-> Note: Additionaly to the steps described in Vercel's integration guide, you need to do some extra actions to integrate with Shopify's Customer Account API
-
-First, you need to follow Shopify's [Getting started with the Customer Account API](https://shopify.dev/docs/custom-storefronts/building-with-the-customer-account-api/getting-started) guide. After you've completed all the steps, you need to add the following environment variables to your project
-
-| Key                | Value                              |
-| ------------------ | ---------------------------------- |
-| LOGIN_REDIRECT_URI | (URL of your ngrok HTTPS endpoint) |
-| SHOP_ID            | (your shop id)                     |
-
-Once you've deployed your store, you should set the value of LOGIN_REDIRECT_URI in Production Environment to your deployment's URL.
-
-To get your shop's ID, you can add "/shop.json" to the end of your store URL (e.g., "test-store.myshopify.com/shop.json") which will display store info in JSON format. On this page you can search for "shopId" and you should find the store ID as a string.
-
-Finally, you need to create a webhook for "Order creation" event the same way as described in [Step 5](https://vercel.com/docs/integrations/shopify#configure-shopify-webhooks) of Vercel's guide.
+For more detailed guide on Shopify (and Vercel) intergration you can refer this [guide](https://vercel.com/docs/integrations/shopify).
