@@ -39,3 +39,17 @@ Your app should now be running on [localhost:3000](http://localhost:3000/). To s
 After completing these steps your storefront will be able to display information from your Shopify store, store products in the cart, create orders and authorize users.
 
 For more detailed guide on Shopify (and Vercel) intergration you can refer this [guide](https://vercel.com/docs/integrations/shopify).
+
+## Technology stack
+
+- Main
+  - Next.js - a full-stack web framework.
+  - TypeScript - a superset of JavaScript with strong types.
+  - TailwindCSS - a utility-first CSS framework.
+- Auxiliary
+  - shadcn/ui - a collection of components.
+  - Lucide-react - a collection of icons.
+  - Keen-slider - a slider library.
+- Dev
+  - ESlint
+  - Prettier
