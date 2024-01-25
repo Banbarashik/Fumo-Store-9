@@ -1,6 +1,6 @@
 # Fumo Store №9
 
-An E-Commerce Website. Integrated with Shopify. Built upon the Next.js Commerce template.
+This project contains the code behind my demo [store](https://fumo-store-9.vercel.app/). Basically, this is an extended version of the [Next.js Commerce template](https://github.com/vercel/commerce). You can see the list of improvements and extensions (with gifs for demonstration) here.
 
 ## Project setup
 
@@ -17,6 +17,7 @@ pnpm dev
 ```
 
 Your app should now be running on [localhost:3000](http://localhost:3000/). To shut down the app click Ctrl + C while in terminal.
+
 > The storefront won't work just yet. You'll have to populate your .env.local file with environment variables values to which you'll get while following the Shopify Integration instruction.
 
 ### Shopify integration
@@ -33,7 +34,7 @@ Your app should now be running on [localhost:3000](http://localhost:3000/). To s
 10. Set the values of the "CLIENT_ID" and "CLIENT_SECRET" environment variables to the client ID and client secret from the previous step.
 11. Set the value of the "LOGIN_REDIRECT_URI" environment variable to the ngrok endpoint you used in Step 8 and 5.
 12. Set the value of the "SHOP_ID" environment variable to your Shopify store's shop ID.
-To get the shop ID, you can add "/shop.json" to the end of your store URL (e.g., "test-store.myshopify.com/shop.json") which will display store info in JSON format. On this page you can search for "shopId".
+    To get the shop ID, you can add "/shop.json" to the end of your store URL (e.g., "test-store.myshopify.com/shop.json") which will display store info in JSON format. On this page you can search for "shopId".
 
 After completing these steps your storefront will be able to display information from your Shopify store, store products in the cart, create orders and authorize users.
 
