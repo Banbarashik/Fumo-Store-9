@@ -63,10 +63,7 @@ const storeDomain = process.env.SHOPIFY_STORE_DOMAIN
   : '';
 const storefrontEndpoint = `${storeDomain}${SHOPIFY_STOREFRONT_API_ENDPOINT} `;
 
-const shopifyDomain = process.env.SHOPIFY_DOMAIN
-  ? ensureStartsWith(process.env.SHOPIFY_DOMAIN, 'https://')
-  : '';
-const customerAccountEndpoint = `${shopifyDomain}${SHOPIFY_CUSTOMER_ACCOUNT_API_ENDPOINT}`;
+const customerAccountEndpoint = 'https://shopify.com' + SHOPIFY_CUSTOMER_ACCOUNT_API_ENDPOINT;
 
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
 
