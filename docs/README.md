@@ -1,6 +1,6 @@
 ![Site logo](logo.svg)
 
-This project contains the code behind my demo [store](https://fumo-store-9.vercel.app/). Basically, this is an extended version of the [Next.js Commerce template](https://github.com/vercel/commerce). You can see the list of improvements and extensions (with gifs for demonstration) here.
+This project contains the code behind my demo [store](https://fumo-store-9.vercel.app/). Basically, this is an extended version of the [Next.js Commerce template](https://github.com/vercel/commerce). You can see a list of improvements and extensions (with gifs for demonstration) here.
 
 ## Project setup
 
