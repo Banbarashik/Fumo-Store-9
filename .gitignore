@@ -20,6 +20,8 @@
 .DS_Store
 *.pem
 todo
+docs/*.png
+docs/*.webm
 
 # debug
 npm-debug.log*
