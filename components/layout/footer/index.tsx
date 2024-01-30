@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-import FooterMenu from '@/components/layout/footer-menu';
+import FooterMenu from '@/components/layout/footer/menu';
 import Logo from '@/components/logo';
 import { getMenu } from '@/lib/shopify';
 
@@ -16,12 +16,9 @@ export default async function Footer() {
 
   return (
     <footer className="text-sm text-neutral-500 dark:text-neutral-400">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 border-t border-neutral-200 px-6 py-12 text-sm md:flex-row md:gap-12 md:px-4 min-[1320px]:px-0 dark:border-neutral-700">
+      <div className="mx-auto flex w-full max-w-7xl flex-row items-center justify-center gap-6 border-t border-neutral-200 py-6 text-sm sm:py-10 min-[1320px]:px-0 dark:border-neutral-700">
         <div>
-          <Link
-            className="flex w-32 items-center gap-2 text-black md:pt-1 dark:text-white"
-            href="/"
-          >
+          <Link className="block w-28 sm:w-32" href="/">
             <Logo />
           </Link>
         </div>

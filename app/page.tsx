@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-import Footer from 'components/layout/footer';
+import Footer from '@/components/layout/footer';
 
 import { buttonVariants } from '@/components/ui/button';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
