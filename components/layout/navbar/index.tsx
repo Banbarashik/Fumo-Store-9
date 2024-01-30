@@ -19,8 +19,8 @@ export default async function Navbar() {
         <MobileMenu menu={menu} />
       </div>
       <div className="flex w-full items-center">
-        <div className="flex w-full md:w-1/3">
-          <Link href="/" className="mx-auto w-32 md:mx-0 lg:mr-6">
+        <div className="flex w-full md:w-5/12 lg:w-1/3">
+          <Link href="/" className="mx-auto w-32 md:mx-0 md:mr-6">
             <Logo />
           </Link>
           {menu.length ? (
