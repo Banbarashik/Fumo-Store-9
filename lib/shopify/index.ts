@@ -61,7 +61,7 @@ import {
 const storeDomain = process.env.SHOPIFY_STORE_DOMAIN
   ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
   : '';
-const storefrontEndpoint = `${storeDomain}${SHOPIFY_STOREFRONT_API_ENDPOINT} `;
+const storefrontEndpoint = storeDomain + SHOPIFY_STOREFRONT_API_ENDPOINT;
 
 const customerAccountEndpoint = 'https://shopify.com' + SHOPIFY_CUSTOMER_ACCOUNT_API_ENDPOINT;
 
