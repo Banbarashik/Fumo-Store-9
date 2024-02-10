@@ -45,7 +45,7 @@ For more detailed instructions on Shopify (and Vercel) integration, you can refe
 - Main
   - Next.js - a full-stack web framework.
   - TypeScript - a superset of JavaScript with strong types.
-  - TailwindCSS - a utility-first CSS framework.
+  - Tailwind CSS - a utility-first CSS framework.
 - Auxiliary
   - shadcn/ui - a collection of components.
   - Lucide-react - a collection of icons.
